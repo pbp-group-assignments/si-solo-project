@@ -5,7 +5,7 @@
     - Mathilda Dellanova
     - Rifqi Farel Muhammad
     - Sakinah Richas
-2. Tautan aplikasi Heroku
+2. Tautan aplikasi Heroku:
     https://sisolo.herokuapp.com/
 3. Cerita aplikasi yang diajukan serta manfaatnya
 4. Daftar modul yang akan diimplementasikan
