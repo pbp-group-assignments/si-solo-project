@@ -1,7 +1,7 @@
 1. Nama-nama anggota kelompok
     - Clarissa Thea Aryanto
     - Fabian Akmal Arkandion (NPM: 2106750660)
-    - Jasmine Indira Wibowo
+    - Jasmine Indira Wibowo (NPM: 2106650374)
     - Mathilda Dellanova
     - Rifqi Farel Muhammad
     - Sakinah Richas
