@@ -1,7 +1,7 @@
 # Si Solo (Sistem Informasi Solo)
 
 ## Nama-nama anggota kelompok
-- Clarissa Thea Aryanto
+- Clarissa Thea Aryanto (NPM: 2106634673)
 - Fabian Akmal Arkandion (NPM: 2106750660)
 - Jasmine Indira Wibowo (NPM: 2106650374)
 - Mathilda Dellanova
