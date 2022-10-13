@@ -8,7 +8,7 @@
 - Rifqi Farel Muhammad (NPM: 2106650310)
 - Sakinah Richas
 
-## Tautan aplikasi Heroku:
+## Tautan aplikasi Heroku
    [Si Solo](https://sisolo.herokuapp.com/)
 
 ## Cerita aplikasi yang diajukan serta manfaatnya
