@@ -6,7 +6,7 @@
 - Jasmine Indira Wibowo (NPM: 2106650374)
 - Mathilda Dellanova
 - Rifqi Farel Muhammad (NPM: 2106650310)
-- Sakinah Richas
+- Sakinah Richas (NPM: 2106751511)
 
 ## Tautan aplikasi Heroku
    [Si Solo](https://sisolo.herokuapp.com/)
