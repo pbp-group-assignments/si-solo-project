@@ -1,6 +1,6 @@
 # Si Solo (Sistem Informasi Solo)
 
-## 1. Nama-nama anggota kelompok
+## Nama-nama anggota kelompok
 - Clarissa Thea Aryanto
 - Fabian Akmal Arkandion (NPM: 2106750660)
 - Jasmine Indira Wibowo (NPM: 2106650374)
@@ -8,13 +8,13 @@
 - Rifqi Farel Muhammad (NPM: 2106650310)
 - Sakinah Richas
 
-## 2. Tautan aplikasi Heroku:
+## Tautan aplikasi Heroku:
    [Si Solo](https://sisolo.herokuapp.com/)
 
-## 3. Cerita aplikasi yang diajukan serta manfaatnya
+## Cerita aplikasi yang diajukan serta manfaatnya
 Aplikasi yang kami ajukan adalah Solo smart city, bernama 'Si Solo' atau kependekan dari Sistem Informasi Solo. Smart city atau kota cerdas merupakan wilayah kota yang telah mengintegrasikan teknologi informasi dan komunikasi dalam tata kelola sehari-hari. Alasan kami memilih kota Solo adalah karena menurut kami kota Solo memiliki banyak potensi namun belum memiliki website untuk menyalurkan potensi-potensi tersebut. Manfaat dari aplikasi ini adalah memperbaiki permasalahan di masyarakat, meningkatkan layanan publik, menciptakan pemerintahan yang lebih baik, mencerdaskan masyarakat, serta mengelola potensi SDM di kota Solo. Menurut kami, aplikasi smart city yang kami buat dapat menyelesaikan beberapa isu yang dibahas dalam G20, seperti ekonomi digital, pariwisata, kesehatan, pembangunan, serta lingkungan.
 
-## 4. Daftar modul yang akan diimplementasikan
+## Daftar modul yang akan diimplementasikan
 1. Landing page
 2. Forum layanan pengaduan
 3. Forum diskusi
@@ -27,7 +27,7 @@ Aplikasi yang kami ajukan adalah Solo smart city, bernama 'Si Solo' atau kepende
 10. Berita atau isu terkini di Solo
 11. Pendaftaran izin usaha
 
-## 5. Role atau peran pengguna beserta deskripsinya
+## Role atau peran pengguna beserta deskripsinya
 1. Pengguna asing: Merupakan pengguna yang belum login ke website. Pengguna asing hanya dapat mengakses landing page, page informasi tentang lokasi kuliner & wisata, page informasi tentang sarana kesehatan, page informasi tentang transportasi umum, dan page informasi tentang lokasi penjualan kebutuhan pokok.
 2. Pengguna: Merupakan pengguna yang sudah login ke website. Pengguna dapat mengakses seluruh hal yang dapat diakses oleh pengguna asing dan juga dapat mengakses page forum layanan pengaduan, page forum diskusi, dan page forum pemberian saran untuk pembangunan kota.
 3. Pelaku usaha: Merupakan pengguna yang juga sudah terdaftar izin usahanya di website, sehingga dapat memanage usahanya di website. 
