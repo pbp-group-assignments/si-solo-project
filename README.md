@@ -39,7 +39,11 @@ Halaman yang berisi tentang berita atau isu terkini yang ada di Kota Solo.
 Halaman yang berisi form beserta status pendaftara izin usaha, dimana ketika pendaftaran telah selesai maka pelaku usaha dapat memanage langsung usahanya pada website.
 
 ## Role atau peran pengguna beserta deskripsinya
-1. Pengguna asing: Merupakan pengguna yang belum login ke website. Pengguna asing hanya dapat mengakses landing page, page informasi tentang lokasi kuliner & wisata, page informasi tentang sarana kesehatan, page informasi tentang transportasi umum, dan page informasi tentang lokasi penjualan kebutuhan pokok.
-2. Pengguna: Merupakan pengguna yang sudah login ke website. Pengguna dapat mengakses seluruh hal yang dapat diakses oleh pengguna asing dan juga dapat mengakses page forum layanan pengaduan, page forum diskusi, dan page forum pemberian saran untuk pembangunan kota.
-3. Pelaku usaha: Merupakan pengguna yang juga sudah terdaftar izin usahanya di website, sehingga dapat memanage usahanya di website. 
-4. Admin: Role untuk pemerintah (melalui pegawainya) untuk mengatur dan mengawasi interaktif yang terjadi di website agar kelancaran website dapat terjamin. Role admin dapat memberikan respon terhadap pengaduan dari forum layanan pengaduan, menjawab atau memberikan respon terhadap diskusi yang ada di forum diskusi, melihat saran yang diberikan pada page forum pemberian saran untuk pembangunan kota, dan melihat list pendaftaran izin usaha dan yang mengubah status dari pendaftaran tersebut.
+### 1. Pengguna asing
+Merupakan pengguna yang belum login ke website. Pengguna asing hanya dapat mengakses landing page, page informasi tentang lokasi kuliner & wisata, page informasi tentang sarana kesehatan, page informasi tentang transportasi umum, dan page informasi tentang lokasi penjualan kebutuhan pokok.
+### 2. Pengguna
+Merupakan pengguna yang sudah login ke website. Pengguna dapat mengakses seluruh hal yang dapat diakses oleh pengguna asing dan juga dapat mengakses page forum layanan pengaduan, page forum diskusi, dan page forum pemberian saran untuk pembangunan kota.
+### 3. Pelaku usaha
+Merupakan pengguna yang juga sudah terdaftar izin usahanya di website, sehingga dapat memanage usahanya di website. 
+### 4. Admin
+Role untuk pemerintah (melalui pegawainya) untuk mengatur dan mengawasi interaktif yang terjadi di website agar kelancaran website dapat terjamin. Role admin dapat memberikan respon terhadap pengaduan dari forum layanan pengaduan, menjawab atau memberikan respon terhadap diskusi yang ada di forum diskusi, melihat saran yang diberikan pada page forum pemberian saran untuk pembangunan kota, dan melihat list pendaftaran izin usaha dan yang mengubah status dari pendaftaran tersebut.
