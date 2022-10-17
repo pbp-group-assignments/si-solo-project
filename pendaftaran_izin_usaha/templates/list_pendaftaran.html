@@ -1,0 +1,108 @@
+{% extends 'base.html' %}
+
+{% block meta %}
+<title>List Pendaftaran Usaha</title>
+{% endblock meta %}
+
+{% block content %}
+<head>
+    <script>
+        $(document).ready(function(){
+          $.get('usaha-json', function(data){
+            for (let i = 0; i < data.length; i++){
+                $('#list-pendaftaran').append(`<div id="${data[i].pk}--task" class="flex mb-3">
+          <div> ${data[i].fields.statusPendaftaran}
+          <div>
+            <h4 style="text-align: center;">${data[i].fields.namaUsaha}</h4>
+            <p style="text-align: center;">${data[i].fields.jenisUsaha}</p>
+            <p style="text-align: center;">${data[i].fields.alamatUsaha}</p>
+            <p style="text-align: center;">${data[i].fields.nomorTeleponUsaha}</p>
+          </div>
+          </div>`)
+            }
+          })
+
+          $('#daftar-usaha').click(function(){
+            if ($('#namaPemilik').val() != '' && $('#nomorTeleponPemilik').val() != '' && $('#alamatTempatTinggalPemilik').val() != '' && $('#namaUsaha').val() != '' && $('#jenisUsaha').val() != 'Pilih jenis usaha' && $('#alamatUsaha').val() != '' && $('#nomorTeleponUsaha').val() != ''){
+              $.ajax({
+                url: 'daftar_usaha_baru/',
+                type: 'POST',
+                data: {namaPemilik: $('#namaPemilik').val(), nomorTeleponPemilik: $('#nomorTeleponPemilik').val(), alamatPemilik: $('#alamatTempatTinggalPemilik').val(), namaUsaha: $('#namaUsaha').val(), jenisUsaha: $('#jenisUsaha').val(), alamatUsaha: $('#alamatUsaha').val(), nomorTeleponUsaha: $('#nomorTeleponUsaha').val()},
+                success: function(response){
+                  $('#list-pendaftaran').append(`<div id="${response.pk}--task" class="flex mb-3">
+                  <div> ${response.fields.statusPendaftaran}
+                  <div>
+                    <h4 style="text-align: center;">${response.fields.namaUsaha}</h4>
+                    <p style="text-align: center;">${response.fields.jenisUsaha}</p>
+                    <p style="text-align: center;">${response.fields.alamatUsaha}</p>
+                    <p style="text-align: center;">${response.fields.nomorTeleponUsaha}</p>
+                  </div>
+                  </div>`)
+                }
+              })
+            }else{
+              window.alert('lah')
+            }
+          })
+        })
+    </script>
+</head>
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-3">
+    <div class="container-fluid navbar-dark bg-dark">
+        <a class="navbar-brand navbar-dark bg-dark">Hello!</a>
+        <button class="navbar-toggler navbar-dark bg-dark" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon navbar-dark bg-dark"></span>
+          </button>
+          <div class="collapse navbar-collapse navbar-dark bg-dark" id="navbarSupportedContent">
+              <ul class="navbar-nav">
+                <li class="nav-item active">
+                  <a class="nav-link navbar-dark bg-dark cursor-pointer" data-bs-toggle="modal" data-bs-target="#DaftarUsahaBaruModal">Daftar Usaha Baru<span class="sr-only navbar-dark bg-dark"></span></a>
+                </li>
+                <!-- <li class="nav-item">
+                  <a class="nav-link navbar-dark bg-dark" href="">Logout</a>
+                </li> -->
+              </ul>
+          </div>
+    </div>
+  </nav>
+
+  <div class="modal fade" id="DaftarUsahaBaruModal" tabindex="-1" role="dialog" aria-labelledby="DaftarUsahaBaruModal" aria-hidden="true">
+    <div class="modal-dialog bg-dark" role="document">
+      <div class="modal-content bg-dark">
+        <div class="modal-header">
+          <h5 class="modal-title text-white" id="DaftarUsahaBaruModal">Daftar Usaha Baru</h5>
+        </div>
+        <div class="modal-body">
+          {% csrf_token %}
+          <label class="text-white font-bold">Nama Pemilik</label>
+          <input id="namaPemilik" class="shadow appearance-none border border-red-500 rounded w-full py-2 px-3 text-zinc-800 mb-3 leading-tight focus:outline-none focus:shadow-outline" type="namaPemilik" name="namaPemilik" placeholder="Nama Pemilik Usaha">
+          <label class="text-white font-bold">Nomor Telepon Pemilik</label>
+          <input id="nomorTeleponPemilik" class="shadow appearance-none border border-red-500 rounded w-full py-2 px-3 text-zinc-800 mb-3 leading-tight focus:outline-none focus:shadow-outline" type="nomorTeleponPemilik" name="nomorTeleponPemilik" placeholder="Nomor Telepon Pemilik Usaha">
+          <label class="text-white font-bold">Alamat Tempat Tinggal pemilik</label>
+          <input id="alamatTempatTinggalPemilik" class="shadow appearance-none border border-red-500 rounded w-full py-2 px-3 text-zinc-800 mb-3 leading-tight focus:outline-none focus:shadow-outline" type="alamatTempatTinggalPemilik" name="alamatTempatTinggalPemilik" placeholder="Alamat Tempat Tinggal Pemilik">
+          <label class="text-white font-bold">Nama Usaha</label>
+          <input id="namaUsaha" class="shadow appearance-none border border-red-500 rounded w-full py-2 px-3 text-zinc-800 mb-3 leading-tight focus:outline-none focus:shadow-outline" type="namaUsaha" name="namaUsaha" placeholder="Nama Usaha">
+          <label class="text-white font-bold">Jenis Usaha</label>
+          <select id="jenisUsaha" class="block py-2.5 px-0 w-full text-sm text-gray-500 rounded bg-white border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer">
+            <option selected>Pilih jenis usaha</option>
+            <option value="Kuliner">Kuliner</option>
+            <option value="TempatWisata">Tempat Wisata</option>
+            <option value="BahanPokok">Menjual Bahan Pokok</option>
+          </select>
+          <label class="text-white font-bold">Alamat Usaha</label>
+          <input id="alamatUsaha" class="shadow appearance-none border border-red-500 rounded w-full py-2 px-3 text-zinc-800 mb-3 leading-tight focus:outline-none focus:shadow-outline" type="alamatUsaha" name="alamatUsaha" placeholder="Alamat Usaha">
+          <label class="text-white font-bold">Nomor Telepon Usaha</label>
+          <input id="nomorTeleponUsaha" class="shadow appearance-none border border-red-500 rounded w-full py-2 px-3 text-zinc-800 mb-3 leading-tight focus:outline-none focus:shadow-outline" type="nomorTeleponUsaha" name="nomorTeleponUsaha" placeholder="Nomor Telepon Usaha">
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button id="daftar-usaha" type="button" class="btn btn-primary" data-bs-dismiss="modal">Daftar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<p class="items-center justify-center" id="list-pendaftaran"></p>
+
+{% endblock content %}
