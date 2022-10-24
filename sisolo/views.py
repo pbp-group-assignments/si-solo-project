@@ -44,7 +44,11 @@ def daftar_pelaku_usaha(request):
     return render(request, 'daftar_pelaku_usaha.html')
 
 def ubah_group_pengguna(request):
-    print('masuk')
-    request.user.groups = 'Pengguna'
+    # user = request.user
+    # # print(request.user.groups)
+    # user.groups = 'Pelaku Usaha'
+    # user.save()
+    # request.user.set_groups('Pelaku Usaha')
+    group = request.user.groups.all()[0].name
     return redirect('pendaftaran_izin_usaha:show_pendaftaran')
     

@@ -47,3 +47,12 @@ def daftar_usaha_baru(request):
         }
 
         return JsonResponse(response)
+
+@login_required(login_url='/login/')
+@csrf_exempt
+@allowed_users(allowed_roles=['Pelaku Usaha'])
+def cancel(request, cancel_id):
+    if (request.method == 'DELETE'):
+        Usaha.objects.filter(id=cancel_id).delete()
+
+        return HttpResponse(status=202)
