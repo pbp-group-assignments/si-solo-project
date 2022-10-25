@@ -63,18 +63,23 @@
           })
 
           $('#submit').click(function(){
-            $.ajaxSetup({
-                data: {csrfmiddlewaretoken: '{{ csrf_token }}' },
-            });
-            
-            $.ajax({
-                url:`set-diterima/${tempPermohonan}`,
-                data:{nomorIzinUsaha: $('#nomorIzinUsaha').val()},
-                type: 'POST',
-                success: function(response){
-                $(`#${tempPermohonan}--daftar`).remove()
-                }
-            })
+            if ($('#nomorIzinUsaha').val() == ''){
+              window.alert('Mohon Isi Nomor Izin Usaha!')
+            }else{
+              $.ajaxSetup({
+                  data: {csrfmiddlewaretoken: '{{ csrf_token }}' },
+              });
+              
+              $.ajax({
+                  url:`set-diterima/${tempPermohonan}`,
+                  data:{nomorIzinUsaha: $('#nomorIzinUsaha').val()},
+                  type: 'POST',
+                  success: function(response){
+                  $(`#${tempPermohonan}--daftar`).remove()
+                  }
+              })
+            }
+            $('#nomorIzinUsaha').val('')
           })
         })
     </script>

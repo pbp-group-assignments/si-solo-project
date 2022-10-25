@@ -49,9 +49,10 @@ def registerAddition(request):
     if request.method == 'POST':
         form = Register(request.POST)
         if form.is_valid():
+            namaLengkap = request.POST.get('namaLengkap')
             nomorTelepon = request.POST.get('nomorTelepon')
             alamat = request.POST.get('alamat')
-            pengguna = User(user = request.user, nomorTeleponPemilik = nomorTelepon, alamatPemilik = alamat)
+            pengguna = User(user = request.user, nomorTeleponPemilik = nomorTelepon, alamatPemilik = alamat, namaLengkap = namaLengkap)
             pengguna.save()
             return redirect('sisolo:landing_page')
     
@@ -62,14 +63,4 @@ def logout_user(request):
     logout(request)
     response = HttpResponseRedirect(reverse('sisolo:login_user'))
     return response
-
-def daftar_pelaku_usaha(request):
-    print(request.user.groups.all()[0].name)
-    return render(request, 'daftar_pelaku_usaha.html')
-
-def ubah_group_pengguna(request):
-    user = User.objects.get(user = request.user)
-    user.role = 'Pelaku Usaha'
-    user.save()
-    return redirect('pendaftaran_izin_usaha:show_pendaftaran')
     

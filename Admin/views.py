@@ -1,9 +1,11 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from sisolo.decorators import admin_only
-from pendaftaran_izin_usaha.models import Usaha
+from pendaftaran_izin_usaha.models import Usaha, PelakuUsaha
 from django.http import HttpResponse, JsonResponse
 from django.core import serializers
+from django.views.decorators.csrf import csrf_exempt
+from sisolo.models import User
 
 # Create your views here.
 @login_required(login_url='/login/')
@@ -94,5 +96,52 @@ def set_diterima_pendaftaran(request, permohonanId):
             print('Tempat Wisata')
         else:
             print('Menjual Bahan Pokok')
+
+        return HttpResponse(status=202)
+
+@login_required(login_url='/login/')
+@admin_only
+def pendaftaran_pelaku_usaha_json(request):
+    data = PelakuUsaha.objects.all()
+    return HttpResponse(serializers.serialize("json", data), content_type="application/json")
+
+@login_required(login_url='/login/')
+@admin_only
+def list_pendaftaran_pelaku_usaha_diproses(request):
+    return render(request, "list_pendaftaran_pelaku_usaha.html", {})
+
+@login_required(login_url='/login/')
+@admin_only
+def list_pendaftaran_pelaku_usaha_diterima(request):
+    return render(request, "list_pendaftaran_pelaku_usaha_diterima.html", {})
+
+@login_required(login_url='/login/')
+@admin_only
+def list_pendaftaran_pelaku_usaha_ditolak(request):
+    return render(request, "list_pendaftaran_pelaku_usaha_ditolak.html", {})
+
+@login_required(login_url='/login/')
+@admin_only
+def set_diterima_pelaku_usaha(request, pkPemohon):
+    if request.method == 'GET':
+        pelakuUsaha = PelakuUsaha.objects.get(pk = pkPemohon)
+        pelakuUsaha.status = 'Diterima'
+        pelakuUsaha.save()
+        
+        user = User.objects.get(user = pelakuUsaha.user.user)
+        user.role = 'Pelaku Usaha'
+        user.save()
+
+        return HttpResponse(status=202)
+
+@login_required(login_url='/login/')
+@admin_only
+def set_ditolak_pelaku_usaha(request, pkPemohon):
+    if request.method == 'POST':
+        alasan = request.POST.get('AlasanDitolak')
+        pelakuUsaha = PelakuUsaha.objects.get(pk = pkPemohon)
+        pelakuUsaha.status = 'Ditolak'
+        pelakuUsaha.pesan = alasan
+        pelakuUsaha.save()
 
         return HttpResponse(status=202)
