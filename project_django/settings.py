@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'sisolo',
     'pendaftaran_izin_usaha',
+    'Admin',
 ]
 
 MIDDLEWARE = [

@@ -20,6 +20,9 @@
             <div class="container text-white bg-dark mb-3" style="text-align: center;">
               ${data[i].fields.statusPendaftaran == 'Diajukan' ? `<a><button class="button-delete bg-red-600"style="width: 75px; height: 30px" ><a class="font-delete" onclick="batalkanPermohonan(${data[i].pk})">Batalkan</a></button></a>`:``}
             </div>
+            <div class="container text-white bg-dark mb-3" style="text-align: center;">
+              ${data[i].fields.statusPendaftaran == 'Diterima' ? `<p class="card-text text-white bg-dark mb-3" style="text-align: center;">Nomor Izin Usaha: ${data[i].fields.nomorIzinUsaha}</p>`:``}
+            </div>
           </div>
           </div>
           </div>
@@ -109,7 +112,7 @@
         </div>
   </div>
 </nav>
-  <!-- <a class="text-white nav-link navbar-dark bg-dark cursor-pointer" data-bs-toggle="modal" data-bs-target="#DaftarUsahaBaruModal">Daftar Usaha Baru<span class="sr-only navbar-dark bg-dark"></span></a> -->
+  <a class="text-white nav-link navbar-dark bg-dark cursor-pointer" data-bs-toggle="modal" data-bs-target="#DaftarUsahaBaruModal">Daftar Usaha Baru<span class="sr-only navbar-dark bg-dark"></span></a>
   <div class="modal fade" id="DaftarUsahaBaruModal" tabindex="-1" role="dialog" aria-labelledby="DaftarUsahaBaruModal" aria-hidden="true">
     <div class="modal-dialog bg-dark" role="document">
       <div class="modal-content bg-dark">
@@ -118,12 +121,6 @@
         </div>
         <div class="modal-body">
           {% csrf_token %}
-          <label class="text-white font-bold">Nama Pemilik</label>
-          <input id="namaPemilik" class="shadow appearance-none border border-red-500 rounded w-full py-2 px-3 text-zinc-800 mb-3 leading-tight focus:outline-none focus:shadow-outline" type="namaPemilik" name="namaPemilik" placeholder="Nama Pemilik Usaha">
-          <label class="text-white font-bold">Nomor Telepon Pemilik</label>
-          <input id="nomorTeleponPemilik" class="shadow appearance-none border border-red-500 rounded w-full py-2 px-3 text-zinc-800 mb-3 leading-tight focus:outline-none focus:shadow-outline" type="nomorTeleponPemilik" name="nomorTeleponPemilik" placeholder="Nomor Telepon Pemilik Usaha">
-          <label class="text-white font-bold">Alamat Tempat Tinggal pemilik</label>
-          <input id="alamatTempatTinggalPemilik" class="shadow appearance-none border border-red-500 rounded w-full py-2 px-3 text-zinc-800 mb-3 leading-tight focus:outline-none focus:shadow-outline" type="alamatTempatTinggalPemilik" name="alamatTempatTinggalPemilik" placeholder="Alamat Tempat Tinggal Pemilik">
           <label class="text-white font-bold">Nama Usaha</label>
           <input id="namaUsaha" class="shadow appearance-none border border-red-500 rounded w-full py-2 px-3 text-zinc-800 mb-3 leading-tight focus:outline-none focus:shadow-outline" type="namaUsaha" name="namaUsaha" placeholder="Nama Usaha">
           <label class="text-white font-bold">Jenis Usaha</label>

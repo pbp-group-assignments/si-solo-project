@@ -4,7 +4,8 @@ from django.http import HttpResponse, JsonResponse
 from django.core import serializers
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
-from sisolo.decorators import unauthenticated_user, allowed_users, admin_only
+from sisolo.decorators import allowed_users
+from sisolo.models import User
 
 # Create your views here.
 @login_required(login_url='/login/')
@@ -16,7 +17,8 @@ def show_pendaftaran(request):
 @login_required(login_url='/login/')
 @allowed_users(allowed_roles=['Pelaku Usaha'])
 def usaha_json(request):
-    data = Usaha.objects.filter(user = request.user)
+    user = User.objects.get(user = request.user)
+    data = Usaha.objects.filter(user = user)
     return HttpResponse(serializers.serialize("json", data), content_type="application/json")
 
 @login_required(login_url='/login/')
@@ -24,15 +26,12 @@ def usaha_json(request):
 @allowed_users(allowed_roles=['Pelaku Usaha'])
 def daftar_usaha_baru(request):
     if request.method == 'POST':
-        user = request.user
-        namaPemilik = request.POST.get('namaPemilik')
-        nomorTeleponPemilik = request.POST.get('nomorTeleponPemilik')
-        alamatPemilik = request.POST.get('alamatPemilik')
+        user = User.objects.get(user = request.user)
         namaUsaha = request.POST.get('namaUsaha')
         jenisUsaha = request.POST.get('jenisUsaha')
         alamatUsaha = request.POST.get('alamatUsaha')
         nomorTeleponUsaha = request.POST.get('nomorTeleponUsaha')
-        usaha = Usaha(user = user, namaPemilik = namaPemilik, nomorTeleponPemilik = nomorTeleponPemilik, alamatPemilik = alamatPemilik, namaUsaha = namaUsaha, jenisUsaha = jenisUsaha, alamatUsaha = alamatUsaha, nomorTeleponUsaha = nomorTeleponUsaha)
+        usaha = Usaha(user = user, namaPemilik = user.user.get_username(), nomorTeleponPemilik = user.nomorTeleponPemilik, alamatPemilik = user.alamatPemilik, namaUsaha = namaUsaha, jenisUsaha = jenisUsaha, alamatUsaha = alamatUsaha, nomorTeleponUsaha = nomorTeleponUsaha)
         usaha.save()
 
         response = {

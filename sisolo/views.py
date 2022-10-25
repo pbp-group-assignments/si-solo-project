@@ -5,6 +5,8 @@ from django.urls import reverse
 from django.contrib import messages
 from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import redirect
+from sisolo.forms import Register
+from sisolo.models import User
 
 def landing_page(request):
     return render(request, 'landing_page.html')
@@ -16,7 +18,13 @@ def login_user(request):
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
-            response = HttpResponseRedirect(reverse("sisolo:landing_page"))
+            if not User.objects.filter(user = request.user).exists():
+                response = HttpResponseRedirect(reverse("sisolo:registerAddition"))
+            else:
+                if (User.objects.get(user = request.user).role == 'Admin'):
+                    response = HttpResponseRedirect(reverse("Admin:show_admin_page"))
+                else:
+                    response = HttpResponseRedirect(reverse("sisolo:landing_page"))
             return response
         else:
             messages.info(request, 'Username atau Password salah!')
@@ -35,20 +43,33 @@ def register(request):
     context = {'form':form}
     return render(request, 'register.html', context)
 
+def registerAddition(request):
+    form = Register()
+
+    if request.method == 'POST':
+        form = Register(request.POST)
+        if form.is_valid():
+            nomorTelepon = request.POST.get('nomorTelepon')
+            alamat = request.POST.get('alamat')
+            pengguna = User(user = request.user, nomorTeleponPemilik = nomorTelepon, alamatPemilik = alamat)
+            pengguna.save()
+            return redirect('sisolo:landing_page')
+    
+    context = {'form':form}
+    return render(request, "registerAddition.html", context)
+
 def logout_user(request):
     logout(request)
     response = HttpResponseRedirect(reverse('sisolo:login_user'))
     return response
 
 def daftar_pelaku_usaha(request):
+    print(request.user.groups.all()[0].name)
     return render(request, 'daftar_pelaku_usaha.html')
 
 def ubah_group_pengguna(request):
-    # user = request.user
-    # # print(request.user.groups)
-    # user.groups = 'Pelaku Usaha'
-    # user.save()
-    # request.user.set_groups('Pelaku Usaha')
-    group = request.user.groups.all()[0].name
+    user = User.objects.get(user = request.user)
+    user.role = 'Pelaku Usaha'
+    user.save()
     return redirect('pendaftaran_izin_usaha:show_pendaftaran')
     
