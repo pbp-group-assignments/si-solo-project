@@ -1,6 +1,5 @@
 from django.urls import path
-from pendaftaran_izin_usaha.views import show_pendaftaran, usaha_json, daftar_usaha_baru, cancel
-from pendaftaran_izin_usaha.views import daftar_pelaku_usaha, ubah_group_pengguna
+from pendaftaran_izin_usaha.views import show_pendaftaran, usaha_json, daftar_usaha_baru, cancel, daftar_pelaku_usaha, ubah_group_pengguna
 
 app_name = 'pendaftaran_izin_usaha'
 

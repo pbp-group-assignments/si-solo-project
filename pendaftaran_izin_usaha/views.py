@@ -1,4 +1,3 @@
-from multiprocessing import context
 from django.shortcuts import render
 from pendaftaran_izin_usaha.models import Usaha, PelakuUsaha
 from django.http import HttpResponse, JsonResponse
@@ -18,7 +17,7 @@ def show_pendaftaran(request):
     return render(request, "list_pendaftaran.html", context)
 
 @login_required(login_url='/login/')
-@admin_only
+@allowed_users(allowed_roles=['Pelaku Usaha', 'Admin'])
 def usaha_json(request):
     user = User.objects.get(user = request.user)
     data = Usaha.objects.filter(user = user)
@@ -51,6 +50,7 @@ def daftar_usaha_baru(request):
         return JsonResponse(response)
 
 @login_required(login_url='/login/')
+@csrf_exempt
 @allowed_users(allowed_roles=['Pelaku Usaha'])
 def cancel(request, cancel_id):
     if (request.method == 'DELETE'):
@@ -84,6 +84,7 @@ def daftar_pelaku_usaha(request):
         if pelakuUsaha.status == 'Diproses':
             return render(request, 'proses_pendaftaran_pelaku_usaha.html')
         elif pelakuUsaha.status == 'Ditolak':
+            temp.delete()
             context={'pesan':pelakuUsaha.pesan}
             return render(request, 'tolak_pendaftaran_pelaku_usaha.html', context)
         else:
@@ -96,10 +97,3 @@ def ubah_group_pengguna(request):
     user.role = 'Pelaku Usaha'
     user.save()
     return redirect('pendaftaran_izin_usaha:show_pendaftaran')
-
-# @login_required(login_url='/login/')
-# @admin_only
-# def pendaftaran_pelaku_usaha_json(request):
-#     user = User.objects.get(user = request.user)
-#     data = Usaha.objects.filter(user = user)
-#     return HttpResponse(serializers.serialize("json", data), content_type="application/json")

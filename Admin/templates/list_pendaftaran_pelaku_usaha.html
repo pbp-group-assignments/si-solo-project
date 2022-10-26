@@ -61,7 +61,7 @@
                   }
               })
             }
-            $('#nomorIzinUsaha').val('')
+            $('#AlasanDitolak').val('')
           })
         })
     </script>
@@ -69,6 +69,13 @@
 
 <body>
     <nav aria-label="Page navigation example">
+      <div class="justify-content-center mt-3" style="text-align: center;">
+        <a class="hover:text-slate-200" href="{% url 'Admin:show_admin_page' %}">
+          <button class="bg-zinc-800 hover:bg-zinc-700 hover:text-slate-200 text-white font-bold py-2 px-4 rounded-full">
+            Kembali Ke Halaman Utama
+          </button>
+        </a>  
+      </div>
         <ul class="pagination justify-content-center mt-3">
           <li class="page-item"><a class="page-link" href="{% url 'Admin:list_pendaftaran_pelaku_usaha_diproses' %}">Diproses</a></li>
           <li class="page-item"><a class="page-link" href="{% url 'Admin:list_pendaftaran_pelaku_usaha_diterima' %}">Diterima</a></li>
@@ -80,14 +87,14 @@
         <div class="modal-dialog bg-dark" role="document">
           <div class="modal-content bg-dark">
             <div class="modal-header">
-              <h5 class="modal-title text-white" id="AlasanTolakModal">Nomor Izin Usaha</h5>
+              <h5 class="modal-title text-white font-bold" id="AlasanTolakModal">Alasan Permohonan Ditolak</h5>
             </div>
             <div class="modal-body">
                 {% csrf_token %}
                 <input id="AlasanDitolak" class="shadow appearance-none border border-red-500 rounded w-full py-2 px-3 text-zinc-800 mb-3 leading-tight focus:outline-none focus:shadow-outline" type="AlasanDitolak" name="AlasanDitolak" placeholder="Alasan Ditolak">
             </div>
             <div class="modal-footer">
-                <button id="submit" type="button" class="btn btn-primary" data-bs-dismiss="modal">Submit</button>
+                <button id="submit" type="button" class="btn btn-primary">Submit</button>
             </div>
           </div>
         </div>
