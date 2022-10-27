@@ -1,20 +1,21 @@
 from django.shortcuts import render
 from pendaftaran_izin_usaha.models import Usaha, PelakuUsaha
-from django.http import HttpResponse, JsonResponse
+from django.http import HttpResponse, JsonResponse, HttpResponseBadRequest
 from django.core import serializers
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
-from sisolo.decorators import allowed_users, admin_only
+from sisolo.decorators import allowed_users
 from sisolo.models import User
 from django.shortcuts import redirect
-from pendaftaran_izin_usaha.forms import DaftarPelakuUsaha
+from pendaftaran_izin_usaha.forms import DaftarPelakuUsaha, DaftarUsaha
 
 # Create your views here.
 @login_required(login_url='/login/')
+@csrf_exempt
 @allowed_users(allowed_roles=['Pelaku Usaha'])
 def show_pendaftaran(request):
-    context = {'username': request.user.get_username()}
-    return render(request, "list_pendaftaran.html", context)
+    form = DaftarUsaha()
+    return render(request, "list_pendaftaran.html", {'form':form})
 
 @login_required(login_url='/login/')
 @allowed_users(allowed_roles=['Pelaku Usaha', 'Admin'])
@@ -28,26 +29,30 @@ def usaha_json(request):
 @allowed_users(allowed_roles=['Pelaku Usaha'])
 def daftar_usaha_baru(request):
     if request.method == 'POST':
-        user = User.objects.get(user = request.user)
-        namaUsaha = request.POST.get('namaUsaha')
-        jenisUsaha = request.POST.get('jenisUsaha')
-        alamatUsaha = request.POST.get('alamatUsaha')
-        nomorTeleponUsaha = request.POST.get('nomorTeleponUsaha')
-        usaha = Usaha(user = user, namaPemilik = user.namaLengkap, nomorTeleponPemilik = user.nomorTeleponPemilik, alamatPemilik = user.alamatPemilik, namaUsaha = namaUsaha, jenisUsaha = jenisUsaha, alamatUsaha = alamatUsaha, nomorTeleponUsaha = nomorTeleponUsaha)
-        usaha.save()
+        form = DaftarUsaha(request.POST)
+        if form.is_valid():
+            user = User.objects.get(user = request.user)
+            namaUsaha = form.cleaned_data['namaUsaha']
+            jenisUsaha = request.POST.get('jenisUsaha')
+            alamatUsaha = form.cleaned_data['alamatUsaha']
+            nomorTeleponUsaha = form.cleaned_data['nomorTeleponUsaha']
+            usaha = Usaha(user = user, namaPemilik = user.namaLengkap, nomorTeleponPemilik = user.nomorTeleponPemilik, alamatPemilik = user.alamatPemilik, namaUsaha = namaUsaha, jenisUsaha = jenisUsaha, alamatUsaha = alamatUsaha, nomorTeleponUsaha = nomorTeleponUsaha)
+            usaha.save()
 
-        response = {
-            'pk':usaha.pk,
-            'fields':{
-                'statusPendaftaran':usaha.statusPendaftaran,
-                'namaUsaha':usaha.namaUsaha,
-                'jenisUsaha':usaha.jenisUsaha,
-                'alamatUsaha':usaha.alamatUsaha,
-                'nomorTeleponUsaha':usaha.nomorTeleponUsaha,
+            response = {
+                'pk':usaha.pk,
+                'fields':{
+                    'statusPendaftaran':usaha.statusPendaftaran,
+                    'namaUsaha':usaha.namaUsaha,
+                    'jenisUsaha':usaha.jenisUsaha,
+                    'alamatUsaha':usaha.alamatUsaha,
+                    'nomorTeleponUsaha':usaha.nomorTeleponUsaha,
+                }
             }
-        }
 
-        return JsonResponse(response)
+            return JsonResponse(response)
+
+    return HttpResponseBadRequest()
 
 @login_required(login_url='/login/')
 @csrf_exempt

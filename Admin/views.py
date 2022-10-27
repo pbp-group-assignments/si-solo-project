@@ -4,10 +4,10 @@ from sisolo.decorators import admin_only
 from pendaftaran_izin_usaha.models import Usaha, PelakuUsaha
 from django.http import HttpResponse, JsonResponse
 from django.core import serializers
-from django.views.decorators.csrf import csrf_exempt
 from sisolo.models import User
+from Admin.forms import AlasanDitolak, NomorIzinUsaha
+from django.views.decorators.csrf import csrf_exempt
 
-# Create your views here.
 @login_required(login_url='/login/')
 @admin_only
 def show_admin_page(request):
@@ -28,7 +28,8 @@ def list_pendaftaran_diajukan(request):
 @login_required(login_url='/login/')
 @admin_only
 def list_pendaftaran_diproses(request):
-    return render(request, "list_pendaftaran_diproses.html", {})
+    form = NomorIzinUsaha()
+    return render(request, "list_pendaftaran_diproses.html", {'form':form})
 
 @login_required(login_url='/login/')
 @admin_only
@@ -82,22 +83,25 @@ def set_ditolak_pendaftaran(request, permohonanId):
         return HttpResponse(status=202)
 
 @login_required(login_url='/login/')
+@csrf_exempt
 @admin_only
 def set_diterima_pendaftaran(request, permohonanId):
     if request.method == 'POST':
-        usaha = Usaha.objects.get(pk = permohonanId)
-        usaha.statusPendaftaran = 'Diterima'
-        usaha.nomorIzinUsaha = request.POST.get('nomorIzinUsaha')
-        usaha.save()
+        form = NomorIzinUsaha(request.POST)
+        if form.is_valid():
+            usaha = Usaha.objects.get(pk = permohonanId)
+            usaha.statusPendaftaran = 'Diterima'
+            usaha.nomorIzinUsaha = form.cleaned_data['nomorIzinUsaha']
+            usaha.save()
 
-        if (usaha.jenisUsaha == 'Kuliner'):
-            print('Kuliner')
-        elif (usaha.jenisUsaha == 'Tempat Wisata'):
-            print('Tempat Wisata')
-        else:
-            print('Menjual Bahan Pokok')
+            if (usaha.jenisUsaha == 'Kuliner'):
+                print('Kuliner')
+            elif (usaha.jenisUsaha == 'Tempat Wisata'):
+                print('Tempat Wisata')
+            else:
+                print('Menjual Bahan Pokok')
 
-        return HttpResponse(status=202)
+            return HttpResponse(status=202)
 
 @login_required(login_url='/login/')
 @admin_only
@@ -108,7 +112,8 @@ def pendaftaran_pelaku_usaha_json(request):
 @login_required(login_url='/login/')
 @admin_only
 def list_pendaftaran_pelaku_usaha_diproses(request):
-    return render(request, "list_pendaftaran_pelaku_usaha.html", {})
+    form = AlasanDitolak()
+    return render(request, "list_pendaftaran_pelaku_usaha.html", {'form':form})
 
 @login_required(login_url='/login/')
 @admin_only
@@ -135,13 +140,16 @@ def set_diterima_pelaku_usaha(request, pkPemohon):
         return HttpResponse(status=202)
 
 @login_required(login_url='/login/')
+@csrf_exempt
 @admin_only
 def set_ditolak_pelaku_usaha(request, pkPemohon):
     if request.method == 'POST':
-        alasan = request.POST.get('AlasanDitolak')
-        pelakuUsaha = PelakuUsaha.objects.get(pk = pkPemohon)
-        pelakuUsaha.status = 'Ditolak'
-        pelakuUsaha.pesan = alasan
-        pelakuUsaha.save()
+        form = AlasanDitolak(request.POST)
+        if form.is_valid():
+            alasan = form.cleaned_data['alasanDitolak']
+            pelakuUsaha = PelakuUsaha.objects.get(pk = pkPemohon)
+            pelakuUsaha.status = 'Ditolak'
+            pelakuUsaha.pesan = alasan
+            pelakuUsaha.save()
 
-        return HttpResponse(status=202)
+            return HttpResponse(status=202)

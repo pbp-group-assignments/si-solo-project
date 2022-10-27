@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load filters %}
 
 {% block meta %}
 <title>List Pendaftaran Usaha</title>
@@ -37,19 +38,16 @@
           $('#daftar-usaha').click(function(){
             if (jumlahDaftar >= 3){
               window.alert('Maaf Anda telah mendaftarkan 3 usaha, mohon tunggu sampai proses pendaftaran selesai')
-              $('#namaPemilik').val('')
-              $('#nomorTeleponPemilik').val('')
-              $('#alamatTempatTinggalPemilik').val('')
-              $('#namaUsaha').val('')
+              $('.namaUsaha-input').val('')
               $('#jenisUsaha').val('Pilih jenis usaha')
-              $('#alamatUsaha').val('')
-              $('#nomorTeleponUsaha').val('')
+              $('.alamatUsaha-input').val('')
+              $('.nomorTeleponUsaha-input').val('')
             }else{
-              if ($('#namaPemilik').val() != '' && $('#nomorTeleponPemilik').val() != '' && $('#alamatTempatTinggalPemilik').val() != '' && $('#namaUsaha').val() != '' && $('#jenisUsaha').val() != 'Pilih jenis usaha' && $('#alamatUsaha').val() != '' && $('#nomorTeleponUsaha').val() != ''){
+              if ($('.namaUsaha-input').val() != '' && $('#jenisUsaha').val() != 'Pilih jenis usaha' && $('.alamatUsaha-input').val() != '' && $('.nomorTeleponUsaha-input').val() != ''){
                 $.ajax({
                   url: 'daftar-usaha-baru/',
                   type: 'POST',
-                  data: {namaPemilik: $('#namaPemilik').val(), nomorTeleponPemilik: $('#nomorTeleponPemilik').val(), alamatPemilik: $('#alamatTempatTinggalPemilik').val(), namaUsaha: $('#namaUsaha').val(), jenisUsaha: $('#jenisUsaha').val(), alamatUsaha: $('#alamatUsaha').val(), nomorTeleponUsaha: $('#nomorTeleponUsaha').val()},
+                  data: {namaUsaha: $('.namaUsaha-input').val(), jenisUsaha: $('#jenisUsaha').val(), alamatUsaha: $('.alamatUsaha-input').val(), nomorTeleponUsaha: $('.nomorTeleponUsaha-input').val()},
                   success: function(response){
                     $('#list-pendaftaran').append(`<div id="${response.pk}--daftar" class="card text-white bg-dark mb-3 transform transition duration-500 hover:scale-105 flex-auto" style="max-width: 17rem; min-width: 17rem;">
             <div class="card-header text-white bg-dark mb-3"> ${response.fields.statusPendaftaran}  -  ${response.fields.namaUsaha}
@@ -68,14 +66,11 @@
                 })
 
                 jumlahDaftar++;
-                $('#namaPemilik').val('')
-                $('#nomorTeleponPemilik').val('')
-                $('#alamatTempatTinggalPemilik').val('')
-                $('#namaUsaha').val('')
+                $('.namaUsaha-input').val('')
                 $('#jenisUsaha').val('Pilih jenis usaha')
-                $('#alamatUsaha').val('')
-                $('#nomorTeleponUsaha').val('')
-              }else if($('#namaPemilik').val() != '' && $('#nomorTeleponPemilik').val() != '' && $('#alamatTempatTinggalPemilik').val() != '' && $('#namaUsaha').val() != '' && $('#jenisUsaha').val() == 'Pilih jenis usaha' && $('#alamatUsaha').val() != '' && $('#nomorTeleponUsaha').val() != ''){
+                $('.alamatUsaha-input').val('')
+                $('.nomorTeleponUsaha-input').val('')
+              }else if($('.namaUsaha-input').val() != '' && $('#jenisUsaha').val() == 'Pilih jenis usaha' && $('.alamatUsaha-input').val() != '' && $('.nomorTeleponUsaha-input').val() != ''){
                 window.alert('Mohon pilih jenis usaha yang ingin didaftarkan')
               }else{
                 window.alert('Mohon lengkapi data usaha')
@@ -112,20 +107,22 @@
           <h5 class="modal-title text-white font-bold" id="DaftarUsahaBaruModal">Daftar Usaha Baru</h5>
         </div>
         <div class="modal-body">
+          <form class="rounded px-8 pt-6 pb-8" method="POST">
           {% csrf_token %}
           <label class="text-white font-bold">Nama Usaha</label>
-          <input id="namaUsaha" class="shadow appearance-none border border-red-500 rounded w-full py-2 px-3 text-zinc-800 mb-3 leading-tight focus:outline-none focus:shadow-outline" type="namaUsaha" name="namaUsaha" placeholder="Nama Usaha">
+          {{form.namaUsaha|addclass:"shadow appearance-none border rounded w-full py-2 px-3 text-zinc-800 leading-tight focus:outline-none focus:shadow-outline namaUsaha-input"}}
           <label class="text-white font-bold">Jenis Usaha</label>
-          <select id="jenisUsaha" class="block py-2.5 px-0 w-full text-black rounded bg-white border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer">
+          <select id="jenisUsaha" class="block py-2.5 px-3.5 w-full text-black rounded bg-white border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer">
             <option selected class="text-black">Pilih jenis usaha</option>
             <option value="Kuliner" class="text-black">Kuliner</option>
             <option value="Tempat Wisata" class="text-black">Tempat Wisata</option>
             <option value="Menjual Bahan Pokok" class="text-black">Menjual Bahan Pokok</option>
           </select>
           <label class="text-white font-bold">Alamat Usaha</label>
-          <input id="alamatUsaha" class="shadow appearance-none border border-red-500 rounded w-full py-2 px-3 text-zinc-800 mb-3 leading-tight focus:outline-none focus:shadow-outline" type="alamatUsaha" name="alamatUsaha" placeholder="Alamat Usaha">
+          {{form.alamatUsaha|addclass:"shadow appearance-none border rounded w-full py-2 px-3 text-zinc-800 leading-tight focus:outline-none focus:shadow-outline alamatUsaha-input"}}
           <label class="text-white font-bold">Nomor Telepon Usaha</label>
-          <input id="nomorTeleponUsaha" class="shadow appearance-none border border-red-500 rounded w-full py-2 px-3 text-zinc-800 mb-3 leading-tight focus:outline-none focus:shadow-outline" type="nomorTeleponUsaha" name="nomorTeleponUsaha" placeholder="Nomor Telepon Usaha">
+          {{form.nomorTeleponUsaha|addclass:"shadow appearance-none border rounded w-full py-2 px-3 text-zinc-800 leading-tight focus:outline-none focus:shadow-outline nomorTeleponUsaha-input"}}
+          </form>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>

@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load filters %}
 
 {% block meta %}
 <title>List Pendaftaran Pelaku Usaha</title>
@@ -45,23 +46,19 @@
           }
 
           $('#submit').click(function(){
-            if ($('#AlasanDitolak').val() == ''){
+            if ($('.alasanDitolak-input').val() == ''){
               window.alert('Mohon Isi Alasan Permohonan Ditolak!')
             }else{
-              $.ajaxSetup({
-                  data: {csrfmiddlewaretoken: '{{ csrf_token }}' },
-              });
-
               $.ajax({
                   url:`set-ditolak-pelaku-usaha/${tempPermohonan}`,
-                  data:{AlasanDitolak: $('#AlasanDitolak').val()},
+                  data:{alasanDitolak: $('.alasanDitolak-input').val()},
                   type: 'POST',
                   success: function(response){
                     $(`#${tempPermohonan}--daftar`).remove()
                   }
               })
             }
-            $('#AlasanDitolak').val('')
+            $('.alasanDitolak-input').val('')
           })
         })
     </script>
@@ -90,9 +87,11 @@
               <h5 class="modal-title text-white font-bold" id="AlasanTolakModal">Alasan Permohonan Ditolak</h5>
             </div>
             <div class="modal-body">
-                {% csrf_token %}
-                <input id="AlasanDitolak" class="shadow appearance-none border border-red-500 rounded w-full py-2 px-3 text-zinc-800 mb-3 leading-tight focus:outline-none focus:shadow-outline" type="AlasanDitolak" name="AlasanDitolak" placeholder="Alasan Ditolak">
-            </div>
+              <form class="rounded px-8 pt-6 pb-8" method="POST">  
+              {% csrf_token %}
+                {{form.alasanDitolak|addclass:"shadow appearance-none border rounded w-full py-2 px-3 text-zinc-800 leading-tight focus:outline-none focus:shadow-outline alasanDitolak-input"}}
+              </form>
+              </div>
             <div class="modal-footer">
                 <button id="submit" type="button" class="btn btn-primary">Submit</button>
             </div>
