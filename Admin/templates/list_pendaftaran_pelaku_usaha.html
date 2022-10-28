@@ -33,7 +33,7 @@
           setujui = (pkPemohon) => {
             $.ajax({
               url: `/Admin/set-diterima-pelaku-usaha/${pkPemohon}`,
-              type:  'GET',
+              type:  'POST',
               success: function(response){
                 $(`#${pkPemohon}--daftar`).remove()
               }
