@@ -9,7 +9,15 @@ from sisolo.forms import Register
 from sisolo.models import User
 
 def landing_page(request):
-    return render(request, 'landing_page.html')
+    if request.user.is_authenticated:
+        data = User.objects.filter(user=request.user)
+        context = {
+            'user': request.user,
+            'data': data,
+        }
+        return render(request, 'landing_page.html', context)
+    else:
+        return render(request, 'landing_page.html')
 
 def login_user(request):
     if request.method == 'POST':

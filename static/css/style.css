@@ -1,0 +1,30 @@
+body {
+    align-items: center;
+    justify-content: center;
+    background-color: #EFFFFF;
+}
+
+.navbar-custom {
+    background-color: #D1B9ED ;
+    color: black
+}
+
+.marg {
+    margin-right: .75rem;
+    margin-left: .75rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.featurette-heading {
+    font-size: 200%;
+    font-weight: 300;
+    line-height: 1;
+    letter-spacing: -.05rem;
+  }
+
+.welcome {
+    max-height: 400px;
+}
