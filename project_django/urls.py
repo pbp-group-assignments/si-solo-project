@@ -22,6 +22,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('sisolo.urls')),
     path('daftar-usaha/', include('pendaftaran_izin_usaha.urls')),
+    path('layanan-pengaduan/', include('layanan_pengaduan.urls')),
     path('Admin/', include('Admin.urls'))
 ]
 
