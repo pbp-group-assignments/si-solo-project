@@ -63,9 +63,10 @@ def get_detail_pendaftaran(request, permohonanId):
         return JsonResponse(response)
 
 @login_required(login_url='/login/')
+@csrf_exempt
 @admin_only
 def set_diproses_pendaftaran(request, permohonanId):
-    if request.method == 'GET':
+    if request.method == 'POST':
         usaha = Usaha.objects.get(pk = permohonanId)
         usaha.statusPendaftaran = 'Diproses'
         usaha.save()
@@ -73,9 +74,10 @@ def set_diproses_pendaftaran(request, permohonanId):
         return HttpResponse(status=202)
 
 @login_required(login_url='/login/')
+@csrf_exempt
 @admin_only
 def set_ditolak_pendaftaran(request, permohonanId):
-    if request.method == 'GET':
+    if request.method == 'POST':
         usaha = Usaha.objects.get(pk = permohonanId)
         usaha.statusPendaftaran = 'Ditolak'
         usaha.save()
@@ -126,9 +128,10 @@ def list_pendaftaran_pelaku_usaha_ditolak(request):
     return render(request, "list_pendaftaran_pelaku_usaha_ditolak.html", {})
 
 @login_required(login_url='/login/')
+@csrf_exempt
 @admin_only
 def set_diterima_pelaku_usaha(request, pkPemohon):
-    if request.method == 'GET':
+    if request.method == 'POST':
         pelakuUsaha = PelakuUsaha.objects.get(pk = pkPemohon)
         pelakuUsaha.status = 'Diterima'
         pelakuUsaha.save()

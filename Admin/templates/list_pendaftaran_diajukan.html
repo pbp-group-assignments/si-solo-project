@@ -55,7 +55,7 @@
           $('#proses').click(function(){
               $.ajax({
                   url:`set-diproses/${tempPermohonan}`,
-                  type: 'GET',
+                  type: 'POST',
                   success: function(response){
                       $(`#${tempPermohonan}--daftar`).remove()
                   }
