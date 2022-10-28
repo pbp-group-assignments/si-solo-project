@@ -287,7 +287,11 @@
                 <div style="margin-top: 50px">
                     <a class="featurette-heading" href="{% url 'pendaftaran_izin_usaha:show_pendaftaran' %}" style="margin-top: 50px">Izin Usaha<span class="text-muted"></a>
                 </div>
+                {% if user.is_authenticated %}
                 <p class="lead">Daftarkan dan mulai manage usahamu!</p>
+                {% else %}
+                <p class="lead">Daftarkan dan mulai manage usahamu! (Dapat diakses setelah login)</p>
+                {% endif %}
             </div>
             <div class="col-md-5 order-md-1">
                 <div class="image">
