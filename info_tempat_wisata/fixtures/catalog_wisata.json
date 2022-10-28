@@ -1,0 +1,38 @@
+[
+    {
+        "model": "info_tempat_wisata.tempatwisata",
+        "pk": 1,
+        "fields": {
+            "wisata_title": "The Lawu Park",
+            "wisata_description": "\"The Lawu Park adalah destinasi wisata Solo di kaki Gunung Lawu, Kabupaten Karanganyar. Harga masuk untuk The Lawu Park adalah Rp15.000 dan akan dikenakan biaya lagi untuk aktivitas outdoornya. The Lawu Park buka Senin-Minggu pada pukul 09.00-18.00 WIB.",
+            "wisata_highlight": "The Lawu Park adalah destinasi wisata Solo di kaki Gunung Lawu, Kabupaten Karanganyarnyang cocok untuk aktivitas outdoor."
+        }
+    },
+    {
+        "model": "info_tempat_wisata.tempatwisata",
+        "pk": 2,
+        "fields": {
+            "wisata_title": "The Heritage Palace",
+            "wisata_description": "The Heritage Palace adalah tempat wisata Solo yang berlokasi di Honggobayan, Pabelan, Kartasura, Sukoharjo. Tempat ini dibuka sejak 9 Juni 2018. The Heritage Palace buka setiap hari, Senin-Kamis pukul 10:00-18:00 WIB, Jumat-Minggu pukul 09:00-21:00. Harga tiket masuk Rp55.000 per orang.",
+            "wisata_highlight": "The Heritage Palace, tempat wisata yang dulunya pabrik gula Gembongan."
+        }
+    },
+    {
+        "model": "info_tempat_wisata.tempatwisata",
+        "pk": 3,
+        "fields": {
+            "wisata_title": "Pabrik Gula De Tjolomadoe",
+            "wisata_description": "Pabrik Gula De Tjolomadoe diubah menjadi objek wisata baru, landmark bersejarah, dan pusat konvensi.Pabrik Gula De Tjolomadoe ini berlokasi di Jl Adi Sucipto No.1, Paulan Wetan, Malangjiwan, Kec. Colomadu, Kabupaten Karanganyar, Jawa Tengah. Bangunan yang berdiri sejak tahun 1861 ini mulai berhenti beroperasi sekitar 20 tahun silam.",
+            "wisata_highlight": "Pabrik Gula De Tjolomadoe, Liburan ke pabrik gula yang diubah menjadi objek wisata baru, landmark bersejarah, dan pusat konvensi."
+        }
+    },
+    {
+        "model": "info_tempat_wisata.tempatwisata",
+        "pk": 4,
+        "fields": {
+            "wisata_title": "Pasar Gede",
+            "wisata_description": "Pasar Gede merupakan pasar tertua yang terdapat di Kota Surakarta. Pasar Gede disebut juga Pasar Harjonegara, maksudnya untuk mengenang bangsawan Harjonegara yang memulai mendirikan Pasar Gede. Lokasinya cukup strategis yakni sekitar Kantor Bupati Solo dan Keraton Kasunanan Surakarta.",
+            "wisata_highlight": "Pasar Gede, pasar tertua yang terdapat di Kota Surakarta."
+        }
+    }
+]
