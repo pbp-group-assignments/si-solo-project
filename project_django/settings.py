@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'sisolo',
     'pendaftaran_izin_usaha',
+    'layanan_pengaduan',
     'Admin',
     'info_transportasi_umum',
 ]
