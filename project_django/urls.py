@@ -23,7 +23,7 @@ urlpatterns = [
     path('', include('sisolo.urls')),
     path('daftar-usaha/', include('pendaftaran_izin_usaha.urls')),
     path('layanan-pengaduan/', include('layanan_pengaduan.urls')),
-    path('info-transportasi-umum', include('info_transportasi_umum.urls')),
+    path('info-transportasi-umum/', include('info_transportasi_umum.urls')),
     path('Admin/', include('Admin.urls')),
 ]
 

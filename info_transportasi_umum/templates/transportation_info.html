@@ -1,0 +1,208 @@
+{% extends 'base.html' %}
+
+{% block meta %}
+<title>Info Transportasi Umum</title>
+{% endblock meta %}
+
+{% block content %}
+
+<nav class="navbar navbar-custom">
+    <div class="container-fluid">
+        <a href="{% url 'sisolo:landing_page' %}" class="navbar-brand">SISOLO</a>
+    
+        <div class="navbar-right">
+            
+            <div class="modal fade" id="nomord" tabindex="-1">
+                <div class="modal-dialog">
+                    <div class="modal-content" style="color:black;">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Nomor Darurat</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div>
+                                <a href="tel:+62-271712600">Poltabes Solo: (0271)712600</a>
+                            </div>
+                            <div>
+                                <a href="tel:+62-119">Ambulans SPGDT: 119</a>
+                            </div>
+                            <div>
+                                <a href="tel:+62-113">Pemadam Kebakaran: 113</a>
+                            </div>
+                            <div>
+                                <a href="tel:+62-271722091">Gangguan Listrik PLN: (0271)722091</a>
+                            </div>
+                            <div>
+                                <a href="tel:+62-271714039">Stasiun Solo Balapan: (0271)714039</a>
+                            </div>
+                            <div>
+                                <a href="tel:+62-271738900">Terminal Tortonadi: (0271)738900</a>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary text-black" data-bs-dismiss="modal">Close</button>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+            
+            
+            <a class="btn btn-danger btn-sm btn-outline-secondary" style="margin:5px; color: white;" data-bs-toggle="modal" data-bs-target="#nomord">Nomor Darurat</a>   
+
+
+            {% if user.is_authenticated %}
+            
+            {% for thing in data %}
+
+            <div class="modal fade" id="edit" tabindex="-1">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title">Edit Profil</h5>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                      <form>
+                        {% csrf_token %}
+                        
+                        <div class="mb-3">
+                            <label for="namaLengkap" class="col-form-label">Nama Lengkap:</label>
+                            <input type="text" name="namaLengkap" id="namaLengkap"  class="form-control" value="{{thing.namaLengkap}}" required="">
+                        </div>
+                        <div class="mb-3">
+                            <label for="nomorTeleponPemilik" class="col-form-label">Nomor Telpon:</label>
+                            <input type="text" name="nomorTeleponPemilik" id="nomorTeleponPemilik" class="form-control" value="{{thing.nomorTeleponPemilik}}" required=""></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="alamatPemilik" class="col-form-label">Alamat:</label>
+                            <input type="text" name="alamatPemilik" id="alamatPemilik" class="form-control" value="{{thing.alamatPemilik}}" required=""></textarea>
+                          </div>
+                
+                        <div class="d-grid mt-4">
+                            <input class="btnUpdate btn btn-outline-primary" type="submit" value="Save" data-bs-dismiss="modal"/>
+                        </div>
+                    </form>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" style="color:black;" data-bs-dismiss="modal">Close</button>
+                    </div>
+                  </div>
+                </div>
+            </div>
+
+            <a class="btn btn-sm btn-outline-secondary" style="margin:5px; color: black;" data-bs-toggle="modal" data-bs-target="#edit">Edit Profil</a>   
+
+            {% endfor %}
+            
+            
+            <a class="btn btn-sm btn-outline-secondary" style="margin:5px; color: black;" href="{% url 'sisolo:logout_user' %}" >Logout</a>
+
+            {% else %}
+            <a class="btn btn-sm btn-outline-secondary" style="margin:5px; color: black;" href="/login">Login</a>
+            <a class="btn btn-sm btn-outline-secondary" style="margin:5px; color: black;" href="/register">Sign up</a>
+            
+            {% endif %}
+        </div>
+    </div>
+</nav>
+
+<div class="row featurette">
+    <div class="welcome p-4 p-md-5 text-white bg-dark">
+        <div class="row mb-2">
+            <div class="px-0">
+                <h1 class="display-4 font-italic" style="text-align: center; padding: 10px; font-weight: bold">Info Transportasi Umum</h1>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class = "transportation-info">
+
+    <nav class="navbar navbar-light bg-light" style="padding: 10px">
+        <div class="container-fluid">
+            <form class="d-flex justify-content-center">
+                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                <button class="btn btn-outline-success" type="submit">Search</button>
+            </form>
+        </div>
+    </nav>
+    <br>
+
+    <div id="transportation-list"></div>
+
+</div>
+
+<script>
+    function renderTransportation() {
+        $.get("{% url info_transportasi_umum:show_json_transport %}", function(data) {
+            console.log(data);
+            var htmlToShow = ""
+            htmlToShow += `
+            <div class="flex-container horizontal-scrollable">
+                <div class="row text-center">
+            `
+            for (i = 0; i < data.length; i++) {
+                htmlToShow += `
+                    <div class="card" style="width: 18rem;">
+                        <div style="width: 320px; height: 240px">
+                            <img src="${transport.image.url}" class="card-img-top img-fluid" alt="Transportation mode image">
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title">${data[i].fields.name}</h5>
+                            <p class="card-text">${data[i].fields.description}</p>
+                            <div class="accordion" id="accordionRouteStayOpen">
+                `
+                $.get(`/info-transportasi-umum/json/route/${data[i].pk}/`, function(data) {
+                    console.log(data);
+                    for (j = 0; j < data.length; j++) {
+                        htmlToShow += `
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header" id="panelsStayOpen-heading">
+                                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapse" aria-expanded="true" aria-controls="panelsStayOpen-collapse">
+                                        Rute: ${data[j].fields.from_to}
+                                    </button>
+                                    </h2>
+                                    <div id="panelsStayOpen-collapse" class="accordion-collapse collapse show" aria-labelledby="panelsStayOpen-heading">
+                        `
+                        $.get(`/info-transportasi-umum/json/stop-point/${data[j].pk}/`, function(data) {
+                            console.log(data);
+                                htmlToShow += `
+                                            <div class="accordion-body">
+                                                <p>Titik pemberhentian:<br>
+                                `
+                                for (k = 0; k < data.length; k++) {
+                                    htmlToShow += `<a href="${data[k].fields.stop_location}">${data[k].fields.stop_name}</a>`
+                                    if (k + 1 != data.length) {
+                                        htmlToShow += `<a> - </a>`
+                                    }
+                                }
+                                htmlToShow += `
+                                                </p>
+                                            </div>
+                                `
+                        })
+                        htmlToShow += `
+                                    </div>
+                                </div>
+                        `
+                    }
+                })
+                htmlToShow += `        
+                            </div>
+                        </div>
+                    </div>
+                    `
+                }
+            htmlToShow += `
+                </div>
+            </div>
+            `
+            document.getElementById("transportation-list").innerHTML = htmlToShow
+        });
+    }
+    $(document).ready(function(){
+        renderTransportation();
+    });
+</script>
+{% endblock content %}

@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+{% block meta %}
+<title>Tambah Titik Pemberhentian</title>
+{% endblock meta %}
+
+{% block content %}
+<div class="row-center" style="height: 100px; display: flex; justify-content: center; align-items: center; background-color: black;">
+    <strong style="font-size: 30px; color: white">Tambah Titik Pemberhentian</strong>
+</div>
+<br>
+
+<div class="add-stop-point">
+
+    <form method="POST" id="add-stop-point">
+        {% csrf_token %}
+        <div class="card border-dark" style="margin:auto; width:60%; padding:10px">
+            <strong class="card-title" style="font-size: 25px">Tambah titik pemberhentian baru disini:</strong>
+            <table>
+                <tr>
+                    <td>Nama referensi rute (lihat di django admin): </td>
+                    <td><input type="text" name="ref_name_route" placeholder="nama_referensi_rute" class="form-control"></td>
+                </tr> 
+                <tr>
+                    <td>Nama titik pemberhentian: </td>
+                    <td><input type="text" name="stop_name" placeholder="Nama titik pemberhentian" class="form-control"></td>
+                </tr>
+                <tr>
+                    <td>URL lokasi titik pemberhentian (google maps): </td>
+                    <td><input type="text" name="stop_location" placeholder="https://goo.gl/maps/..." class="form-control"></td>
+                </tr>
+            </table>
+            <br>
+            <button class="btn btn-primary" type="submit" style="align-self: center; width: 100%;">Tambah</button>
+        </div>
+    </form>
+
+</div>
+
+<script>
+    $(document).ready(function(){
+        $('#add-stop-point').submit(function() {
+            // create an AJAX call
+            $.ajax({
+                data: $(this).serialize(), // get the form data
+                method: 'POST', // GET or POST
+                url: "{% url 'Admin:add_stop_point' %}",
+                // on success
+                success: function(response) {
+                    alert(response);
+                }
+            });
+            return false;
+        });
+    });
+</script>
+{% endblock content %}

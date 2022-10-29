@@ -7,6 +7,6 @@ urlpatterns = [
     path('', show_transport_info, name='show_transport_info'),
     path('search/', search_transport, name='search_transport'),
     path('json/transportation/', show_json_transport, name='show_json_transport'),
-    path('json/route/<int:id>', show_json_route, name='show_json_route'),
-    path('json/stoppoint/<int:id>', show_json_stop_point, name='show_json_stop_point'),
+    path('json/route/<int:id>/', show_json_route, name='show_json_route'),
+    path('json/stop-point/<int:id>/', show_json_stop_point, name='show_json_stop_point'),
 ]
