@@ -116,12 +116,13 @@
         </div>
     </div>
 </div>
+<br>
 
 <div class = "transportation-info">
 
     <nav class="navbar navbar-light bg-light" style="padding: 10px">
-        <div class="container-fluid">
-            <form class="d-flex justify-content-center">
+        <div class="container-fluid" style="display: flex; justify-content: center; width: 100%">
+            <form class="d-flex justify-content-center" style="width: 50%">
                 <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
                 <button class="btn btn-outline-success" type="submit">Search</button>
             </form>
@@ -135,7 +136,7 @@
 
 <script>
     function renderTransportation() {
-        $.get("{% url info_transportasi_umum:show_json_transport %}", function(data) {
+        $.get("{% url 'info_transportasi_umum:show_json_transport' %}", function(data) {
             console.log(data);
             var htmlToShow = ""
             htmlToShow += `
