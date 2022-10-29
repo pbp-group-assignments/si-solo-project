@@ -22,7 +22,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('sisolo.urls')),
     path('daftar-usaha/', include('pendaftaran_izin_usaha.urls')),
-    path('Admin/', include('Admin.urls'))
+    path('Admin/', include('Admin.urls')),
+    path('info-transportasi-umum', include('info_transportasi_umum.urls')),
 ]
 
 if settings.DEBUG:
