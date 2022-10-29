@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'sisolo',
     'pendaftaran_izin_usaha',
     'layanan_pengaduan',
+    'saran_pembangunan_kota',
     'Admin',
 ]
 

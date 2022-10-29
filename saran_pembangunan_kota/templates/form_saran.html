@@ -1,0 +1,113 @@
+{% extends 'base.html' %}
+
+{% block meta %}
+<title>Task List</title>
+{% endblock meta %}
+
+{% block content %}
+<body class="">
+    <nav class="navbar navbar-custom">
+        <div class="container-fluid">
+            <a href="/" class="navbar-brand">SISOLO</a>
+        
+            <div class="navbar-right">
+                
+                <div class="modal fade" id="nomord" tabindex="-1">
+                    <div class="modal-dialog">
+                        <div class="modal-content" style="color:black;">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Nomor Darurat</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div>
+                                    <a href="tel:+62-271712600">Poltabes Solo: (0271)712600</a>
+                                </div>
+                                <div>
+                                    <a href="tel:+62-119">Ambulans SPGDT: 119</a>
+                                </div>
+                                <div>
+                                    <a href="tel:+62-113">Pemadam Kebakaran: 113</a>
+                                </div>
+                                <div>
+                                    <a href="tel:+62-271722091">Gangguan Listrik PLN: (0271)722091</a>
+                                </div>
+                                <div>
+                                    <a href="tel:+62-271714039">Stasiun Solo Balapan: (0271)714039</a>
+                                </div>
+                                <div>
+                                    <a href="tel:+62-271738900">Terminal Tortonadi: (0271)738900</a>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary text-black" data-bs-dismiss="modal">Close</button>
+                            </div>
+                            
+                        </div>
+                    </div>
+                </div>
+                
+                
+                <a class="btn btn-danger btn-sm btn-outline-secondary" style="margin:5px; color: white;" data-bs-toggle="modal" data-bs-target="#nomord">Nomor Darurat</a>   
+                
+                <a class="btn btn-sm btn-outline-secondary" style="margin:5px; color: black;" href="{% url 'sisolo:landing_page' %}" >Halaman Utama</a>
+                
+                <a class="btn btn-sm btn-outline-secondary" style="margin:5px; color: black;" href="{% url 'sisolo:logout_user' %}" >Logout</a>
+            </div>
+        </div>
+    </nav>
+    <div>
+        <div>
+            <h1 class="display-4 font-italic mb-3" style="text-align: center;">Saran Pembangunan Kota</h1>
+            <h5 class="display-7 font-italic mb-3" style="text-align: center;">Silakan kritik serta saran yang membangun untuk kota Solo.</h5>
+            <div class="items-center md:flex flex justify-center">
+                <form class="bg-zinc-800 shadow-md rounded px-8 pt-6 pb-8 mb-4" method="POST">
+                    {% csrf_token %}
+                    <div class="mb-6">
+                        <label class="block text-white text-sm font-bold mb-2" for="nama">
+                            Nama
+                        </label>
+                        <label class="bg-white shadow appearance-none border rounded w-full py-2 px-3 text-zinc-800 leading-tight focus:outline-none focus:shadow-outline">{{form.nama}}</label>
+                    </div>
+                    <div class="mb-6">
+                        <label class="block text-white text-sm font-bold mb-2" for="email">
+                            Email
+                        </label>
+                        <label class="bg-white shadow appearance-none border rounded w-full py-2 px-3 text-zinc-800 leading-tight focus:outline-none focus:shadow-outline">{{form.email}}</label>
+                      </div>
+                    <div class="mb-6">
+                        <label class="block text-white text-sm font-bold mb-2" for="saran_pembangunan">
+                            Kritik dan Saran
+                        </label>
+                        <label class="bg-white shadow appearance-none border rounded w-full py-2 px-3 text-zinc-800 leading-tight focus:outline-none focus:shadow-outline">{{form.saran_pembangunan}}</label>
+                      </div>
+                <div class="flex items-center justify-center">
+                    <input class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit" name="submit" value="Ajukan Pengaduan">
+                </div>
+            </form>
+            </div>
+            <tbody>
+                {% for pengaduan in daftar_pengaduan %}
+                <div class="col-sm mb-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ form.judul_pengaduan }}</h5>
+                            <p class="card-text ">{{ form.deskripsi_pengaduan }}</p>
+                            <div class="row row-cols-2">
+                                {% if pengaduan.status_pengaduan %}
+                                <p class="fw-bold text-success">Menunggu</p>
+                                {% else %}
+                                <p class="fw-bold text-warning">Diproses</p>
+                                {% endif %}
+                                <p class="card-text text-black text-end">{{ pengaduan.tanggal_pengaduan }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </tbody>
+        </div>
+    </div>
+</body>
+
+{% endblock content %}
