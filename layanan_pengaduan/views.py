@@ -5,6 +5,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse, JsonResponse, HttpResponseBadRequest
 from sisolo.models import User
 from datetime import datetime
+from django.core import serializers
 
 # Create your views here.
 @login_required(login_url='/login/')
@@ -12,6 +13,12 @@ from datetime import datetime
 def show_pengaduan(request):
     form_pengaduan = Pengaduan()
     return render(request, "daftar_pengaduan.html", {'form':form_pengaduan})
+
+@login_required(login_url='/login/')
+def pengaduan_json(request):
+    user = User.objects.get(user = request.user)
+    data = Pengaduan.objects.filter(user = user)
+    return HttpResponse(serializers.serialize("json", data), content_type="application/json")
 
 @login_required(login_url='/login/')
 @csrf_exempt
