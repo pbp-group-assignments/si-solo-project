@@ -8,7 +8,7 @@ class TestModels(TestCase):
             user = User.objects(10),
             judul_pengaduan = 'Lampu jalan mati',
             deskripsi_pengaduan = 'Tolong mas/mba diperbaiki, lampu jalan di perempatan keraton Solo mati, saya tadi hampir nabrak tukang becak',
-            status_pengaduan = 'Diproses'
+            status_pengaduan = 'Menunggu'
         )
         testing = Pengaduan.objects.get(namaUsaha = 'Bakso Wenak')
         self.assertEquals(self.project1, testing)
