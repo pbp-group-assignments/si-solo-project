@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'layanan_pengaduan',
     'saran_pembangunan_kota',
     'Admin',
+    'info_transportasi_umum',
 ]
 
 MIDDLEWARE = [
@@ -139,6 +140,12 @@ STATICFILES_DIRS = [
 ]
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+# Base url to serve media files  
+MEDIA_URL = '/media/'  
+  
+# Path where media is stored  
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')  
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field

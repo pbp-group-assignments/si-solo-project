@@ -56,7 +56,7 @@
           $('#tolak').click(function(){
               $.ajax({
                   url:`set-ditolak/${tempPermohonan}`,
-                  type: 'GET',
+                  type: 'POST',
                   success: function(response){
                     $(`#${tempPermohonan}--daftar`).remove()
                   }
