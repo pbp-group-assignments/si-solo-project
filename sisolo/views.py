@@ -1,10 +1,14 @@
 from django.shortcuts import render
 from django.contrib.auth import authenticate, login, logout
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
+from django.core import serializers
 from django.urls import reverse
 from django.contrib import messages
 from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect
+from sisolo.decorators import admin_only
+
 from sisolo.forms import Register
 from sisolo.models import User
 
@@ -66,6 +70,29 @@ def registerAddition(request):
     
     context = {'form':form}
     return render(request, "registerAddition.html", context)
+
+@login_required(login_url='/login/')
+def editProfile(request):
+    form = Register()
+
+    if request.method == 'POST':
+        form = Register(request.POST)
+        if form.is_valid():
+            user = User.objects.get(user=request.user)
+            user.namaLengkap = request.POST.get('namaLengkap')
+            user.nomorTeleponPemilik = request.POST.get('nomorTelepon')
+            user.alamatPemilik = request.POST.get('alamat')
+            user.save()
+            return redirect('sisolo:landing_page')
+    
+    context = {'form':form}
+    return render(request, "registerAddition.html", context)
+
+@login_required(login_url='/login/')
+@admin_only
+def all_user_data_json(request):
+    data = User.objects.all()
+    return HttpResponse(serializers.serialize("json", data), content_type="application/json")
 
 def logout_user(request):
     logout(request)

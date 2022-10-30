@@ -111,7 +111,7 @@
     <div class="row featurette">
         <div class="welcome p-4 p-md-5 text-white bg-dark">
             <div class="row mb-2">
-                <div class="px-0">
+                <div class="px-0" style="margin: 5px;">
                     {% if user.is_authenticated %}
                     {% for thing in data %}
                     <h1 class="display-4 font-italic">Welcome to SISolo, {{ user }}!</h1>
@@ -139,7 +139,7 @@
             </div>
             <div class="col-md-5">
                 <div class="image">
-                    {% load static %} <img src="{% static 'images/landing/report.png' %}" alt="" class="card-img" style="max-width: 200px; max-width: 200px">
+                    {% load static %} <img src="{% static 'images/landing/report.png' %}" alt="" class="card-img" style="max-width: 200px; max-height: 200px">
                 </div>      
             </div>
         </div>
@@ -159,7 +159,7 @@
             </div>
             <div class="col-md-5 order-md-1">
                 <div class="image">
-                    {% load static %} <img src="{% static 'images/landing/chat.png' %}" alt="" class="card-img" style="max-width: 200px; max-width: 200px">
+                    {% load static %} <img src="{% static 'images/landing/chat.png' %}" alt="" class="card-img" style="max-width: 200px; max-height: 200px">
                 </div>  
             </div>
         </div>
@@ -179,7 +179,7 @@
             </div>
             <div class="col-md-5">
                 <div class="image">
-                    {% load static %} <img src="{% static 'images/landing/suggestion.png' %}" alt="" class="card-img" style="max-width: 200px; max-width: 200px">
+                    {% load static %} <img src="{% static 'images/landing/suggestion.png' %}" alt="" class="card-img" style="max-width: 200px; max-height: 200px">
                 </div>        
             </div>
         </div>
@@ -195,7 +195,7 @@
             </div>
             <div class="col-md-5 order-md-1">
                 <div class="image">
-                    {% load static %} <img src="{% static 'images/landing/health.png' %}" alt="" class="card-img" style="max-width: 200px; max-width: 200px">
+                    {% load static %} <img src="{% static 'images/landing/health.png' %}" alt="" class="card-img" style="max-width: 200px; max-height: 200px">
                 </div>        
             </div>
         </div>
@@ -211,7 +211,7 @@
             </div>
             <div class="col-md-5">
                 <div class="image">
-                    {% load static %} <img src="{% static 'images/landing/transport.png' %}" alt="" class="card-img" style="max-width: 200px; max-width: 200px">
+                    {% load static %} <img src="{% static 'images/landing/transport.png' %}" alt="" class="card-img" style="max-width: 200px; max-height: 200px">
                 </div>   
             </div>
         </div>
@@ -227,7 +227,7 @@
             </div>
             <div class="col-md-5 order-md-1">
                 <div class="image">
-                    {% load static %} <img src="{% static 'images/landing/food.png' %}" alt="" class="card-img" style="max-width: 200px; max-width: 200px">
+                    {% load static %} <img src="{% static 'images/landing/food.png' %}" alt="" class="card-img" style="max-width: 200px; max-height: 200px">
                 </div>  
             </div>
         </div>
@@ -243,7 +243,7 @@
             </div>
             <div class="col-md-5">
                 <div class="image">
-                    {% load static %} <img src="{% static 'images/landing/wisata.png' %}" alt="" class="card-img" style="max-width: 200px; max-width: 200px">
+                    {% load static %} <img src="{% static 'images/landing/wisata.png' %}" alt="" class="card-img" style="max-width: 200px; max-height: 200px">
                 </div>  
             </div>
         </div>
@@ -259,7 +259,7 @@
             </div>
             <div class="col-md-5 order-md-1">
                 <div class="image">
-                    {% load static %} <img src="{% static 'images/landing/produce.png' %}" alt="" class="card-img" style="max-width: 200px; max-width: 200px">
+                    {% load static %} <img src="{% static 'images/landing/produces.png' %}" alt="" class="card-img" style="max-width: 200px; max-height: 200px">
                 </div>  
             </div>
         </div>
@@ -275,7 +275,7 @@
             </div>
             <div class="col-md-5">
                 <div class="image">
-                    {% load static %} <img src="{% static 'images/landing/news.png' %}" alt="" class="card-img" style="max-width: 200px; max-width: 200px">
+                    {% load static %} <img src="{% static 'images/landing/news.png' %}" alt="" class="card-img" style="max-width: 200px; max-height: 200px">
                 </div>
             </div>
         </div>
@@ -295,7 +295,7 @@
             </div>
             <div class="col-md-5 order-md-1">
                 <div class="image">
-                    {% load static %} <img src="{% static 'images/landing/shop.png' %}" alt="" class="card-img" style="max-width: 200px; max-width: 200px">
+                    {% load static %} <img src="{% static 'images/landing/shop.png' %}" alt="" class="card-img" style="max-width: 200px; max-height: 200px">
                 </div>
             </div>
         </div>
@@ -308,19 +308,20 @@
       e.preventDefault();
       $.ajax({
         type:'POST',
-        url:'registerAddition/',
+        url:'/update/',
         data:{
             namaLengkap:$('#namaLengkap').val(),
-            nomorTeleponPemilik:$('#nomorTeleponPemilik').val(),
-            alamatPemilik:$('#alamatPemilik').val(),
+            nomorTelepon:$('#nomorTeleponPemilik').val(),
+            alamat:$('#alamatPemilik').val(),
             csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val()
         },
         success: function() {
-          
+            alert("Profil berhasil di update!");
         }
-        
+
       })
-    })
-    
-  </script>
+      
+    });
+
+</script>
 {% endblock content %}

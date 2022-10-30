@@ -4,6 +4,11 @@ body {
     background-color: #EFFFFF;
 }
 
+.login,
+.register {
+    background: linear-gradient(45deg,  rgba(185, 66, 245, 0.8) 0%,rgba(66, 81, 245, 0.4) 100%) no-repeat fixed;
+}
+
 .navbar-custom {
     background-color: #D1B9ED ;
     color: black
@@ -27,4 +32,11 @@ body {
 
 .welcome {
     max-height: 400px;
+}
+
+@media screen and (max-width: 992px) {
+    .card-img {
+        max-width: 100px; 
+        max-height: 100px
+    }
 }
