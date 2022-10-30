@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block meta %}
+<title>Hapus Transportasi Umum</title>
+{% endblock meta %}
+
+{% block content %}
+<div class="row-center" style="height: 100px; display: flex; justify-content: center; align-items: center; background-color: black;">
+    <strong style="font-size: 30px; color: white">Tambah Transportasi Umum</strong>
+</div>
+<br>
+
+<div class="delete-transportation">
+
+    <form method="POST" id="delete-transportation">
+        {% csrf_token %}
+        <div class="card border-dark" style="margin:auto; width:60%; padding:10px">
+            <strong class="card-title" style="font-size: 25px">Hapus transportasi disini:</strong>
+            <table>
+                <tr>
+                    <td>Nama referensi transportasi yang akan dihapus (lihat di django admin): </td>
+                    <td><input type="text" name="ref_name" placeholder="nama_referensi" class="form-control"></td>
+                </tr>
+            </table>
+            <br>
+            <button class="btn btn-danger" type="submit" style="align-self: center; width: 100%;">Hapus</button>
+        </div>
+    </form>
+
+</div>
+
+<script>
+    $(document).ready(function(){
+        $('#delete-transportation').submit(function() {
+            // create an AJAX call
+            $.ajax({
+                data: $(this).serialize(), // get the form data
+                method: 'POST', // GET or POST
+                url: "{% url 'Admin:delete_transport' %}",
+                // on success
+                success: function(response) {
+                    alert(response);
+                }
+            });
+            return false;
+        });
+    });
+</script>
+{% endblock content %}

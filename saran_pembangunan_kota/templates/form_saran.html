@@ -58,22 +58,28 @@
     </nav>
     <div>
         <div>
-            <h1 class="display-4 font-italic mb-3" style="text-align: center;">Layanan Pengaduan</h1>
-            <h5 class="display-7 font-italic mb-3" style="text-align: center;">Laporkan masalah perkotaan yang ada di sekitar anda dan lihat laporan warga lain di sekitar anda.</h5>
+            <h1 class="display-4 font-italic mb-3" style="text-align: center;">Saran Pembangunan Kota</h1>
+            <h5 class="display-7 font-italic mb-3" style="text-align: center;">Silakan kritik serta saran yang membangun untuk kota Solo.</h5>
             <div class="items-center md:flex flex justify-center">
                 <form class="bg-zinc-800 shadow-md rounded px-8 pt-6 pb-8 mb-4" method="POST">
                     {% csrf_token %}
                     <div class="mb-6">
-                      <label class="block text-white text-sm font-bold mb-2" for="judul_pengaduan">
-                          Masalah
-                      </label>
-                      <label class="bg-white shadow appearance-none border rounded w-full py-2 px-3 text-zinc-800 leading-tight focus:outline-none focus:shadow-outline">{{form.judul_pengaduan}}</label>
+                        <label class="block text-white text-sm font-bold mb-2" for="nama">
+                            Nama
+                        </label>
+                        <label class="bg-white shadow appearance-none border rounded w-full py-2 px-3 text-zinc-800 leading-tight focus:outline-none focus:shadow-outline">{{form.nama}}</label>
                     </div>
                     <div class="mb-6">
-                        <label class="block text-white text-sm font-bold mb-2" for="deskripsi_pengaduan">
-                            Deskripsi masalah
+                        <label class="block text-white text-sm font-bold mb-2" for="email">
+                            Email
                         </label>
-                        <label class="bg-white shadow appearance-none border rounded w-full py-2 px-3 text-zinc-800 leading-tight focus:outline-none focus:shadow-outline">{{form.deskripsi_pengaduan}}</label>
+                        <label class="bg-white shadow appearance-none border rounded w-full py-2 px-3 text-zinc-800 leading-tight focus:outline-none focus:shadow-outline">{{form.email}}</label>
+                      </div>
+                    <div class="mb-6">
+                        <label class="block text-white text-sm font-bold mb-2" for="saran_pembangunan">
+                            Kritik dan Saran
+                        </label>
+                        <label class="bg-white shadow appearance-none border rounded w-full py-2 px-3 text-zinc-800 leading-tight focus:outline-none focus:shadow-outline">{{form.saran_pembangunan}}</label>
                       </div>
                 <div class="flex items-center justify-center">
                     <input class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit" name="submit" value="Ajukan Pengaduan">

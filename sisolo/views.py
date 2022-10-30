@@ -96,6 +96,6 @@ def all_user_data_json(request):
 
 def logout_user(request):
     logout(request)
-    response = HttpResponseRedirect(reverse('sisolo:login_user'))
+    response = HttpResponseRedirect(reverse('sisolo:landing_page'))
     return response
     
