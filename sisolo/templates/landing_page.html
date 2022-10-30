@@ -146,28 +146,8 @@
 
         <hr class="featurette-divider">
 
-        <div class="row featurette" style="margin: 50px"> 
-            <div class="col-md-7 order-md-2">
-                <div style="margin-top: 50px">
-                    <a class="featurette-heading" href="" style="margin-top: 50px">Forum Diskusi<span class="text-muted"></a>
-                </div>
-                {% if user.is_authenticated %}
-                <p class="lead">Mari berbincang dengan pengguna lainnya mengenai Solo!</p>
-                {% else %}
-                <p class="lead">Mari berbincang dengan pengguna lainnya mengenai Solo! (Dapat diakses setelah login)</p>
-                {% endif %}
-            </div>
-            <div class="col-md-5 order-md-1">
-                <div class="image">
-                    {% load static %} <img src="{% static 'images/landing/chat.png' %}" alt="" class="card-img" style="max-width: 200px; max-height: 200px">
-                </div>  
-            </div>
-        </div>
-
-        <hr class="featurette-divider">
-
         <div class="row featurette" style="margin: 50px">
-            <div class="col-md-7">
+            <div class="col-md-7 order-md-2">
                 <div style="margin-top: 50px">
                     <a class="featurette-heading" href="" style="margin-top: 50px">Forum Pemberian Saran</a>
                 </div>
@@ -187,7 +167,7 @@
         <hr class="featurette-divider">
 
         <div class="row featurette" style="margin: 50px"> 
-            <div class="col-md-7 order-md-2">
+            <div class="col-md-7">
                 <div style="margin-top: 50px">
                     <a class="featurette-heading" href="" style="margin-top: 50px">Sarana Kesehatan<span class="text-muted"></a>
                 </div>
@@ -203,7 +183,7 @@
         <hr class="featurette-divider">
 
         <div class="row featurette" style="margin: 50px">
-            <div class="col-md-7">
+            <div class="col-md-7 order-md-2">
                 <div style="margin-top: 50px">
                     <a class="featurette-heading" href="{% url 'info_transportasi_umum:show_transport_info' %}" style="margin-top: 50px">Transportasi Umum</a>
                 </div>
@@ -219,7 +199,7 @@
         <hr class="featurette-divider">
 
         <div class="row featurette" style="margin: 50px"> 
-            <div class="col-md-7 order-md-2">
+            <div class="col-md-7">
                 <div style="margin-top: 50px">
                     <a class="featurette-heading" href="" style="margin-top: 50px">Kuliner<span class="text-muted"></a>
                 </div>
@@ -235,7 +215,7 @@
         <hr class="featurette-divider">
 
         <div class="row featurette" style="margin: 50px">
-            <div class="col-md-7">
+            <div class="col-md-7 order-md-2">
                 <div style="margin-top: 50px">
                     <a class="featurette-heading" href="" style="margin-top: 50px">Tempat Wisata</a>
                 </div>
@@ -251,7 +231,7 @@
         <hr class="featurette-divider">
 
         <div class="row featurette" style="margin: 50px"> 
-            <div class="col-md-7 order-md-2">
+            <div class="col-md-7">
                 <div style="margin-top: 50px">
                     <a class="featurette-heading" href="" style="margin-top: 50px">Jual Kebutuhan Pokok<span class="text-muted"></a>
                 </div>
@@ -267,7 +247,7 @@
         <hr class="featurette-divider">
 
         <div class="row featurette" style="margin: 50px">
-            <div class="col-md-7">
+            <div class="col-md-7 order-md-2">
                 <div style="margin-top: 50px">
                     <a class="featurette-heading" href="" style="margin-top: 50px">Berita/Isu Terkini</a>
                 </div>
@@ -283,7 +263,7 @@
         <hr class="featurette-divider">
 
         <div class="row featurette" style="margin: 50px"> 
-            <div class="col-md-7 order-md-2">
+            <div class="col-md-7">
                 <div style="margin-top: 50px">
                     <a class="featurette-heading" href="{% url 'pendaftaran_izin_usaha:show_pendaftaran' %}" style="margin-top: 50px">Izin Usaha<span class="text-muted"></a>
                 </div>

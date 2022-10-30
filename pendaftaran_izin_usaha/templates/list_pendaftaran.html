@@ -24,6 +24,9 @@
             <div class="container text-white bg-dark mb-3" style="text-align: center;">
               ${data[i].fields.statusPendaftaran == 'Diterima' ? `<p class="card-text text-white bg-dark mb-3" style="text-align: center;">Nomor Izin Usaha: ${data[i].fields.nomorIzinUsaha}</p>`:``}
             </div>
+            <div class="container text-white bg-dark mb-3" style="text-align: center;">
+              ${data[i].fields.statusPendaftaran == 'Ditolak' ? `<p class="card-text text-white bg-dark mb-3" style="text-align: center;">Alasan Ditolak: ${data[i].fields.alasanDitolak}</p>`:``}
+            </div>
           </div>
           </div>
           </div>
