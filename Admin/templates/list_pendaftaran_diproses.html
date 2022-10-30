@@ -53,17 +53,23 @@
             $('#infoDetail').html('')
           }
 
-          $('#tolak').click(function(){
+          $('#submit2').click(function(){
+            if ($('.alasanDitolak-input').val() == ''){
+              window.alert('Mohon Isi Alasan Permohonan Ditolak!')
+            }else{
               $.ajax({
                   url:`set-ditolak/${tempPermohonan}`,
+                  data:{alasanDitolak: $('.alasanDitolak-input').val()},
                   type: 'POST',
                   success: function(response){
                     $(`#${tempPermohonan}--daftar`).remove()
                   }
               })
+            }
+            $('.alasanDitolak-input').val('')
           })
 
-          $('#submit').click(function(){
+          $('#submit1').click(function(){
             if ($('.nomorIzinUsaha-input').val() == ''){
               window.alert('Mohon Isi Nomor Izin Usaha!')
             }else{              
@@ -152,13 +158,32 @@
             <div class="modal-body" id="infoDetail">
             </div>
             <div class="modal-footer">
-                <button id="tolak" type="button" class="btn btn-primary text-black data-bs-dismiss="modal">Tolak</button>
+                <button id="tolak" type="button" class="btn btn-primary text-black" data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#AlasanTolakModal">Tolak</button>
                 <button type="button" class="btn btn-primary text-black" data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#InputNomorIzinUsahaModal">Terima</button>
             </div>
           </div>
         </div>
       </div>
     
+      <div class="modal fade" id="AlasanTolakModal" tabindex="-1" role="dialog" aria-labelledby="AlasanTolakModal" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title text-black" id="AlasanTolakModal">Alasan Permohonan Ditolak</h5>
+            </div>
+            <div class="modal-body">
+              <form class="rounded px-8 pt-6 pb-8" method="POST">  
+              {% csrf_token %}
+                {{form2.alasanDitolak|addclass:"shadow appearance-none border rounded w-full py-2 px-3 text-zinc-800 leading-tight focus:outline-none focus:shadow-outline alasanDitolak-input"}}
+              </form>
+              </div>
+            <div class="modal-footer">
+                <button id="submit2" type="button" class="btn btn-primary text-black">Submit</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      
       <div class="modal fade" id="InputNomorIzinUsahaModal" tabindex="-1" role="dialog" aria-labelledby="InputNomorIzinUsahaModal" aria-hidden="true">
         <div class="modal-dialog" role="document">
           <div class="modal-content">
@@ -168,11 +193,11 @@
             <div class="modal-body">
               <form class="rounded px-8 pt-6 pb-8" method="POST">
                 {% csrf_token %}
-                {{form.nomorIzinUsaha|addclass:"shadow appearance-none border rounded w-full py-2 px-3 text-zinc-800 leading-tight focus:outline-none focus:shadow-outline nomorIzinUsaha-input"}}
+                {{form1.nomorIzinUsaha|addclass:"shadow appearance-none border rounded w-full py-2 px-3 text-zinc-800 leading-tight focus:outline-none focus:shadow-outline nomorIzinUsaha-input"}}
               </form>
               </div>
             <div class="modal-footer">
-                <button id="submit" type="button" class="btn btn-primary text-black">Submit</button>
+                <button id="submit1" type="button" class="btn btn-primary text-black">Submit</button>
             </div>
           </div>
         </div>

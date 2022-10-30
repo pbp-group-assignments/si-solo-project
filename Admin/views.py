@@ -29,8 +29,9 @@ def list_pendaftaran_diajukan(request):
 @login_required(login_url='/login/')
 @admin_only
 def list_pendaftaran_diproses(request):
-    form = NomorIzinUsaha()
-    return render(request, "list_pendaftaran_diproses.html", {'form':form})
+    form1 = NomorIzinUsaha()
+    form2 = AlasanDitolak()
+    return render(request, "list_pendaftaran_diproses.html", {'form1':form1, 'form2':form2})
 
 @login_required(login_url='/login/')
 @admin_only
@@ -79,11 +80,15 @@ def set_diproses_pendaftaran(request, permohonanId):
 @admin_only
 def set_ditolak_pendaftaran(request, permohonanId):
     if request.method == 'POST':
-        usaha = Usaha.objects.get(pk = permohonanId)
-        usaha.statusPendaftaran = 'Ditolak'
-        usaha.save()
+        form = AlasanDitolak(request.POST)
+        if form.is_valid():
+            usaha = Usaha.objects.get(pk = permohonanId)
+            alasan = form.cleaned_data['alasanDitolak']
+            usaha.statusPendaftaran = 'Ditolak'
+            usaha.alasanDitolak = alasan
+            usaha.save()
 
-        return HttpResponse(status=202)
+            return HttpResponse(status=202)
 
 @login_required(login_url='/login/')
 @csrf_exempt
