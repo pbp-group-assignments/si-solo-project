@@ -1,0 +1,103 @@
+{% extends 'base.html' %}
+
+{% block meta %}
+<title>Pendaftaran Pelaku Usaha</title>
+{% endblock meta %}
+
+{% block content %}
+<body>
+  <nav class="navbar navbar-custom">
+    <div class="container-fluid">
+        <a href="/" class="navbar-brand">SISOLO</a>
+    
+        <div class="navbar-right">
+            
+            <div class="modal fade" id="nomord" tabindex="-1">
+                <div class="modal-dialog">
+                    <div class="modal-content" style="color:black;">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Nomor Darurat</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div>
+                                <a href="tel:+62-271712600">Poltabes Solo: (0271)712600</a>
+                            </div>
+                            <div>
+                                <a href="tel:+62-119">Ambulans SPGDT: 119</a>
+                            </div>
+                            <div>
+                                <a href="tel:+62-113">Pemadam Kebakaran: 113</a>
+                            </div>
+                            <div>
+                                <a href="tel:+62-271722091">Gangguan Listrik PLN: (0271)722091</a>
+                            </div>
+                            <div>
+                                <a href="tel:+62-271714039">Stasiun Solo Balapan: (0271)714039</a>
+                            </div>
+                            <div>
+                                <a href="tel:+62-271738900">Terminal Tortonadi: (0271)738900</a>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary text-black" data-bs-dismiss="modal">Close</button>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+            
+            
+            <a class="btn btn-danger btn-sm btn-outline-secondary" style="margin:5px; color: white;" data-bs-toggle="modal" data-bs-target="#nomord">Nomor Darurat</a>   
+            
+            <a class="btn btn-sm btn-outline-secondary" style="margin:5px; color: black;" href="{% url 'sisolo:landing_page' %}" >Halaman Utama</a>
+            
+            <a class="btn btn-sm btn-outline-secondary" style="margin:5px; color: black;" href="{% url 'sisolo:logout_user' %}" >Logout</a>
+        </div>
+    </div>
+</nav>
+
+    <h1 class="display-4 font-italic mb-3" style="text-align: center;">Pendaftaran Pelaku Usaha</h1>
+    <h5 class="display-7 font-italic mb-3" style="text-align: center;">Harap baca peraturan untuk pelaku usaha dengan menekan tombol 'Peraturan' di bawah</h5>
+    <div style="text-align: center" class="mb-3">
+        <button class="bg-cyan-500 hover:bg-cyan-400 text-white py-2 px-4 rounded-full" data-bs-toggle="modal" data-bs-target="#PeraturanPelakuUsahaModal">
+            Peraturan
+        </button>
+    </div>
+
+    <div class="items-center md:flex flex justify-center">
+        <form class="bg-zinc-800 shadow-md rounded px-8 pt-6 pb-8 mb-4" method="POST">
+            {% csrf_token %}
+            <div class="mb-6">
+              <label class="block text-white text-sm font-bold mb-2" for="nik">
+                  NIK
+              </label>
+              <label class="bg-white shadow appearance-none border rounded w-full py-2 px-3 text-zinc-800 leading-tight focus:outline-none focus:shadow-outline">{{form.nik}}</label>
+          </div>
+          <div class="flex items-center justify-center">
+            <input class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit" name="submit" value="Daftar">
+        </div>
+    </form>
+    </div>
+
+    <div class="modal fade" id="PeraturanPelakuUsahaModal" tabindex="-1" role="dialog" aria-labelledby="PeraturanPelakuUsahaModal" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <label class="modal-title font-bold" id="PeraturanPelakuUsahaModal">Peraturan Untuk Pelaku Usaha</label>
+            </div>
+            <div class="modal-body">
+              <h5>1. Mohon mengisi form pendaftaran di bawah dengan NIK Anda</h5>
+              <h5>2. Data NIK yang Anda masukkan di form pendaftaran di bawah akan dianggap valid dan dapat dipertanggungjawabkan</h5>
+              <h5>3. Dengan mengisi form pendaftaran di bawah, maka Anda setuju untuk menjaga nama baik Kota Solo melalui usaha Anda</h5>
+              <h5>4. Jika usaha Anda tertangkap melakukan pelanggaran yang merusak nama baik Kota Solo tercoreng, maka Anda bersedia untuk mencabut izin usaha Anda</h5>
+            </div>
+            <div class="modal-footer">
+                <h3>Jika Anda telah membaca dan menyetujui seluruh peraturan di atas, maka Anda dapat menekan tombol "Tutup" dan mengisi form pendaftaran di bawah</h3>
+              <button type="button" class="btn btn-secondary text-black" data-bs-dismiss="modal">Tutup</button>
+            </div>
+          </div>
+        </div>
+      </div>
+</body>
+{% endblock content %}

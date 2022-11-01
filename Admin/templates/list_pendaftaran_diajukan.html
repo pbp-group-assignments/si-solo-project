@@ -10,13 +10,12 @@
         $(document).ready(function(){
           $.get('list-pendaftaran-json', function(data){
             for (let i = 0; i < data.length; i++){
-                // console.log(data[i])
                 if (data[i].fields.statusPendaftaran  == 'Diajukan'){
                     $('#list-pendaftaran').append(`<div id="${data[i].pk}--daftar" class="card text-white bg-dark mb-3 transform transition duration-500 hover:scale-105 flex-auto" style="max-width: 17rem; min-width: 17rem;">
                       <div class="card-header text-white bg-dark mb-3"> ${data[i].fields.statusPendaftaran}  -  ${data[i].fields.namaPemilik}
                       <div class="card-body text-white bg-dark mb-3">
-                        <h4 class="card-title text-white bg-dark mb-3" style="text-align: center;">${data[i].fields.namaUsaha}</h4>
-                        <p class="card-text text-white bg-dark mb-4" style="text-align: center;">${data[i].fields.jenisUsaha}</p>
+                        <h4 class="card-title text-white bg-dark mb-3" style="text-align: center;">Nama Usaha: ${data[i].fields.namaUsaha}</h4>
+                        <p class="card-text text-white bg-dark mb-4" style="text-align: center;">Jenis Usaha: ${data[i].fields.jenisUsaha}</p>
                         <div class="container text-white bg-dark" style="text-align: center;">
                           <a><button class="button-delete bg-cyan-600"style="width: 75px; height: 30px" ><a data-bs-toggle="modal" data-bs-target="#createTaskModal" onclick="detailPermohonan(${data[i].pk})">Detail</a></button></a>
                         </div>
@@ -35,19 +34,19 @@
                 type: 'GET',
                 success: function(response){
                     tempPermohonan = permohonanId
-                    $('.modal-body').append(`<label class="text-white font-bold">Nama Pendaftar: ${response.fields.namaPemilik}</label>
+                    $('.modal-body').append(`<label class="text-black">Nama Pendaftar: ${response.fields.namaPemilik}</label>
                     <br>
-                    <label class="text-white font-bold">Nomor Telepon Pendaftar: ${response.fields.nomorTeleponPemilik}</label>
+                    <label class="text-black">Nomor Telepon Pendaftar: ${response.fields.nomorTeleponPemilik}</label>
                     <br>
-                    <label class="text-white font-bold">Alamat Pendaftar: ${response.fields.alamatPemilik}</label>
+                    <label class="text-black">Alamat Pendaftar: ${response.fields.alamatPemilik}</label>
                     <br>
-                    <label class="text-white font-bold">Nama Usaha: ${response.fields.namaUsaha}</label>
+                    <label class="text-black">Nama Usaha: ${response.fields.namaUsaha}</label>
                     <br>
-                    <label class="text-white font-bold">Jenis Usaha: ${response.fields.jenisUsaha}</label>
+                    <label class="text-black">Jenis Usaha: ${response.fields.jenisUsaha}</label>
                     <br>
-                    <label class="text-white font-bold">Alamat Usaha: ${response.fields.alamatUsaha}</label>
+                    <label class="text-black">Alamat Usaha: ${response.fields.alamatUsaha}</label>
                     <br>
-                    <label class="text-white font-bold">Nomor Telepon Usaha: ${response.fields.nomorTeleponUsaha}</label>`)
+                    <label class="text-black">Nomor Telepon Usaha: ${response.fields.nomorTeleponUsaha}</label>`)
                 }
             })
             $('.modal-body').html('')
@@ -56,7 +55,7 @@
           $('#proses').click(function(){
               $.ajax({
                   url:`set-diproses/${tempPermohonan}`,
-                  type: 'GET',
+                  type: 'POST',
                   success: function(response){
                       $(`#${tempPermohonan}--daftar`).remove()
                   }
@@ -67,7 +66,59 @@
 </head>
 
 <body>
+  <nav class="navbar navbar-custom">
+    <div class="container-fluid">
+        <a href="/" class="navbar-brand">SISOLO</a>
+    
+        <div class="navbar-right">
+            
+            <div class="modal fade" id="nomord" tabindex="-1">
+                <div class="modal-dialog">
+                    <div class="modal-content" style="color:black;">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Nomor Darurat</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div>
+                                <a href="tel:+62-271712600">Poltabes Solo: (0271)712600</a>
+                            </div>
+                            <div>
+                                <a href="tel:+62-119">Ambulans SPGDT: 119</a>
+                            </div>
+                            <div>
+                                <a href="tel:+62-113">Pemadam Kebakaran: 113</a>
+                            </div>
+                            <div>
+                                <a href="tel:+62-271722091">Gangguan Listrik PLN: (0271)722091</a>
+                            </div>
+                            <div>
+                                <a href="tel:+62-271714039">Stasiun Solo Balapan: (0271)714039</a>
+                            </div>
+                            <div>
+                                <a href="tel:+62-271738900">Terminal Tortonadi: (0271)738900</a>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary text-black" data-bs-dismiss="modal">Close</button>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+            
+            
+            <a class="btn btn-danger btn-sm btn-outline-secondary" style="margin:5px; color: white;" data-bs-toggle="modal" data-bs-target="#nomord">Nomor Darurat</a>   
+            
+            <a class="btn btn-sm btn-outline-secondary" style="margin:5px; color: black;" href="{% url 'Admin:show_admin_page' %}" >Halaman Utama</a>
+            
+            <a class="btn btn-sm btn-outline-secondary" style="margin:5px; color: black;" href="{% url 'sisolo:logout_user' %}" >Logout</a>
+        </div>
+    </div>
+</nav>
+
     <nav aria-label="Page navigation example">
+
         <ul class="pagination justify-content-center mt-3">
           <li class="page-item"><a class="page-link" href="{% url 'Admin:list_pendaftaran_diajukan' %}">Diajukan</a></li>
           <li class="page-item"><a class="page-link" href="{% url 'Admin:list_pendaftaran_diproses' %}">Diproses</a></li>
@@ -77,15 +128,15 @@
       </nav>
 
     <div class="modal fade" id="createTaskModal" tabindex="-1" role="dialog" aria-labelledby="createTaskModalLabel" aria-hidden="true">
-        <div class="modal-dialog bg-dark" role="document">
-          <div class="modal-content bg-dark">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title text-white" id="createTaskModalLabel1">Detail Pendaftaran</h5>
+              <h5 class="modal-title text-black" id="createTaskModalLabel1">Detail Pendaftaran</h5>
             </div>
             <div class="modal-body">
             </div>
             <div class="modal-footer">
-                <button id="proses" type="button" class="btn btn-primary" data-bs-dismiss="modal">Proses</button>
+                <button id="proses" type="button" class="btn btn-primary text-black data-bs-dismiss="modal">Proses</button>
             </div>
           </div>
         </div>
