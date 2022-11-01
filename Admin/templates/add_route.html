@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block meta %}
+<title>Tambah Rute</title>
+{% endblock meta %}
+
+{% block content %}
+<div class="row-center" style="height: 100px; display: flex; justify-content: center; align-items: center; background-color: black;">
+    <strong style="font-size: 30px; color: white">Tambah Rute</strong>
+</div>
+<br>
+
+<div class="add-route">
+    <div class="card border-dark" style="margin:auto; width:60%; padding:10px">
+        <div class="card-body">
+            <h4 class="card-title" style="font-size: 25px; font-weight: bold; padding-bottom: 5px">Tambah rute baru disini:</h4>
+            <form method="POST" id="add-route">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <br>
+                <button class="btn" type="submit" style="align-self: center; width: 100%; padding-bottom: 5px; background-color: #721ad6; color: white">Tambah</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function(){
+        $('#add-route').submit(function() {
+            // create an AJAX call
+            $.ajax({
+                data: $(this).serialize(), // get the form data
+                method: 'POST', // GET or POST
+                url: "{% url 'Admin:add_route' %}",
+                // on success
+                success: function(response) {
+                    alert(response);
+                },
+                error: function(response) {
+                    alert("Penambahan rute gagal!")
+                }
+            });
+            return false;
+        });
+    });
+</script>
+{% endblock content %}

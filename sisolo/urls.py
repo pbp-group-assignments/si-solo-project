@@ -1,6 +1,5 @@
 from django.urls import path
-from sisolo.views import landing_page, login_user, register, daftar_pelaku_usaha, ubah_group_pengguna
-from sisolo.views import registerAddition, logout_user
+from sisolo.views import landing_page, login_user, register, registerAddition, editProfile, logout_user, all_user_data_json
 
 app_name = 'sisolo'
 
@@ -10,6 +9,6 @@ urlpatterns = [
     path('register/', register, name='register'),
     path('logout/', logout_user, name='logout_user'),
     path('registerAddition/', registerAddition, name='registerAddition'),
-    path('daftar-pelaku-usaha/', daftar_pelaku_usaha, name='daftar_pelaku_usaha'),
-    path('ubah-group-pengguna/', ubah_group_pengguna, name='ubah_group_pengguna'),
+    path('update/', editProfile, name='update'),
+    path('json/', all_user_data_json, name='show_user_json'),
 ]

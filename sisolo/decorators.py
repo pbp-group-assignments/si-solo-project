@@ -16,7 +16,7 @@ def allowed_users(allowed_roles=[]):
 				if group.role in allowed_roles:
 					return view_func(request, *args, **kwargs)
 				elif group.role == 'Pengguna':
-					return redirect('sisolo:daftar_pelaku_usaha')
+					return redirect('pendaftaran_izin_usaha:daftar_pelaku_usaha')
 				else:
 					return HttpResponse('You are not authorized to view this page')
 		return wrapper_func
