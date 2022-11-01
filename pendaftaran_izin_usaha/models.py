@@ -13,6 +13,7 @@ class Usaha(models.Model):
     nomorTeleponUsaha = models.CharField(max_length=13, blank=True)
     statusPendaftaran = models.TextField(default='Diajukan', blank=True)
     nomorIzinUsaha = models.TextField(blank=True)
+    alasanDitolak = models.TextField(blank=True)
 
 class PelakuUsaha(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)

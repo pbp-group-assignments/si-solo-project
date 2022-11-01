@@ -26,6 +26,15 @@
     <div class="card text-white bg-dark mb-3 transform transition duration-500 hover:scale-105 flex-auto" style="width: 17rem;">
       <img class="card-img-top" src="{% static 'images/info-transport-adminpage.jpg' %}" alt="Card image cap">
       <div class="card-body">
+        <h5 class="card-title">Tambah Wisata</h5>
+        <a href="{% url 'Admin:tempat_wisata_baru' %}" class="btn btn-primary">Add Tempat Wisata</a>
+      </div>
+    </div>
+    <div class="card text-white bg-dark mb-3 transform transition duration-500 hover:scale-105 flex-auto" style="width: 17rem;">
+      <img class="card-img-top" src="{% static 'images/info-transport-adminpage.jpg' %}" alt="Card image cap">
+      <div class="card-body">
+        <h5 class="card-title">Tambah Kuliner</h5>
+        <a href="{% url 'Admin:tempat_kuliner_baru' %}" class="btn btn-primary">Add Tempat Kuliner</a>
         <h5 class="card-title">Info Transportasi Umum</h5>
         <a href="{% url 'Admin:pengaturan_info_transport' %}" class="btn btn-primary">Lihat Pengaturan</a>
       </div>
