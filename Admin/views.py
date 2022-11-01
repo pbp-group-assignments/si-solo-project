@@ -1,5 +1,8 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
+from info_kuliner.models import TempatKuliner
+from info_tempat_wisata.forms import TempatWisataForms
+from info_tempat_wisata.models import TempatWisata
 from sisolo.decorators import admin_only
 from pendaftaran_izin_usaha.models import Usaha, PelakuUsaha
 from django.http import HttpResponse, JsonResponse
@@ -165,6 +168,46 @@ def set_ditolak_pelaku_usaha(request, pkPemohon):
 
 @login_required(login_url='/sisolo/login/')
 @admin_only
+def tempat_wisata_baru(request):
+    if request.method == 'POST':
+        wisata_title = request.POST.get['wisata_title']
+        wisata_description = request.POST.get['wisata_description']
+        wisata_highlight = request.POST.get['wisata_highlight']
+        wisata_image = request.POST.get['wisata_image']
+        tempatwisata = TempatWisata(wisata_title=wisata_title, wisata_description=wisata_description, wisata_image=wisata_image, wisata_highlight=wisata_highlight)
+        tempatwisata.save()
+        return HttpResponse("Tempat wisata: " + wisata_title + " berhasil ditambahkan!")
+
+    context = {}
+    return render(request, 'add_tempat_wisata.html', context)
+
+# @login_required(login_url='/sisolo/login/')
+# @admin_only
+# def delete_wisata(request, id):
+#      if request.method == "POST":
+#         ref_name = request.POST.get('ref_name')
+#         tempatwisata = TempatWisata.objects.get(ref_name=ref_name)
+#         tempatwisata.delete()
+
+#         return HttpResponse("Transportasi: " + tempatwisata.name + " berhasil dihapus!")
+    
+#     context = {}
+#     return render(request, 'delete_wisata.html', context)
+
+@login_required(login_url='/sisolo/login/')
+@admin_only
+def tempat_kuliner_baru(request):
+    if request.method == 'POST':
+        kuliner_title = request.POST.get['kuliner_title']
+        kuliner_description = request.POST.get['kuliner_description']
+        kuliner_highlight = request.POST.get['kuliner_highlight']
+        kuliner_image = request.POST.get['kuliner_image']
+        tempatkuliner = TempatKuliner(kuliner_title=kuliner_title, kuliner_description=kuliner_description, kuliner_image=kuliner_image, kuliner_highlight=kuliner_highlight)
+        tempatkuliner.save()
+        return HttpResponse("Tempat kuliner: " + kuliner_title + " berhasil ditambahkan!")
+
+    context = {}
+    return render(request, 'add_tempat_kuliner.html', context)
 def add_transport(request):
     if request.method == "POST":
         name = request.POST.get('name')
