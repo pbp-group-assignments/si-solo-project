@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
+from info_kebutuhan_pokok.models import Kebutuhan_Pokok
 from info_tempat_wisata.models import TempatWisata
 from sisolo.decorators import admin_only
 from pendaftaran_izin_usaha.models import Usaha, PelakuUsaha
