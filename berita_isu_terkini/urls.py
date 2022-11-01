@@ -1,5 +1,5 @@
 from django.urls import path
-from berita_isu_terkini.views import show_berita, show_berita_json, show_create
+from berita_isu_terkini.views import show_berita, show_berita_json
 
 app_name = 'berita_isu_terkini'
 

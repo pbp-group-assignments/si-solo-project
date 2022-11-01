@@ -1,7 +1,7 @@
 from django.urls import path
 from Admin.views import show_admin_page, list_pendaftaran_json, list_pendaftaran_diajukan, get_detail_pendaftaran, set_diproses_pendaftaran
 from Admin.views import list_pendaftaran_diproses, set_ditolak_pendaftaran, list_pendaftaran_ditolak, list_pendaftaran_diterima, set_diterima_pendaftaran
-from Admin.views import tambah_berita, add_berita
+from Admin.views import add_berita
 
 app_name = 'Admin'
 

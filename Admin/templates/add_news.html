@@ -1,12 +1,12 @@
 {% extends 'base.html' %}
 
 {% block meta %}
-<title>Tambah Transportasi Umum</title>
+<title>Tambah Berita Baru</title>
 {% endblock meta %}
 
 {% block content %}
 <div class="row-center" style="height: 100px; display: flex; justify-content: center; align-items: center; background-color: black;">
-    <strong style="font-size: 30px; color: white">Tambah Transportasi Umum</strong>
+    <strong style="font-size: 30px; color: white">Tambah Berita Baru</strong>
 </div>
 <br>
 
@@ -15,7 +15,7 @@
     <form method="POST" id="add-transportation">
         {% csrf_token %}
         <div class="card border-dark" style="margin:auto; width:60%; padding:10px">
-            <strong class="card-title" style="font-size: 25px">Tambah transportasi baru disini:</strong>
+            <strong class="card-title" style="font-size: 25px">Tambah berita baru:</strong>
             <table>
                 <tr>
                     <td>Judul Berita: </td>
