@@ -229,8 +229,8 @@ def add_kebutuhan(request):
         harga = request.POST.get('harga')
         image = request.POST.get('image')
        
-        # kebutuhan = Kebutuhan_Pokok(item=item, harga=harga, image=image)
-        # kebutuhan.save()
+        kebutuhan = Kebutuhan_Pokok(item=item, harga=harga, image=image)
+        kebutuhan.save()
 
         return HttpResponse("Item: " + item + " berhasil ditambahkan!")
     
