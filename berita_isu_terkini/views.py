@@ -19,7 +19,7 @@ from sisolo.decorators import admin_only
 
 def show_berita(request):
     if is_ajax(request=request) : 
-        p = Berita(news_title='Test', news_description='Berkeley', news_highlight='Data baru', image_url='https://filestore.community.support.microsoft.com/api/images/371db990-f99c-49e3-a230-c7de0458f791?upload=true')
+        p = Berita(news_title='news_title', news_description='news_description', news_highlight='news_highlight', image_url='https://filestore.community.support.microsoft.com/api/images/371db990-f99c-49e3-a230-c7de0458f791?upload=true')
         p.save()
         context = Berita.objects.all().values()
         arr = []

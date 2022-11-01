@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
+from info_kebutuhan_pokok.models import Kebutuhan_Pokok
 from info_kuliner.models import TempatKuliner
 from info_tempat_wisata.forms import TempatWisataForms
 from info_tempat_wisata.models import TempatWisata
@@ -241,6 +242,23 @@ def add_berita(request):
     
     context = {}
     return render(request, 'add_news.html', context)
+
+@login_required(login_url='/login/')
+@admin_only
+def add_kebutuhan(request):
+    if request.method == "POST":
+        item = request.POST.get('item')
+        harga = request.POST.get('harga')
+        image = request.POST.get('image')
+       
+        kebutuhan = Kebutuhan_Pokok(item=item, harga=harga, image=image)
+        kebutuhan.save()
+
+        return HttpResponse("Item: " + item + " berhasil ditambahkan!")
+    
+    context = {}
+    return render(request, 'add_kebutuhan.html', context)
+
 
    
 @login_required(login_url='/sisolo/login/')
