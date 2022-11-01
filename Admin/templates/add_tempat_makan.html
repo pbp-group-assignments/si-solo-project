@@ -1,30 +1,30 @@
 {% extends 'base.html' %}
 
 {% block meta %}
-<title>Tambah Tempat Wisata</title>
+<title>Tambah Tempat Kuliner</title>
 {% endblock meta %}
 
 {% block content %}
 <div class="row-center" style="height: 100px; display: flex; justify-content: center; align-items: center; background-color: black;">
-    <strong style="font-size: 30px; color: white">Tambah Tempat Wisata</strong>
+    <strong style="font-size: 30px; color: white">Tambah Tempat Kuliner</strong>
 </div>
 <br>
 
-<div class="add-tempat-wisata">
+<div class="add-tempat-makan">
 
-    <form method="POST" id="add-tempat-wisata">
+    <form method="POST" id="add-tempat-makan">
         {% csrf_token %}
         <div class="card border-dark" style="margin:auto; width:60%; padding:10px">
-            <strong class="card-title" style="font-size: 25px">Tambah tempat wisata:</strong>
+            <strong class="card-title" style="font-size: 25px">Tambah tempat kuliner:</strong>
             <table>
                 <tr>
-                    <td>Nama Tempat Wisata: </td>
-                    <td><input type="text" name="wisata_title" placeholder="Nama" class="form-control"></td>
+                    <td>Nama Tempat Kuliner: </td>
+                    <td><input type="text" name="kuliner_title" placeholder="Nama" class="form-control"></td>
                 </tr> 
                 <tr>
                     <td>Deskripsi Singkat: </td>
                     <td>
-                        <textarea name="wisata_highlight" placeholder="Deskripsi" class="form-control"></textarea>
+                        <textarea name="kuliner_highlight" placeholder="Deskripsi" class="form-control"></textarea>
                     </td>
                 </tr>
                 <tr>
@@ -32,7 +32,7 @@
                     <td><input type="text" name="ref_name" placeholder="nama_referensi" class="form-control"></td>
                 </tr>
                 <tr>
-                    <td>File gambar wisata (ukuran 4x3): </td>
+                    <td>File gambar makanan (ukuran 4x3): </td>
                     <td><input type="file" name="image"></td>
                 </tr> 
             </table>
@@ -45,12 +45,12 @@
 
 <script>
     $(document).ready(function(){
-        $('#add-tempat-wisata').submit(function() {
+        $('#add-tempat-makan').submit(function() {
             // create an AJAX call
             $.ajax({
                 data: $(this).serialize(), // get the form data
                 method: 'POST', // GET or POST
-                url: "{% url 'Admin:tempat_wisata_baru' %}",
+                url: "{% url 'Admin:tempat_kuliner_baru' %}",
                 // on success
                 success: function(response) {
                     alert(response);

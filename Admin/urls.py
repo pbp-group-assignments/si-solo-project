@@ -1,5 +1,5 @@
 from django.urls import path
-from Admin.views import show_admin_page, list_pendaftaran_json, list_pendaftaran_diajukan, get_detail_pendaftaran, set_diproses_pendaftaran, tempat_wisata_baru
+from Admin.views import show_admin_page, list_pendaftaran_json, list_pendaftaran_diajukan, get_detail_pendaftaran, set_diproses_pendaftaran, tempat_kuliner_baru, tempat_wisata_baru
 from Admin.views import list_pendaftaran_diproses, set_ditolak_pendaftaran, list_pendaftaran_ditolak, list_pendaftaran_diterima, set_diterima_pendaftaran
 from Admin.views import  pendaftaran_pelaku_usaha_json, list_pendaftaran_pelaku_usaha_diproses, set_diterima_pelaku_usaha, list_pendaftaran_pelaku_usaha_diterima
 from Admin.views import set_ditolak_pelaku_usaha, list_pendaftaran_pelaku_usaha_ditolak
@@ -24,4 +24,5 @@ urlpatterns = [
     path('set-ditolak-pelaku-usaha/<pkPemohon>', set_ditolak_pelaku_usaha, name='set_ditolak_pelaku_usaha'),
     path('list-pendaftaran-pelaku-usaha-ditolak', list_pendaftaran_pelaku_usaha_ditolak, name='list_pendaftaran_pelaku_usaha_ditolak'),
     path('tempat-wisata-baru/', tempat_wisata_baru, name='tempat_wisata_baru'),
+    path('tempat-kuliner-baru/', tempat_kuliner_baru, name='tempat_kuliner_baru'),
 ]

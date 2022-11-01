@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'saran_pembangunan_kota',
     'Admin',
     'info_transportasi_umum',
+    'info_kuliner',
 ]
 
 MIDDLEWARE = [
