@@ -4,6 +4,9 @@ from sisolo.decorators import admin_only
 from pendaftaran_izin_usaha.models import Usaha
 from django.http import HttpResponse, JsonResponse
 from django.core import serializers
+from berita_isu_terkini.forms import Create
+from django.shortcuts import redirect
+from berita_isu_terkini.models import Berita
 
 # Create your views here.
 @login_required(login_url='/login/')
@@ -96,3 +99,21 @@ def set_diterima_pendaftaran(request, permohonanId):
             print('Menjual Bahan Pokok')
 
         return HttpResponse(status=202)
+
+@login_required(login_url='/login/')
+@admin_only
+def add_berita(request):
+    if request.method == "POST":
+        news_title = request.POST.get('news_title')
+        news_date = request.POST.get('news_date')
+        news_image = request.POST.get('news_image')
+        news_highlight = request.POST.get('news_highlight')
+        berita = Berita(news_title=news_title, news_date=news_date, news_image=news_image, news_highlight=news_highlight)
+        berita.save()
+
+        return HttpResponse("Berita: " + news_title + " berhasil ditambahkan!")
+    
+    context = {}
+    return render(request, 'add_news.html', context)
+
+   

@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+
+{% block meta %}
+<title>Tambah Transportasi Umum</title>
+{% endblock meta %}
+
+{% block content %}
+<div class="row-center" style="height: 100px; display: flex; justify-content: center; align-items: center; background-color: black;">
+    <strong style="font-size: 30px; color: white">Tambah Transportasi Umum</strong>
+</div>
+<br>
+
+<div class="add-transportation">
+
+    <form method="POST" id="add-transportation">
+        {% csrf_token %}
+        <div class="card border-dark" style="margin:auto; width:60%; padding:10px">
+            <strong class="card-title" style="font-size: 25px">Tambah transportasi baru disini:</strong>
+            <table>
+                <tr>
+                    <td>Judul Berita: </td>
+                    <td><input type="text" name="news_title" placeholder="Judul" class="form-control"></td>
+                </tr> 
+                <tr>
+                    <td>Highlight Berita: </td>
+                    <td>
+                        <textarea name="news_ighlight" placeholder="Highlight" class="form-control"></textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Tanggal Berita: </td>
+                    <td><input type="date" name="news_date" placeholder="Date" class="form-control"></td>
+                </tr>
+                <tr>
+                    <td>URL gambar: </td>
+                    <td><input type="url" name="news_image" placeholder="URL Image" class="form-control"></td>
+                </tr> 
+            </table>
+            <br>
+            <!-- <button class="btn btn-primary" type="submit" style="align-self: center; width: 100%;">Tambah</button> -->
+            <a href="{% url 'Admin:add_berita' %}" class="btn btn-light" class="btn btn-outline-info" role="button">Tambah</a>
+        </div>
+    </form>
+
+</div>
+
+<script>
+    $(document).ready(function(){
+        $('#add-berita').submit(function() {
+            // create an AJAX call
+            $.ajax({
+                data: $(this).serialize(), // get the form data
+                method: 'POST', // GET or POST
+                url: "{% url 'Admin:add_berita' %}",
+                // on success
+                success: function(response) {
+                    alert(response);
+                }
+            });
+            return false;
+        });
+    });
+</script>
+{% endblock content %}

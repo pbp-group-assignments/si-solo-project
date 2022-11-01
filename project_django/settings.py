@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'sisolo',
     'pendaftaran_izin_usaha',
     'Admin',
+    'berita_isu_terkini',
 ]
 
 MIDDLEWARE = [
