@@ -1,6 +1,3 @@
-from genericpath import exists
-from queue import Empty
-from tkinter import Menu
 from urllib import response
 from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse, HttpResponseBadRequest
