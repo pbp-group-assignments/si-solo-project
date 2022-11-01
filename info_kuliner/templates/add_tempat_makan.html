@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block meta %}
+<title>Add Tempat Makan</title>
+{% endblock meta %}
+
+{% block content %}
+
+<body>
+    <div class="add_new">
+
+        <h1> Add Tempat Makan</h1>
+
+        <form method="POST" >  
+            {% csrf_token %}
+            <div class="title">
+                <div class="col-xl-2 align-self-center">
+                    <label class="form-lable" for="user_title">Title:</label>
+                </div>
+                <div class="col align-self-center">
+                    <input type="text" name="title" placeholder="Input title" id="user_title" class="form-control">
+                </div>
+            </div>
+            <div class="description">
+                <div class="col-xl-2 align-self-center">
+                    <label class="form-lable" for="user_description">Description:</label>
+                </div>
+                <div class="col align-self-center">
+                    <input type="text" name="description" placeholder="Input description" id="user_description" class="form-control">
+                </div>
+            </div>
+            <input type="submit" name="submit" value="Create New Task" class="btn btn-outline-dark mx-auto d-block">
+        </form>
+</body>
+
+{% endblock content %}

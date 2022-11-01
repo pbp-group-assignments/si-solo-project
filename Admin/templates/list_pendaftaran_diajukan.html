@@ -1,0 +1,106 @@
+{% extends 'base.html' %}
+
+{% block meta %}
+<title>List Pendaftaran Usaha</title>
+{% endblock meta %}
+
+{% block content %}
+<head>
+    <script>
+        $(document).ready(function(){
+          $.get('list-pendaftaran-json', function(data){
+            for (let i = 0; i < data.length; i++){
+                if (data[i].fields.statusPendaftaran  == 'Diajukan'){
+                    $('#list-pendaftaran').append(`<div id="${data[i].pk}--daftar" class="card text-white bg-dark mb-3 transform transition duration-500 hover:scale-105 flex-auto" style="max-width: 17rem; min-width: 17rem;">
+                      <div class="card-header text-white bg-dark mb-3"> ${data[i].fields.statusPendaftaran}  -  ${data[i].fields.namaPemilik}
+                      <div class="card-body text-white bg-dark mb-3">
+                        <h4 class="card-title text-white bg-dark mb-3" style="text-align: center;">${data[i].fields.namaUsaha}</h4>
+                        <p class="card-text text-white bg-dark mb-4" style="text-align: center;">${data[i].fields.jenisUsaha}</p>
+                        <div class="container text-white bg-dark" style="text-align: center;">
+                          <a><button class="button-delete bg-cyan-600"style="width: 75px; height: 30px" ><a data-bs-toggle="modal" data-bs-target="#createTaskModal" onclick="detailPermohonan(${data[i].pk})">Detail</a></button></a>
+                        </div>
+                      </div>
+                      </div>
+                      </div>
+                    </div>`)
+                }
+            }
+          })
+
+          var tempPermohonan = 0;
+          detailPermohonan = (permohonanId) => {
+            $.ajax({
+                url: `/Admin/detail-pendaftaran/${permohonanId}`,
+                type: 'GET',
+                success: function(response){
+                    tempPermohonan = permohonanId
+                    $('.modal-body').append(`<label class="text-white">Nama Pendaftar: ${response.fields.namaPemilik}</label>
+                    <br>
+                    <label class="text-white">Nomor Telepon Pendaftar: ${response.fields.nomorTeleponPemilik}</label>
+                    <br>
+                    <label class="text-white">Alamat Pendaftar: ${response.fields.alamatPemilik}</label>
+                    <br>
+                    <label class="text-white">Nama Usaha: ${response.fields.namaUsaha}</label>
+                    <br>
+                    <label class="text-white">Jenis Usaha: ${response.fields.jenisUsaha}</label>
+                    <br>
+                    <label class="text-white">Alamat Usaha: ${response.fields.alamatUsaha}</label>
+                    <br>
+                    <label class="text-white">Nomor Telepon Usaha: ${response.fields.nomorTeleponUsaha}</label>`)
+                }
+            })
+            $('.modal-body').html('')
+          }
+
+          $('#proses').click(function(){
+              $.ajax({
+                  url:`set-diproses/${tempPermohonan}`,
+                  type: 'GET',
+                  success: function(response){
+                      $(`#${tempPermohonan}--daftar`).remove()
+                  }
+              })
+          })
+        })
+    </script>
+</head>
+
+<body>
+    <nav aria-label="Page navigation example">
+      <div class="justify-content-center mt-3" style="text-align: center;">
+        <a class="hover:text-slate-200" href="{% url 'Admin:show_admin_page' %}">
+          <button class="bg-zinc-800 hover:bg-zinc-700 hover:text-slate-200 text-white font-bold py-2 px-4 rounded-full">
+            Kembali Ke Halaman Utama
+          </button>
+        </a>  
+      </div>
+
+        <ul class="pagination justify-content-center mt-3">
+          <li class="page-item"><a class="page-link" href="{% url 'Admin:list_pendaftaran_diajukan' %}">Diajukan</a></li>
+          <li class="page-item"><a class="page-link" href="{% url 'Admin:list_pendaftaran_diproses' %}">Diproses</a></li>
+          <li class="page-item"><a class="page-link" href="{% url 'Admin:list_pendaftaran_diterima' %}">Diterima</a></li>
+          <li class="page-item"><a class="page-link" href="{% url 'Admin:list_pendaftaran_ditolak' %}">Ditolak</a></li>
+        </ul>
+      </nav>
+
+    <div class="modal fade" id="createTaskModal" tabindex="-1" role="dialog" aria-labelledby="createTaskModalLabel" aria-hidden="true">
+        <div class="modal-dialog bg-dark" role="document">
+          <div class="modal-content bg-dark">
+            <div class="modal-header">
+              <h5 class="modal-title text-white font-bold" id="createTaskModalLabel1">Detail Pendaftaran</h5>
+            </div>
+            <div class="modal-body">
+            </div>
+            <div class="modal-footer">
+                <button id="proses" type="button" class="btn btn-primary" data-bs-dismiss="modal">Proses</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    <div class="items-center flex justify-center">
+      <div class="grid gap-4 grid-cols-1 sm:grid-flow-cols-1 md:grid-cols-3 lg:grid-cols-4 m-4" id="list-pendaftaran"></div>
+    </div>
+</body>
+
+{% endblock content %}

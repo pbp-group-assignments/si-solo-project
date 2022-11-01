@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+
+{% block meta %}
+<title>Task List</title>
+{% endblock meta %}
+
+{% block content %}
+<style>
+    .gradient-custom {
+        background: linear-gradient(to right, #ea8d8d, #a890fe)
+    }
+
+    .card:hover {
+        transform: scale(1.1);
+    }
+
+    .card {
+        border-radius: 25px;
+        transition: transform .3s;
+        background-color: white;
+        color: black;
+    }
+
+    .title {
+        font-family: Arial;
+        font-weight: bold;
+        text-align: center;
+    }
+
+    .fullscreen {
+        height: 100vh;
+    }
+
+    .navigation {
+        font-family: Arial;
+        font-weight: bold;
+        text-align: center;
+        color: black;
+    }
+</style>
+<body class="">
+    <div class="my-3 mx-5 h-100">
+        <div>
+            <ul class="navigation">
+                <h1>Hi {{ user }}! 👋</h1>
+            </ul>
+            <section class="fullscreen gradient">
+                <div class="container py-5 h-100">
+                    <form method="POST">
+                        {% csrf_token %}
+                        {{ form }}
+                        <input type="submit" value="Submit">
+                    </form>
+                </div>
+            </section>
+            <tbody>
+                {% for pengaduan in form_pengaduan %}
+                <div class="col-sm mb-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ pengaduan.judul_pengaduan }}</h5>
+                            <p class="card-text ">{{ task.deskripsi_pengaduan }}</p>
+                            <div class="row row-cols-2">
+                                {% if pengaduan.status_pengaduan %}
+                                <p class="fw-bold text-success">Verifikasi</p>
+                                {% else %}
+                                <p class="fw-bold text-warning">Diproses</p>
+                                {% endif %}
+                                <p class="card-text text-black text-end">{{ pengaduan.tanggal_pengaduan }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </tbody>
+        </div>
+    </div>
+</body>
+
+{% endblock content %}

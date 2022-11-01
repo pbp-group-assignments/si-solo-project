@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block meta %}
+<title>Informasi Tambahan</title>
+{% endblock meta %}
+
+{% block content %}  
+<h1 class="text-zinc-800" style="font-weight:bold ; font-size:50px; text-align: center; margin-bottom: 20px;">Mohon Mengisi Informasi Tambahan Berikut</h1>  
+
+<div class="items-center md:flex flex justify-center">
+    <form class="bg-zinc-800 shadow-md rounded px-8 pt-6 pb-8 mb-4" method="POST">
+        {% csrf_token %}
+        <div class="mb-4">
+            <label class="block text-white text-sm font-bold mb-2" for="namaLengkap">
+                Nama Lengkap
+        </label>
+        <label class="bg-white shadow appearance-none border rounded w-full py-2 px-3 text-zinc-800 leading-tight focus:outline-none focus:shadow-outline">{{form.namaLengkap}}</label>
+    </div>
+        <div class="mb-4">
+            <label class="block text-white text-sm font-bold mb-2" for="nomorTelepon">
+                Nomor Telepon
+        </label>
+        <label class="bg-white shadow appearance-none border rounded w-full py-2 px-3 text-zinc-800 leading-tight focus:outline-none focus:shadow-outline">{{form.nomorTelepon}}</label>
+    </div>
+    <div class="mb-6">
+        <label class="block text-white text-sm font-bold mb-2" for="alamat">
+            Alamat Tempat Tinggal
+        </label>
+        <label class="bg-white shadow appearance-none border rounded w-full py-2 px-3 text-zinc-800 leading-tight focus:outline-none focus:shadow-outline">{{form.alamat}}</label>
+    </div>
+      <div class="flex items-center justify-center">
+        <input class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit" name="submit" value="Daftar">
+    </div>
+</form>
+</div>
+{% endblock content %}

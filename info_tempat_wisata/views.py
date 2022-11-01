@@ -6,7 +6,7 @@ from django.http import HttpResponse, JsonResponse, HttpResponseBadRequest
 from django.core import serializers
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
-from sisolo.decorators import allowed_users
+from sisolo.decorators import admin_only, allowed_users
 from django.shortcuts import redirect
 
 def is_ajax(request):
@@ -35,7 +35,9 @@ def show_json_by_id(request, id):
     tempatwisata_data = TempatWisata.objects.filter(pk=id)
     return HttpResponse(serializers.serialize("json", tempatwisata_data), content_type="application/json")
 
-@login_required(login_url='/login/')
+@login_required(login_url='/sisolo/login/')
+@csrf_exempt
+@admin_only
 def add_tempat_wisata(request):
     if request.user.is_authenticated:
         form = TempatWisataForms(request.POST)
@@ -43,8 +45,9 @@ def add_tempat_wisata(request):
             wisata_title = form.cleaned_data['title']
             wisata_description = form.cleaned_data['description']
             wisata_highlight = form.cleaned_data['highlight']
+            wisata_image = request.POST.get('image')
             tempat_baru = TempatWisata.objects.create(title=wisata_title, description=wisata_description, highlight=wisata_highlight,
-                                                user=request.user)
+                                                image=wisata_image)
             return redirect('info_tempat_wisata:show_tempatwisata')
         
         context = {
@@ -54,7 +57,9 @@ def add_tempat_wisata(request):
     else:
         return HttpResponseBadRequest()
 
-@login_required(login_url='/login/')
+@login_required(login_url='/sisolo/login/')
+@csrf_exempt
+@admin_only
 def tempat_wisata_baru(request):
     if request.method == 'POST':
         form = TempatWisataForms(request.POST)
@@ -74,6 +79,14 @@ def tempat_wisata_baru(request):
         return render(request, 'add_tempat_wisata.html', context)
     else:
         return HttpResponseBadRequest()
+
+@login_required(login_url='/sisolo/login/')
+@csrf_exempt
+@admin_only
+def delete_task(request, id):
+    new_tempatwisata = TempatWisata.objects.get(id=id)
+    new_tempatwisata.delete()
+    return redirect('info_tempat_wisata:show_tempatwisata')
 
 # @login_required(login_url='/login/')
 # @csrf_exempt

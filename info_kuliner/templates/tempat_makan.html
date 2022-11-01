@@ -77,6 +77,34 @@
         crossorigin="anonymous"></script>
 
 </body>
+<script>
+    function mintaData() {
+        $.ajax({
+            type: 'GET',
+            url: "/tempat-wisata",
+            data: {
+
+            },
+            datatype: "json",
+            success: nampilinData
+        })
+    }
+    function nampilinData(data) {
+        var dynamic = document.querySelector('.containerSolo');
+        var content = ''
+        for (var i = 0; i < data.length; i++) {
+            var data1 = data[i]
+            var wisata_title = data1["wisata_title"]
+            var wisata_description = data1["wisata_description"]
+            var wisata_highlight = data1["wisata_highlight"]
+            var image_url = data1["image_url"]
+            content += '<div class="col-12 col-md-6 col-lg-4"><div class="card"><img src="' + image_url + '"class="card-img-top" alt="' + wisata_title + '"><div class="card-body"><h5 class="card-title">' + wisata_title + '</h5><p class="card-text">' + wisata_highlight + '</p><a href="#" class="btn btn-primary">More detail</a></div></div></div>'
+        }
+        dynamic.innerHTML = content;
+        console.log(data)
+    }
+    $(document).ready(mintaData);
+</script>
 
 </html>
 

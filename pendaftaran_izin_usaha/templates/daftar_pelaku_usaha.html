@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block meta %}
+<title>Pendaftaran Pelaku Usaha</title>
+{% endblock meta %}
+
+{% block content %}
+<body>
+    <h1 class="text-zinc-800" style="font-weight:bold ; font-size:50px; text-align: center; margin-bottom: 20px;">Pendaftaran Pelaku Usaha</h1>
+    <h5 class="text-zinc-800" style="font-weight:bold ; text-align: center; margin-bottom: 20px;">Harap baca peraturan untuk pelaku usaha dengan menekan tombol 'Peraturan' di bawah</h5>
+    <div style="text-align: center" class="mb-3">
+        <button class="bg-zinc-800 hover:bg-zinc-700 text-white font-bold py-2 px-4 rounded-full" data-bs-toggle="modal" data-bs-target="#PeraturanPelakuUsahaModal">
+            Peraturan
+        </button>
+    </div>
+
+    <div class="items-center md:flex flex justify-center">
+        <form class="bg-zinc-800 shadow-md rounded px-8 pt-6 pb-8 mb-4" method="POST">
+            {% csrf_token %}
+            <div class="mb-6">
+              <label class="block text-white text-sm font-bold mb-2" for="nik">
+                  NIK
+              </label>
+              <label class="bg-white shadow appearance-none border rounded w-full py-2 px-3 text-zinc-800 leading-tight focus:outline-none focus:shadow-outline">{{form.nik}}</label>
+          </div>
+          <div class="flex items-center justify-center">
+            <input class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit" name="submit" value="Daftar">
+        </div>
+    </form>
+    </div>
+
+    <div class="modal fade" id="PeraturanPelakuUsahaModal" tabindex="-1" role="dialog" aria-labelledby="PeraturanPelakuUsahaModal" aria-hidden="true">
+        <div class="modal-dialog bg-dark" role="document">
+          <div class="modal-content bg-dark">
+            <div class="modal-header">
+              <label class="modal-title text-white font-bold" id="PeraturanPelakuUsahaModal">Peraturan Untuk Pelaku Usaha</label>
+            </div>
+            <div class="modal-body">
+              <h5 class="text-white">1. Mohon mengisi form pendaftaran di bawah dengan NIK Anda</h5>
+              <h5 class="text-white">2. Data NIK yang Anda masukkan di form pendaftaran di bawah akan dianggap valid dan dapat dipertanggungjawabkan</h5>
+              <h5 class="text-white">3. Dengan mengisi form pendaftaran di bawah, maka Anda setuju untuk menjaga nama baik Kota Solo melalui usaha Anda</h5>
+              <h5 class="text-white">4. Jika usaha Anda tertangkap melakukan pelanggaran yang merusak nama baik Kota Solo tercoreng, maka Anda bersedia untuk mencabut izin usaha Anda</h5>
+            </div>
+            <div class="modal-footer">
+                <h3 class="text-white font-bold">Jika Anda telah membaca dan menyetujui seluruh peraturan di atas, maka Anda dapat menekan tombol "Tutup" dan mengisi form pendaftaran di bawah</h3>
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+            </div>
+          </div>
+        </div>
+      </div>
+</body>
+{% endblock content %}
