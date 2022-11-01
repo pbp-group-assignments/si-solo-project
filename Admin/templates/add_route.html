@@ -11,30 +11,17 @@
 <br>
 
 <div class="add-route">
-
-    <form method="POST" id="add-route">
-        {% csrf_token %}
-        <div class="card border-dark" style="margin:auto; width:60%; padding:10px">
-            <strong class="card-title" style="font-size: 25px">Tambah rute baru disini:</strong>
-            <table>
-                <tr>
-                    <td>Nama referensi transportasi (lihat di django admin): </td>
-                    <td><input type="text" name="ref_name_transportation" placeholder="nama_referensi_transportasi" class="form-control"></td>
-                </tr> 
-                <tr>
-                    <td>Rute: </td>
-                    <td><input type="text" name="from_to" placeholder="lokasi1 - lokasi2" class="form-control"></td>
-                </tr>
-                <tr>
-                    <td>Nama referensi (untuk fungsi add/delete): </td>
-                    <td><input type="text" name="ref_name" placeholder="nama_referensi" class="form-control"></td>
-                </tr>
-            </table>
-            <br>
-            <button class="btn btn-primary" type="submit" style="align-self: center; width: 100%;">Tambah</button>
+    <div class="card border-dark" style="margin:auto; width:60%; padding:10px">
+        <div class="card-body">
+            <h4 class="card-title" style="font-size: 25px; font-weight: bold; padding-bottom: 5px">Tambah rute baru disini:</h4>
+            <form method="POST" id="add-route">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <br>
+                <button class="btn" type="submit" style="align-self: center; width: 100%; padding-bottom: 5px; background-color: #721ad6; color: white">Tambah</button>
+            </form>
         </div>
-    </form>
-
+    </div>
 </div>
 
 <script>
@@ -48,6 +35,9 @@
                 // on success
                 success: function(response) {
                     alert(response);
+                },
+                error: function(response) {
+                    alert("Penambahan rute gagal!")
                 }
             });
             return false;

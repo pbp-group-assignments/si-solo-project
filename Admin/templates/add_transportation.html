@@ -11,50 +11,39 @@
 <br>
 
 <div class="add-transportation">
-
-    <form method="POST" id="add-transportation">
-        {% csrf_token %}
-        <div class="card border-dark" style="margin:auto; width:60%; padding:10px">
-            <strong class="card-title" style="font-size: 25px">Tambah transportasi baru disini:</strong>
-            <table>
-                <tr>
-                    <td>Nama transportasi: </td>
-                    <td><input type="text" name="name" placeholder="Nama" class="form-control"></td>
-                </tr> 
-                <tr>
-                    <td>Deskripsi: </td>
-                    <td>
-                        <textarea name="description" placeholder="Deskripsi" class="form-control"></textarea>
-                    </td>
-                </tr>
-                <tr>
-                    <td>Nama referensi (untuk fungsi add/delete): </td>
-                    <td><input type="text" name="ref_name" placeholder="nama_referensi" class="form-control"></td>
-                </tr>
-                <tr>
-                    <td>File gambar transportasi (ukuran 4x3): </td>
-                    <td><input type="file" name="image"></td>
-                </tr> 
-            </table>
-            <br>
-            <button class="btn btn-primary" type="submit" style="align-self: center; width: 100%;">Tambah</button>
+    <div class="card border-dark" style="margin:auto; width:60%; padding:10px">
+        <div class="card-body">
+            <h4 class="card-title" style="font-size: 25px; font-weight: bold; padding-bottom: 5px">Tambah transportasi baru disini:</h4>
+            <form method="POST" id="add-transportation" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <br>
+                <button class="btn" type="submit" style="align-self: center; width: 100%; padding-bottom: 5px; background-color: #721ad6; color: white">Tambah</button>
+            </form>
         </div>
-    </form>
-
+    </div>
+    <br>
 </div>
 
 <script>
     $(document).ready(function(){
         $('#add-transportation').submit(function() {
             // create an AJAX call
+            var formData = new FormData(this);
             $.ajax({
-                data: $(this).serialize(), // get the form data
+                data: formData,
                 method: 'POST', // GET or POST
                 url: "{% url 'Admin:add_transport' %}",
                 // on success
                 success: function(response) {
                     alert(response);
-                }
+                },
+                error: function(response) {
+                    alert("Penambahan transportasi gagal!")
+                },
+                cache: false,
+                contentType: false,
+                processData: false
             });
             return false;
         });
