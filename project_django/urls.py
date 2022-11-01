@@ -22,4 +22,5 @@ urlpatterns = [
     path('daftar-usaha/', include('pendaftaran_izin_usaha.urls')),
     path('Admin/', include('Admin.urls')),
     path('berita-isu-terkini/', include('berita_isu_terkini.urls')),
+    path('info-kebutuhan-pokok/', include('info_kebutuhan_pokok.urls')),
 ]

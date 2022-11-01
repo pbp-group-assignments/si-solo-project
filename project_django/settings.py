@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'pendaftaran_izin_usaha',
     'Admin',
     'berita_isu_terkini',
+    'info_kebutuhan_pokok',
 ]
 
 MIDDLEWARE = [

@@ -1,7 +1,7 @@
 from django.urls import path
 from Admin.views import show_admin_page, list_pendaftaran_json, list_pendaftaran_diajukan, get_detail_pendaftaran, set_diproses_pendaftaran
 from Admin.views import list_pendaftaran_diproses, set_ditolak_pendaftaran, list_pendaftaran_ditolak, list_pendaftaran_diterima, set_diterima_pendaftaran
-from Admin.views import add_berita
+from Admin.views import add_berita, add_kebutuhan
 
 app_name = 'Admin'
 
@@ -17,4 +17,5 @@ urlpatterns = [
     path('set-ditolak/<permohonanId>', set_ditolak_pendaftaran, name='set_ditolak_pendaftaran'),
     path('set-diterima/<permohonanId>', set_diterima_pendaftaran, name='set_diterima_pendaftaran'),
     path('add-berita/', add_berita, name='add_berita'),
+    path('add-kebutuhan/', add_kebutuhan, name='add_kebutuhan'),
 ]

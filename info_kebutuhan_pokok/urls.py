@@ -1,8 +1,10 @@
 from django.urls import path
-from info_kebutuhan_pokok.views import show_kebutuhanpokok
+from info_kebutuhan_pokok.views import show_kebutuhan, show_kebutuhan_json
 
-app_name = 'kebutuhan_pokok'
+app_name = 'info_kebutuhan_pokok'
 
 urlpatterns = [
-    path('', show_kebutuhanpokok, name= 'show_kebutuhanpokok'),
+    path('', show_kebutuhan, name='show_kebutuhan'),
+    path('json/', show_kebutuhan_json, name='show_kebutuhan_json'),
+    
 ]
