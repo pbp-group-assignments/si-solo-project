@@ -5,41 +5,52 @@
 {% endblock meta %}
 
 {% block content %}  
-
-  <h1 class="text-zinc-800" style="font-weight:bold ; font-size:50px; text-align: center; margin-bottom: 20px;">Formulir Registrasi</h1>  
-
-<div class="items-center md:flex flex justify-center">
-    <form class="bg-zinc-800 shadow-md rounded px-8 pt-6 pb-8 mb-4" method="POST">
-        {% csrf_token %}
-        <div class="mb-4">
-            <label class="block text-white text-sm font-bold mb-2" for="username">
-                Username
-        </label>
-        <label class="bg-white shadow appearance-none border rounded w-full py-2 px-3 text-zinc-800 leading-tight focus:outline-none focus:shadow-outline">{{form.username}}</label>
+<div class="register">
+    
+    <div class="items-left" style="margin:5px;">
+        <a class="btn btn-danger btn-sm btn-outline-secondary" style="margin:5px; color: white;" href="/"><</a>
     </div>
-    <div class="mb-6">
-        <label class="block text-white text-sm font-bold mb-2" for="password">
-            Password
-        </label>
-        <label class="bg-white shadow appearance-none border rounded w-full py-2 px-3 text-zinc-800 leading-tight focus:outline-none focus:shadow-outline">{{form.password1}}</label>
+    
+      <h1 class="text-zinc-800" style="font-weight:bold ; font-size:50px; text-align: center; margin-bottom: 20px;">Formulir Registrasi</h1>  
+    
+    <div class="items-center md:flex flex justify-center">
+        <form class="bg-zinc-800 shadow-md rounded px-8 pt-6 pb-8 mb-4" method="POST">
+            {% csrf_token %}
+            <div class="mb-4">
+                <label class="block text-white text-sm font-bold mb-2" for="username">
+                    Username
+            </label>
+            <label class="bg-white shadow appearance-none border rounded w-full py-2 px-3 text-zinc-800 leading-tight focus:outline-none focus:shadow-outline">{{form.username}}</label>
+        </div>
+        <div class="mb-6">
+            <label class="block text-white text-sm font-bold mb-2" for="password">
+                Password
+            </label>
+            <label class="bg-white shadow appearance-none border rounded w-full py-2 px-3 text-zinc-800 leading-tight focus:outline-none focus:shadow-outline">{{form.password1}}</label>
+        </div>
+        <div class="mb-6">
+            <label class="block text-white text-sm font-bold mb-2" for="password">
+                Password confirmation
+            </label>
+            <label class="bg-white shadow appearance-none border rounded w-full py-2 px-3 text-zinc-800 leading-tight focus:outline-none focus:shadow-outline">{{form.password2}}</label>
+        </div>
+          <div class="flex items-center justify-center">
+            <input class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit" name="submit" value="Daftar">
+        </div>
+        {% if messages %}
+            <ul style="margin-top: 5px;" class="text-white">
+                {% for message in messages %}
+                    <li align="center">{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    </form>
     </div>
-    <div class="mb-6">
-        <label class="block text-white text-sm font-bold mb-2" for="password">
-            Password confirmation
-        </label>
-        <label class="bg-white shadow appearance-none border rounded w-full py-2 px-3 text-zinc-800 leading-tight focus:outline-none focus:shadow-outline">{{form.password2}}</label>
-    </div>
-      <div class="flex items-center justify-center">
-        <input class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit" name="submit" value="Daftar">
-    </div>
-    {% if messages %}
-        <ul style="margin-top: 5px;" class="text-white">
-            {% for message in messages %}
-                <li align="center">{{ message }}</li>
-            {% endfor %}
-        </ul>
-    {% endif %}
-</form>
 </div>
+
+<div class="image" style="background-color: rgba(215, 215, 215, 1); display: flex; flex-direction: column; align-items: center; justify-content: center;">
+    {% load static %} <img src="{% static 'images/landing/tugu_solo.png' %}" alt="" class="card-img login-img" style="max-width: 200px; max-height: 200px">
+</div>
+
 
 {% endblock content %}

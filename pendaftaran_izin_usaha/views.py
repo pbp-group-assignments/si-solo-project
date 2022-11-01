@@ -80,20 +80,32 @@ def daftar_pelaku_usaha(request):
                 pelakuUsaha = PelakuUsaha(user = user, namaPemilik = user.namaLengkap, nomorTeleponPemilik = user.nomorTeleponPemilik, alamatPemilik = user.alamatPemilik, nik = nik)
                 pelakuUsaha.save()
 
-                render(request, 'proses_pendaftaran_pelaku_usaha.html')
+                return redirect('pendaftaran_izin_usaha:proses_daftar_pelaku_usaha')
             
         context= {'form':form}
         return render(request, 'daftar_pelaku_usaha.html', context)
     else:
         pelakuUsaha = PelakuUsaha.objects.get(user = user)
         if pelakuUsaha.status == 'Diproses':
-            return render(request, 'proses_pendaftaran_pelaku_usaha.html')
+            return redirect('pendaftaran_izin_usaha:proses_daftar_pelaku_usaha')
         elif pelakuUsaha.status == 'Ditolak':
-            temp.delete()
             context={'pesan':pelakuUsaha.pesan}
             return render(request, 'tolak_pendaftaran_pelaku_usaha.html', context)
         else:
             return redirect('pendaftaran_izin_usaha:show_pendaftaran')
+
+@login_required(login_url='/login/')
+@allowed_users(allowed_roles=['Pengguna'])
+def daftar_ulang(request):
+    user = User.objects.get(user = request.user)
+    temp = PelakuUsaha.objects.filter(user = user)
+    temp.delete()
+    return redirect('pendaftaran_izin_usaha:daftar_usaha_baru')
+
+@login_required(login_url='/login/')
+@allowed_users(allowed_roles=['Pengguna'])
+def proses_daftar_pelaku_usaha(request):
+    return render(request, 'proses_pendaftaran_pelaku_usaha.html')
 
 @login_required(login_url='/login/')
 @allowed_users(allowed_roles=['Pengguna'])

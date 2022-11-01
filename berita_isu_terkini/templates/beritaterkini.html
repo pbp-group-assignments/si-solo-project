@@ -1,0 +1,117 @@
+{% extends 'base.html' %}
+
+{% block meta %}
+<!-- <!doctype html>
+<html lang="en"> -->
+<title>Berita Isu Terkini</title>
+{% endblock meta %}
+
+{% block content %}
+<!-- Bootstrap CSS -->
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+  <link rel="stylesheet" href="style.css" type="text/css">
+
+<body>
+
+    <div class="container">
+        <div class="row mb-3 mt-3">
+            <div class="col">
+                <h1>Berita Terkini</h1>
+            </div>
+        </div>
+    </div>
+
+
+    
+    <div class="container">
+        <div class="row g-3">
+            <div class="col-md-4">
+                <div class="card mb-3">
+                    <img src="https://imgx.gridoto.com/crop/0x0:0x0/700x465/photo/2022/10/24/ffuhgglamaay8lbjpeg-202210230735-20221024101927.jpeg"class="card-img-top" >
+                    <div class="card-body">
+                        <h5 class="card-title">Tarif Parkir Motor di CFD Solo Rp 3 Ribu Diprotes Warga, Dishub Panggil Pengelola dan Jukir</h5>
+                        <p class="card-text">Kepala Bidang Angkutan dan Perparkiran Dishub Surakarta, Yulianto Nugroho menegaskan, tarif parkir di Jalan Slamet Riyadi yang masuk zona C sebesar Rp 2.000 untuk sepeda motor.</p>
+                        <h6 class="card-title">2022-10-27</h6>
+                        <a href="#" class="btn btn-primary">Baca Selengkapnya...</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-4">
+                <div class="card mb-3">
+                    <img src="https://images.solopos.com/2022/10/dian-warih3.jpg"class="card-img-top" >
+                    <div class="card-body">
+                        <h5 class="card-title">Diah Warih: Saatnya Anak Muda Jadi Pemimpin Global dengan Kuasai Digital</h5>
+                        <p class="card-text">Pengusaha Solo yang giat menginisiasi kegiatan bagi pemuda mengajak anak-anak muda menjadi pemimpin global dengan menguasai teknologi digital.</p>
+                        <h6 class="card-title">2022-10-28</h6>
+                        <a href="#" class="btn btn-primary">Baca Selengkapnya...</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-4">
+                <div class="card mb-3">
+                    <img src="https://images.solopos.com/2022/10/dispersip-perpustakan.jpg"class="card-img-top">
+                    <div class="card-body">
+                        <h5 class="card-title">Gandeng Nyalanesia, Dispersip Solo Perkuat Transformasi Perpustakaan Inklusif</h5>
+                        <p class="card-text">Dispersip Kota Solo menggandeng Nyalanesia untuk memperkuat transformasi perpustakaan berbasis inklusi sosial, yakni sebagai ruang belajar sekaligus ruang berlatih keterampilan.</p>
+                        <h6 class="card-title">2022-10-28</h6>
+                        <a href="#" class="btn btn-primary">Baca Selengkapnya...</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card mb-3">
+                    <img src="https://images.solopos.com/2022/10/radya-pustaka.jpg"class="card-img-top">
+                    <div class="card-body">
+                        <h5 class="card-title">Ingin Kenal Tokoh Wayang Beber, Puluhan Pelajar SMA Solo Datangi Radya Pustak</h5>
+                        <p class="card-text">Puluhan pelajar mengikuti kegiatan menggambar tokoh wayang beber seperti Joko Kembang Kuning, Panji Asmoro Bangun, dan Dewi Sekartaji di Museum Radya Pustaka Solo.</p>
+                        <h6 class="card-title">2022-10-28</h6>
+                        <a href="#" class="btn btn-primary">Baca Selengkapnya...</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="containerSolo">
+            </div>
+        </div>
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+
+</body>
+<script>
+    function mintaData() {
+        $.ajax({
+            type: 'GET',
+            url: "/add-berita",
+            data: {
+
+            },
+            datatype: "json",
+            success: nampilinData
+        })
+    }
+    function nampilinData(data) {
+        var dynamic = document.querySelector('.containerSolo');
+        var content = ''
+        for (var i = 0; i < data.length; i++) {
+            var data1 = data[i]
+            var news_title = data1["news_title"]
+            var news_date = data1["news_date"]
+            var news_highlight = data1["news_highlight"]
+            var news_image = data1["image_url"]
+            content += '<div class="col-12 col-md-6 col-lg-4"><div class="card"><img src="' + news_image + '"class="card-img-top" alt="' +news_title+ '"><div class="card-body"><h5 class="card-title">' + news_title + '</h5><p class="card-text">' + news_highlight + '</p><a href="#" class="btn btn-primary">More detail</a></div></div></div>'
+        }
+        dynamic.innerHTML = content;
+        console.log(data)
+    }
+    $(document).ready(mintaData);
+</script>
+
+</html>
+
+{% endblock content %}

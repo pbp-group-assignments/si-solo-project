@@ -1,15 +1,27 @@
 from django.shortcuts import render
 from django.contrib.auth import authenticate, login, logout
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
+from django.core import serializers
 from django.urls import reverse
 from django.contrib import messages
 from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect
+from sisolo.decorators import admin_only
+
 from sisolo.forms import Register
 from sisolo.models import User
 
 def landing_page(request):
-    return render(request, 'landing_page.html')
+    if request.user.is_authenticated:
+        data = User.objects.filter(user=request.user)
+        context = {
+            'user': request.user,
+            'data': data,
+        }
+        return render(request, 'landing_page.html', context)
+    else:
+        return render(request, 'landing_page.html')
 
 def login_user(request):
     if request.method == 'POST':
@@ -59,8 +71,31 @@ def registerAddition(request):
     context = {'form':form}
     return render(request, "registerAddition.html", context)
 
+@login_required(login_url='/login/')
+def editProfile(request):
+    form = Register()
+
+    if request.method == 'POST':
+        form = Register(request.POST)
+        if form.is_valid():
+            user = User.objects.get(user=request.user)
+            user.namaLengkap = request.POST.get('namaLengkap')
+            user.nomorTeleponPemilik = request.POST.get('nomorTelepon')
+            user.alamatPemilik = request.POST.get('alamat')
+            user.save()
+            return redirect('sisolo:landing_page')
+    
+    context = {'form':form}
+    return render(request, "registerAddition.html", context)
+
+@login_required(login_url='/login/')
+@admin_only
+def all_user_data_json(request):
+    data = User.objects.all()
+    return HttpResponse(serializers.serialize("json", data), content_type="application/json")
+
 def logout_user(request):
     logout(request)
-    response = HttpResponseRedirect(reverse('sisolo:login_user'))
+    response = HttpResponseRedirect(reverse('sisolo:landing_page'))
     return response
     
