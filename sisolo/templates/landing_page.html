@@ -5,20 +5,303 @@
 {% endblock meta %}
 
 {% block content %}
-<h1>Hello, world!</h1>
-<hr>
-<div class="member-list">
-    <h3>Introducing Group B12:</h3>
-    <ul>
-        <li>Clarissa Thea Aryanto</li>
-        <li>Fabian Akmal Arkandion</li>
-        <li>Jasmine Indira Wibowo</li>
-        <li>Mathilda Dellanova</li>
-        <li>Rifqi Farel Muhammad</li>
-        <li>Sakinah Richas</li>
-    </ul>
-</div>
-<br>
-<h3>This is our website for PBP group assignment</h3>
-<p>Si Solo: Work in progress...</p>
+
+<body>
+    <nav class="navbar navbar-custom">
+        <div class="container-fluid">
+            <a href="/" class="navbar-brand">SISOLO</a>
+        
+            <div class="navbar-right">
+                
+                <div class="modal fade" id="nomord" tabindex="-1">
+                    <div class="modal-dialog">
+                        <div class="modal-content" style="color:black;">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Nomor Darurat</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div>
+                                    <a href="tel:+62-271712600">Poltabes Solo: (0271)712600</a>
+                                </div>
+                                <div>
+                                    <a href="tel:+62-119">Ambulans SPGDT: 119</a>
+                                </div>
+                                <div>
+                                    <a href="tel:+62-113">Pemadam Kebakaran: 113</a>
+                                </div>
+                                <div>
+                                    <a href="tel:+62-271722091">Gangguan Listrik PLN: (0271)722091</a>
+                                </div>
+                                <div>
+                                    <a href="tel:+62-271714039">Stasiun Solo Balapan: (0271)714039</a>
+                                </div>
+                                <div>
+                                    <a href="tel:+62-271738900">Terminal Tortonadi: (0271)738900</a>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary text-black" data-bs-dismiss="modal">Close</button>
+                            </div>
+                            
+                        </div>
+                    </div>
+                </div>
+                
+                
+                <a class="btn btn-danger btn-sm btn-outline-secondary" style="margin:5px; color: white;" data-bs-toggle="modal" data-bs-target="#nomord">Nomor Darurat</a>   
+
+
+                {% if user.is_authenticated %}
+                
+                {% for thing in data %}
+
+                <div class="modal fade" id="edit" tabindex="-1">
+                    <div class="modal-dialog">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 class="modal-title">Edit Profil</h5>
+                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                          <form>
+                            {% csrf_token %}
+                            
+                            <div class="mb-3">
+                                <label for="namaLengkap" class="col-form-label">Nama Lengkap:</label>
+                                <input type="text" name="namaLengkap" id="namaLengkap"  class="form-control" value="{{thing.namaLengkap}}" required="">
+                            </div>
+                            <div class="mb-3">
+                                <label for="nomorTeleponPemilik" class="col-form-label">Nomor Telpon:</label>
+                                <input type="text" name="nomorTeleponPemilik" id="nomorTeleponPemilik" class="form-control" value="{{thing.nomorTeleponPemilik}}" required=""></textarea>
+                            </div>
+                            <div class="mb-3">
+                                <label for="alamatPemilik" class="col-form-label">Alamat:</label>
+                                <input type="text" name="alamatPemilik" id="alamatPemilik" class="form-control" value="{{thing.alamatPemilik}}" required=""></textarea>
+                              </div>
+                    
+                            <div class="d-grid mt-4">
+                                <input class="btnUpdate btn btn-outline-primary" type="submit" value="Save" data-bs-dismiss="modal"/>
+                            </div>
+                        </form>
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-secondary" style="color:black;" data-bs-dismiss="modal">Close</button>
+                        </div>
+                      </div>
+                    </div>
+                </div>
+
+                <a class="btn btn-sm btn-outline-secondary" style="margin:5px; color: black;" data-bs-toggle="modal" data-bs-target="#edit">Edit Profil</a>   
+
+                {% endfor %}
+                
+                
+                <a class="btn btn-sm btn-outline-secondary" style="margin:5px; color: black;" href="{% url 'sisolo:logout_user' %}" >Logout</a>
+
+                {% else %}
+                <a class="btn btn-sm btn-outline-secondary" style="margin:5px; color: black;" href="/login">Login</a>
+                <a class="btn btn-sm btn-outline-secondary" style="margin:5px; color: black;" href="/register">Sign up</a>
+                
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+
+    <div class="row featurette">
+        <div class="welcome p-4 p-md-5 text-white bg-dark">
+            <div class="row mb-2">
+                <div class="px-0" style="margin: 5px;">
+                    {% if user.is_authenticated %}
+                    {% for thing in data %}
+                    <h1 class="display-4 font-italic">Welcome to SISolo, {{ user }}!</h1>
+                    {% endfor %}
+                    {% else %}
+                    <h1 class="display-4 font-italic">Welcome to SISolo!</h1>
+                    {% endif %}
+                    <p class="lead my-3">Things you need for all your Solo adventures</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="marg" style="margin: 50px">
+        <div class="row featurette" style="margin: 50px">
+            <div class="col-md-7">
+                <div style="margin-top: 50px">
+                    <a class="featurette-heading" href="/layanan-pengaduan/">Layanan Pengaduan</a>
+                </div>
+                {% if user.is_authenticated %}
+                <p class="lead">Kirimkan laporan mengenai layanan di Kota Solo.</p>
+                {% else %}
+                <p class="lead">Kirimkan laporan mengenai layanan di Kota Solo. (Dapat diakses setelah login)</p>
+                {% endif %}
+            </div>
+            <div class="col-md-5">
+                <div class="image">
+                    {% load static %} <img src="{% static 'images/landing/report.png' %}" alt="" class="card-img" style="max-width: 200px; max-height: 200px">
+                </div>      
+            </div>
+        </div>
+
+        <hr class="featurette-divider">
+
+        <div class="row featurette" style="margin: 50px">
+            <div class="col-md-7 order-md-2">
+                <div style="margin-top: 50px">
+                    <a class="featurette-heading" href="" style="margin-top: 50px">Forum Pemberian Saran</a>
+                </div>
+                {% if user.is_authenticated %}
+                <p class="lead">Berikanlah saran untuk memajukan dan membangun Kota Solo!</p>
+                {% else %}
+                <p class="lead">Berikanlah saran untuk memajukan dan membangun Kota Solo! (Dapat diakses setelah login)</p>
+                {% endif %}
+            </div>
+            <div class="col-md-5">
+                <div class="image">
+                    {% load static %} <img src="{% static 'images/landing/suggestion.png' %}" alt="" class="card-img" style="max-width: 200px; max-height: 200px">
+                </div>        
+            </div>
+        </div>
+
+        <hr class="featurette-divider">
+
+        <div class="row featurette" style="margin: 50px"> 
+            <div class="col-md-7">
+                <div style="margin-top: 50px">
+                    <a class="featurette-heading" href="" style="margin-top: 50px">Sarana Kesehatan<span class="text-muted"></a>
+                </div>
+                <p class="lead">Informasi mengenai sarana kesehatan di Solo.</p>
+            </div>
+            <div class="col-md-5 order-md-1">
+                <div class="image">
+                    {% load static %} <img src="{% static 'images/landing/health.png' %}" alt="" class="card-img" style="max-width: 200px; max-height: 200px">
+                </div>        
+            </div>
+        </div>
+
+        <hr class="featurette-divider">
+
+        <div class="row featurette" style="margin: 50px">
+            <div class="col-md-7 order-md-2">
+                <div style="margin-top: 50px">
+                    <a class="featurette-heading" href="{% url 'info_transportasi_umum:show_transport_info' %}" style="margin-top: 50px">Transportasi Umum</a>
+                </div>
+                <p class="lead">Informasi mengenai transportasi umum di Solo.</p>
+            </div>
+            <div class="col-md-5">
+                <div class="image">
+                    {% load static %} <img src="{% static 'images/landing/transport.png' %}" alt="" class="card-img" style="max-width: 200px; max-height: 200px">
+                </div>   
+            </div>
+        </div>
+
+        <hr class="featurette-divider">
+
+        <div class="row featurette" style="margin: 50px"> 
+            <div class="col-md-7">
+                <div style="margin-top: 50px">
+                    <a class="featurette-heading" href="" style="margin-top: 50px">Kuliner<span class="text-muted"></a>
+                </div>
+                <p class="lead">Informasi mengenai kuliner di Solo.</p>
+            </div>
+            <div class="col-md-5 order-md-1">
+                <div class="image">
+                    {% load static %} <img src="{% static 'images/landing/food.png' %}" alt="" class="card-img" style="max-width: 200px; max-height: 200px">
+                </div>  
+            </div>
+        </div>
+
+        <hr class="featurette-divider">
+
+        <div class="row featurette" style="margin: 50px">
+            <div class="col-md-7 order-md-2">
+                <div style="margin-top: 50px">
+                    <a class="featurette-heading" href="" style="margin-top: 50px">Tempat Wisata</a>
+                </div>
+                <p class="lead">Informasi mengenai tempat wisata di Solo.</p>
+            </div>
+            <div class="col-md-5">
+                <div class="image">
+                    {% load static %} <img src="{% static 'images/landing/wisata.png' %}" alt="" class="card-img" style="max-width: 200px; max-height: 200px">
+                </div>  
+            </div>
+        </div>
+
+        <hr class="featurette-divider">
+
+        <div class="row featurette" style="margin: 50px"> 
+            <div class="col-md-7">
+                <div style="margin-top: 50px">
+                    <a class="featurette-heading" href="" style="margin-top: 50px">Jual Kebutuhan Pokok<span class="text-muted"></a>
+                </div>
+                <p class="lead">Ayo beli kebutuhan pokok dari para penjual lokal!</p>
+            </div>
+            <div class="col-md-5 order-md-1">
+                <div class="image">
+                    {% load static %} <img src="{% static 'images/landing/produces.png' %}" alt="" class="card-img" style="max-width: 200px; max-height: 200px">
+                </div>  
+            </div>
+        </div>
+
+        <hr class="featurette-divider">
+
+        <div class="row featurette" style="margin: 50px">
+            <div class="col-md-7 order-md-2">
+                <div style="margin-top: 50px">
+                    <a class="featurette-heading" href="" style="margin-top: 50px">Berita/Isu Terkini</a>
+                </div>
+                <p class="lead">Berita terbaru di Solo</p>
+            </div>
+            <div class="col-md-5">
+                <div class="image">
+                    {% load static %} <img src="{% static 'images/landing/news.png' %}" alt="" class="card-img" style="max-width: 200px; max-height: 200px">
+                </div>
+            </div>
+        </div>
+
+        <hr class="featurette-divider">
+
+        <div class="row featurette" style="margin: 50px"> 
+            <div class="col-md-7">
+                <div style="margin-top: 50px">
+                    <a class="featurette-heading" href="{% url 'pendaftaran_izin_usaha:show_pendaftaran' %}" style="margin-top: 50px">Izin Usaha<span class="text-muted"></a>
+                </div>
+                {% if user.is_authenticated %}
+                <p class="lead">Daftarkan dan mulai manage usahamu!</p>
+                {% else %}
+                <p class="lead">Daftarkan dan mulai manage usahamu! (Dapat diakses setelah login)</p>
+                {% endif %}
+            </div>
+            <div class="col-md-5 order-md-1">
+                <div class="image">
+                    {% load static %} <img src="{% static 'images/landing/shop.png' %}" alt="" class="card-img" style="max-width: 200px; max-height: 200px">
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+  
+<script>
+    $(document).on('submit', '#edit', function(e) {
+      e.preventDefault();
+      $.ajax({
+        type:'POST',
+        url:'/update/',
+        data:{
+            namaLengkap:$('#namaLengkap').val(),
+            nomorTelepon:$('#nomorTeleponPemilik').val(),
+            alamat:$('#alamatPemilik').val(),
+            csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val()
+        },
+        success: function() {
+            alert("Profil berhasil di update!");
+        }
+
+      })
+      
+    });
+
+</script>
 {% endblock content %}

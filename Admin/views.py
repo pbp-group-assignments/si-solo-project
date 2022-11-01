@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from info_tempat_wisata.forms import TempatWisataForms
+from info_tempat_wisata.models import TempatWisata
 from sisolo.decorators import admin_only
 from pendaftaran_izin_usaha.models import Usaha, PelakuUsaha
 from django.http import HttpResponse, JsonResponse
@@ -8,7 +9,6 @@ from django.core import serializers
 from sisolo.models import User
 from Admin.forms import AlasanDitolak, NomorIzinUsaha
 from django.views.decorators.csrf import csrf_exempt
-from django.shortcuts import redirect
 
 @login_required(login_url='/login/')
 @admin_only
@@ -30,8 +30,9 @@ def list_pendaftaran_diajukan(request):
 @login_required(login_url='/login/')
 @admin_only
 def list_pendaftaran_diproses(request):
-    form = NomorIzinUsaha()
-    return render(request, "list_pendaftaran_diproses.html", {'form':form})
+    form1 = NomorIzinUsaha()
+    form2 = AlasanDitolak()
+    return render(request, "list_pendaftaran_diproses.html", {'form1':form1, 'form2':form2})
 
 @login_required(login_url='/login/')
 @admin_only
@@ -65,9 +66,10 @@ def get_detail_pendaftaran(request, permohonanId):
         return JsonResponse(response)
 
 @login_required(login_url='/login/')
+@csrf_exempt
 @admin_only
 def set_diproses_pendaftaran(request, permohonanId):
-    if request.method == 'GET':
+    if request.method == 'POST':
         usaha = Usaha.objects.get(pk = permohonanId)
         usaha.statusPendaftaran = 'Diproses'
         usaha.save()
@@ -75,14 +77,19 @@ def set_diproses_pendaftaran(request, permohonanId):
         return HttpResponse(status=202)
 
 @login_required(login_url='/login/')
+@csrf_exempt
 @admin_only
 def set_ditolak_pendaftaran(request, permohonanId):
-    if request.method == 'GET':
-        usaha = Usaha.objects.get(pk = permohonanId)
-        usaha.statusPendaftaran = 'Ditolak'
-        usaha.save()
+    if request.method == 'POST':
+        form = AlasanDitolak(request.POST)
+        if form.is_valid():
+            usaha = Usaha.objects.get(pk = permohonanId)
+            alasan = form.cleaned_data['alasanDitolak']
+            usaha.statusPendaftaran = 'Ditolak'
+            usaha.alasanDitolak = alasan
+            usaha.save()
 
-        return HttpResponse(status=202)
+            return HttpResponse(status=202)
 
 @login_required(login_url='/login/')
 @csrf_exempt
@@ -128,9 +135,10 @@ def list_pendaftaran_pelaku_usaha_ditolak(request):
     return render(request, "list_pendaftaran_pelaku_usaha_ditolak.html", {})
 
 @login_required(login_url='/login/')
+@csrf_exempt
 @admin_only
 def set_diterima_pelaku_usaha(request, pkPemohon):
-    if request.method == 'GET':
+    if request.method == 'POST':
         pelakuUsaha = PelakuUsaha.objects.get(pk = pkPemohon)
         pelakuUsaha.status = 'Diterima'
         pelakuUsaha.save()
@@ -156,20 +164,30 @@ def set_ditolak_pelaku_usaha(request, pkPemohon):
 
             return HttpResponse(status=202)
 
-@login_required(login_url='/login/')
+@login_required(login_url='/sisolo/login/')
 @admin_only
-def tambah_wisata(request):
-    #user = request.user
-    form = TempatWisataForms(request.POST)
+def tempat_wisata_baru(request):
     if request.method == 'POST':
-        form = TempatWisataForms(request.POST, request.FILES)
-        if form.is_valid():
-            task = form.save(commit=False)
-            task.user = request.user
-            task.save()
-        #Task.objects.create(user_id=user.id, title=title, description=description, date=date)
-            return redirect ('info_tempat_wisata:show_tempatwisata')
-        else:
-            form = TempatWisataForms(initial={'user': request.user})
-    context = {'form':form}
+        wisata_title = request.POST.get['wisata_title']
+        wisata_description = request.POST.get['wisata_description']
+        wisata_highlight = request.POST.get['wisata_highlight']
+        wisata_image = request.POST.get['wisata_image']
+        tempatwisata = TempatWisata(wisata_title=wisata_title, wisata_description=wisata_description, wisata_image=wisata_image, wisata_highlight=wisata_highlight)
+        tempatwisata.save()
+        return HttpResponse("Tempat wisata: " + wisata_title + " berhasil ditambahkan!")
+
+    context = {}
     return render(request, 'add_tempat_wisata.html', context)
+
+# @login_required(login_url='/sisolo/login/')
+# @admin_only
+# def delete_wisata(request, id):
+#      if request.method == "POST":
+#         ref_name = request.POST.get('ref_name')
+#         tempatwisata = TempatWisata.objects.get(ref_name=ref_name)
+#         tempatwisata.delete()
+
+#         return HttpResponse("Transportasi: " + tempatwisata.name + " berhasil dihapus!")
+    
+#     context = {}
+#     return render(request, 'delete_wisata.html', context)
