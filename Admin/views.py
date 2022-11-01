@@ -10,6 +10,7 @@ from django.core import serializers
 from sisolo.models import User
 from Admin.forms import AlasanDitolak, NomorIzinUsaha
 from django.views.decorators.csrf import csrf_exempt
+from info_transportasi_umum.models import Transportation, Route, StopPoint
 
 @login_required(login_url='/login/')
 @admin_only
@@ -207,3 +208,66 @@ def tempat_kuliner_baru(request):
 
     context = {}
     return render(request, 'add_tempat_kuliner.html', context)
+def add_transport(request):
+    if request.method == "POST":
+        name = request.POST.get('name')
+        description = request.POST.get('description')
+        image = request.POST.get('image')
+        ref_name = request.POST.get('ref_name')
+        transportation = Transportation(name=name, description=description, image=image, ref_name=ref_name, verbose_name=name)
+        transportation.save()
+
+        return HttpResponse("Transportasi: " + name + " berhasil ditambahkan!")
+    
+    context = {}
+    return render(request, 'add_transportation.html', context)
+
+@login_required(login_url='/sisolo/login/')
+@admin_only
+def add_route(request):
+    if request.method == "POST":
+        ref_name_transportation = request.POST.get('ref_name_transportation')
+        transportation = Transportation.objects.get(ref_name=ref_name_transportation)
+        from_to = request.POST.get('from_to')
+        ref_name = request.POST.get('ref_name')
+        route = Route(transportation=transportation, from_to=from_to, ref_name=ref_name, verbose_name=from_to)
+        route.save()
+
+        return HttpResponse("Rute: " + from_to + " berhasil ditambahkan!")
+    
+    context = {}
+    return render(request, 'add_route.html', context)
+
+@login_required(login_url='/sisolo/login/')
+@admin_only
+def add_stop_point(request):
+    if request.method == "POST":
+        ref_name_route = request.POST.get('ref_name_route')
+        route = Route.objects.get(ref_name=ref_name_route)
+        stop_name = request.POST.get('stop_name')
+        stop_location = request.POST.get('stop_location')
+        stop_point = StopPoint(route=route, stop_name=stop_name, stop_location=stop_location, verbose_name=stop_name)
+        stop_point.save()
+
+        return HttpResponse("Titik pemberhentian: " + stop_name + " berhasil ditambahkan!")
+    
+    context = {}
+    return render(request, 'add_stop_point.html', context)
+
+@login_required(login_url='/sisolo/login/')
+@admin_only
+def delete_transport(request):
+    if request.method == "POST":
+        ref_name = request.POST.get('ref_name')
+        transportation = Transportation.objects.get(ref_name=ref_name)
+        transportation.delete()
+
+        return HttpResponse("Transportasi: " + transportation.name + " berhasil dihapus!")
+    
+    context = {}
+    return render(request, 'delete_transportation.html', context)
+
+@login_required(login_url='/login/')
+@admin_only
+def pengaturan_info_transport(request):
+    return render(request, "pengaturan_info_transport.html", {})
