@@ -205,8 +205,6 @@ def add_transport(request):
     context = {'form': TransportationForm()}
     return render(request, 'add_transportation.html', context)
 
-        return HttpResponse(status=202)
-
 @login_required(login_url='/login/')
 @admin_only
 def add_berita(request):
