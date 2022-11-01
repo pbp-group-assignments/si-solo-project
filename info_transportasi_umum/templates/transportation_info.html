@@ -130,79 +130,61 @@
     </nav>
     <br>
 
-    <div id="transportation-list"></div>
+    <div class="px-5" id="transportation-list"></div>
 
 </div>
 
 <script>
+    function clearElement() {
+        $("#transportation-list").empty();
+    }
     function renderTransportation() {
+        var flexContainer = $('<div class="flex-container"></div>')
+        var divCard = $('<div></div>')
         $.get("{% url 'info_transportasi_umum:show_json_transport' %}", function(data) {
-            console.log(data);
-            var htmlToShow = ""
-            htmlToShow += `
-            <div class="flex-container horizontal-scrollable">
-                <div class="row text-center">
-            `
+            console.log(data)
             for (i = 0; i < data.length; i++) {
-                htmlToShow += `
-                    <div class="card" style="width: 18rem;">
-                        <div style="width: 320px; height: 240px">
-                            <img src="${transport.image.url}" class="card-img-top img-fluid" alt="Transportation mode image">
-                        </div>
-                        <div class="card-body">
-                            <h5 class="card-title">${data[i].fields.name}</h5>
-                            <p class="card-text">${data[i].fields.description}</p>
-                            <div class="accordion" id="accordionRouteStayOpen">
-                `
-                $.get(`/info-transportasi-umum/json/route/${data[i].pk}/`, function(data) {
-                    console.log(data);
+                var transportation = data[i]
+                var card = $('<div class="card" style="width: 100%; height: auto"></div>')
+                var cardHeader = $('<div class="card-header" id="image" style="width: 100%; height: auto"></div>')
+                var cardBody = $('<div class="card-body"></div>')
+                var routeContainer = $('<div class="container"></div>')
+                $.get(`json/route/${transportation.pk}/`, function(data) {
+                    console.log(data)
                     for (j = 0; j < data.length; j++) {
-                        htmlToShow += `
-                                <div class="accordion-item">
-                                    <h2 class="accordion-header" id="panelsStayOpen-heading">
-                                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapse" aria-expanded="true" aria-controls="panelsStayOpen-collapse">
-                                        Rute: ${data[j].fields.from_to}
-                                    </button>
-                                    </h2>
-                                    <div id="panelsStayOpen-collapse" class="accordion-collapse collapse show" aria-labelledby="panelsStayOpen-heading">
-                        `
-                        $.get(`/info-transportasi-umum/json/stop-point/${data[j].pk}/`, function(data) {
-                            console.log(data);
-                                htmlToShow += `
-                                            <div class="accordion-body">
-                                                <p>Titik pemberhentian:<br>
-                                `
-                                for (k = 0; k < data.length; k++) {
-                                    htmlToShow += `<a href="${data[k].fields.stop_location}">${data[k].fields.stop_name}</a>`
-                                    if (k + 1 != data.length) {
-                                        htmlToShow += `<a> - </a>`
-                                    }
+                        var route = data[j]
+                        var divRoute = $(`<div>Rute ${from_to}:<br></div>`)
+                        var pStops = $('<p></p>')
+                        $.get(`json/stop-point/${route.pk}/`, function(data) {
+                            console.log(data)
+                            for (k = 0; k < data.length; k++) {
+                                pStops.append(`<a href="${data[k].fields.stop_location}">${data[k].fields.stop_name}</a>`)
+                                if (k + 1 != data.length) {
+                                    pStops.append(`<a> - </a>`)
                                 }
-                                htmlToShow += `
-                                                </p>
-                                            </div>
-                                `
+                            }
                         })
-                        htmlToShow += `
-                                    </div>
-                                </div>
-                        `
+                        divRoute.append(pStops)
+                        routeContainer.append(divRoute)
                     }
                 })
-                htmlToShow += `        
-                            </div>
-                        </div>
-                    </div>
-                    `
-                }
-            htmlToShow += `
-                </div>
-            </div>
-            `
-            document.getElementById("transportation-list").innerHTML = htmlToShow
-        });
+                cardHeader.append(`<img src="/media/${transportation.fields.image}" class="card-img-top img-fluid py-2" alt="Transportation mode image">`)
+                cardBody.append(`
+                    <strong class="card-title" style="padding: 5px; font-size: 22px">${transportation.fields.name}</strong>
+                    <p class="card-text">${transportation.fields.description}</p>
+                `)
+                cardBody.append(routeContainer)
+                card.append(cardHeader)
+                card.append(cardBody)
+                divCard.append(card)
+                divCard.append('<br>')
+            }
+        })
+        flexContainer.append(divCard)
+        $("#transportation-list").append(flexContainer)
     }
     $(document).ready(function(){
+        clearElement();
         renderTransportation();
     });
 </script>

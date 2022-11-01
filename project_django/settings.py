@@ -48,6 +48,8 @@ INSTALLED_APPS = [
     'layanan_pengaduan',
     'saran_pembangunan_kota',
     'Admin',
+    'berita_isu_terkini',
+    'info_kebutuhan_pokok',
     'info_transportasi_umum',
     'info_kuliner',
 ]

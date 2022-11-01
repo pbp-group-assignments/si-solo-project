@@ -2,14 +2,8 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.core import serializers
 from info_transportasi_umum.models import Transportation, Route, StopPoint
-from django.views.generic import DetailView
 
 # Create your views here.
-
-class ImageDisplay(DetailView):
-    model = Transportation
-    template_name = 'transportation_info.html'
-    context_object_name = 'transport'
 
 def show_transport_info(request):
     context = {

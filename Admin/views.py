@@ -1,14 +1,19 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
+from info_kebutuhan_pokok.models import Kebutuhan_Pokok
 from info_tempat_wisata.models import TempatWisata
 from sisolo.decorators import admin_only
 from pendaftaran_izin_usaha.models import Usaha, PelakuUsaha
 from django.http import HttpResponse, JsonResponse
 from django.core import serializers
+from berita_isu_terkini.forms import Create
+from django.shortcuts import redirect
+from berita_isu_terkini.models import Berita
 from sisolo.models import User
 from Admin.forms import AlasanDitolak, NomorIzinUsaha
 from django.views.decorators.csrf import csrf_exempt
 from info_transportasi_umum.models import Transportation, Route, StopPoint
+from info_transportasi_umum.forms import TransportationForm, RouteForm, StopPointForm, DeleteTransportationForm
 
 @login_required(login_url='/login/')
 @admin_only
@@ -190,61 +195,94 @@ def show_list_kuliner(request):  #Untuk nampilin data kuliner
 
 def add_transport(request):
     if request.method == "POST":
-        name = request.POST.get('name')
-        description = request.POST.get('description')
-        image = request.POST.get('image')
-        ref_name = request.POST.get('ref_name')
-        transportation = Transportation(name=name, description=description, image=image, ref_name=ref_name, verbose_name=name)
-        transportation.save()
-
-        return HttpResponse("Transportasi: " + name + " berhasil ditambahkan!")
+        form = TransportationForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return HttpResponse("Transportasi: " + form.cleaned_data['name'] + " berhasil ditambahkan!")
+        else:
+            return HttpResponse("Transportasi tidak berhasil ditambahkan!")
     
-    context = {}
+    context = {'form': TransportationForm()}
     return render(request, 'add_transportation.html', context)
 
+        return HttpResponse(status=202)
+
+@login_required(login_url='/login/')
+@admin_only
+def add_berita(request):
+    if request.method == "POST":
+        news_title = request.POST.get('news_title')
+        news_date = request.POST.get('news_date')
+        news_image = request.POST.get('news_image')
+        news_highlight = request.POST.get('news_highlight')
+        berita = Berita(news_title=news_title, news_date=news_date, news_image=news_image, news_highlight=news_highlight)
+        berita.save()
+
+        return HttpResponse("Berita: " + news_title + " berhasil ditambahkan!")
+    
+    context = {}
+    return render(request, 'add_news.html', context)
+
+@login_required(login_url='/login/')
+@admin_only
+def add_kebutuhan(request):
+    if request.method == "POST":
+        item = request.POST.get('item')
+        harga = request.POST.get('harga')
+        image = request.POST.get('image')
+       
+        kebutuhan = Kebutuhan_Pokok(item=item, harga=harga, image=image)
+        kebutuhan.save()
+
+        return HttpResponse("Item: " + item + " berhasil ditambahkan!")
+    
+    context = {}
+    return render(request, 'add_kebutuhan.html', context)
+
+
+   
 @login_required(login_url='/sisolo/login/')
 @admin_only
 def add_route(request):
     if request.method == "POST":
-        ref_name_transportation = request.POST.get('ref_name_transportation')
-        transportation = Transportation.objects.get(ref_name=ref_name_transportation)
-        from_to = request.POST.get('from_to')
-        ref_name = request.POST.get('ref_name')
-        route = Route(transportation=transportation, from_to=from_to, ref_name=ref_name, verbose_name=from_to)
-        route.save()
-
-        return HttpResponse("Rute: " + from_to + " berhasil ditambahkan!")
+        form = RouteForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return HttpResponse("Rute: " + form.cleaned_data['from_to'] + " berhasil ditambahkan!")
+        else:
+            return HttpResponse("Rute tidak berhasil ditambahkan!")
     
-    context = {}
+    context = {'form': RouteForm()}
     return render(request, 'add_route.html', context)
 
 @login_required(login_url='/sisolo/login/')
 @admin_only
 def add_stop_point(request):
     if request.method == "POST":
-        ref_name_route = request.POST.get('ref_name_route')
-        route = Route.objects.get(ref_name=ref_name_route)
-        stop_name = request.POST.get('stop_name')
-        stop_location = request.POST.get('stop_location')
-        stop_point = StopPoint(route=route, stop_name=stop_name, stop_location=stop_location, verbose_name=stop_name)
-        stop_point.save()
-
-        return HttpResponse("Titik pemberhentian: " + stop_name + " berhasil ditambahkan!")
+        form = StopPointForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return HttpResponse("Titik pemberhentian: " + form.cleaned_data['stop_name'] + " berhasil ditambahkan!")
+        else:
+            return HttpResponse("Titik pemberhentian tidak berhasil ditambahkan!")
     
-    context = {}
+    context = {'form': StopPointForm()}
     return render(request, 'add_stop_point.html', context)
 
 @login_required(login_url='/sisolo/login/')
 @admin_only
 def delete_transport(request):
     if request.method == "POST":
-        ref_name = request.POST.get('ref_name')
-        transportation = Transportation.objects.get(ref_name=ref_name)
-        transportation.delete()
-
-        return HttpResponse("Transportasi: " + transportation.name + " berhasil dihapus!")
+        form = DeleteTransportationForm(request.POST)
+        if form.is_valid():
+            transportation = form.cleaned_data['transportation']
+            transport_name = transportation.name
+            transportation.delete()
+            return HttpResponse("Transportasi: " + transport_name + " berhasil dihapus!")
+        else:
+            return HttpResponse("Transportasi tidak berhasil dihapus!")
     
-    context = {}
+    context = {'form': DeleteTransportationForm()}
     return render(request, 'delete_transportation.html', context)
 
 @login_required(login_url='/login/')

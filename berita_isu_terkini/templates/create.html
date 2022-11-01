@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% block meta %}
+<title>Login</title>
+{% endblock meta %}
+
+{% block content %}
+<div class="p-3 mb-2 bg-info text-white">ToDoList App</div>
+<div class = "login">
+
+    <!-- <h1>Tambah Baru</h1> -->
+
+    <form method="POST" action="">
+        {% csrf_token %}
+        <div class="mx-auto card align-items-center  text-white bg-info mb-3 w-50" >
+            
+            <div class="card-body">
+                <h2 class="card-title"> <center>Tambah Baru</center></h2>
+                <table>
+                    <tr>
+                        
+                        <td>News Title: </td>
+                        <td><input type="text" name="news_title" placeholder="news_title" class="form-control"></td>
+                    </tr>
+                            
+                    <tr>
+                        <td>News Highlight: </td>
+                        <td><textarea name="news_highlight" placeholder="news_highlight" class="form-control"></textarea></td>
+                    </tr>
+                    
+                    <tr>
+                        
+                        <td>News Date: </td>
+                        <td><input type="text" name="news_date" placeholder="news_date" class="form-control"></td>
+                    </tr>
+
+                    <tr>
+                        <td></td>
+                        <td><input class="btn btn-light" type="submit" value="Tambah" ></td>
+                    </tr>
+                </table>
+                    
+
+            </div>
+        </div>
+        
+    </form>
+
+    
+</div>
+
+{% endblock content %}
+
