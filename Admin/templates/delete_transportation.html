@@ -11,22 +11,18 @@
 <br>
 
 <div class="delete-transportation">
-
-    <form method="POST" id="delete-transportation">
-        {% csrf_token %}
-        <div class="card border-dark" style="margin:auto; width:60%; padding:10px">
-            <strong class="card-title" style="font-size: 25px">Hapus transportasi disini:</strong>
-            <table>
-                <tr>
-                    <td>Nama referensi transportasi yang akan dihapus (lihat di django admin): </td>
-                    <td><input type="text" name="ref_name" placeholder="nama_referensi" class="form-control"></td>
-                </tr>
-            </table>
-            <br>
-            <button class="btn btn-danger" type="submit" style="align-self: center; width: 100%;">Hapus</button>
+    <div class="card border-dark" style="margin:auto; width:60%; padding:10px">
+        <div class="card-body">
+            <h4 class="card-title" style="font-size: 25px; font-weight: bold; padding-bottom: 5px">Hapus transportasi disini:</h4>
+            <form method="POST" id="delete-transportation">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <br>
+                <button class="btn btn-danger" type="submit" style="align-self: center; width: 100%; padding-bottom: 5px; background-color: #dc3545">Hapus</button>
+            </form>
         </div>
-    </form>
-
+    </div>
+    <br>
 </div>
 
 <script>
@@ -40,6 +36,9 @@
                 // on success
                 success: function(response) {
                     alert(response);
+                },
+                error: function(response) {
+                    alert("Penghapusan transportasi gagal!")
                 }
             });
             return false;
