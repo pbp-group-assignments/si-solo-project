@@ -8,6 +8,7 @@ from Admin.views import set_ditolak_pelaku_usaha, list_pendaftaran_pelaku_usaha_
 from Admin.views import add_transport, add_route, add_stop_point, delete_transport, pengaturan_info_transport
 from Admin.views import list_pengaduan_diproses, list_pengaduan_verifikasi, list_saran
 from Admin.views import add_transport, add_route, add_stop_point, delete_transport, pengaturan_info_transport, show_list_kuliner, hapus_usaha
+from Admin.views import add_healthcenter, delete_healthcenter, pengaturan_info_sarana_kesehatan
 
 app_name = 'Admin'
 
@@ -35,7 +36,10 @@ urlpatterns = [
     path('add-route/', add_route, name='add_route'),
     path('add-stop-point/', add_stop_point, name='add_stop_point'),
     path('delete-transport/', delete_transport, name='delete_transport'),
+    path('add-healthcenter/', add_healthcenter, name='add_healthcenter'),
+    path('delete-transport/', delete_healthcenter, name='delete_healthcenter'),
     path('pengaturan-info-transport/', pengaturan_info_transport, name='pengaturan_info_transport'),
+    path('pengaturan-info-sarana-kesehatan/', pengaturan_info_sarana_kesehatan, name='pengaturan_info_sarana_kesehatan'),
     path('list-pengaduan-diproses/', list_pengaduan_diproses, name='list_pengaduan_diproses'),
     path('list-pengaduan-verifikasi/', list_pengaduan_verifikasi, name='list_pengaduan_verifikasi'),
     path('list-saran/', list_saran, name='list_saran'),

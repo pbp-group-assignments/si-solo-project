@@ -17,9 +17,6 @@
                       <div class="card-body text-white bg-dark mb-3">
                         <h4 class="card-title text-white bg-dark mb-3" style="text-align: center;">Deskripsi Pengaduan: ${data[i].fields.deskripsi_pengaduan}</h4>
                         <p class="card-text text-white bg-dark mb-4" style="text-align: center;">Tanggal Pengaduan: ${data[i].fields.tanggal_pengaduan}</p>
-                        <div class="container text-white bg-dark" style="text-align: center;">
-                          <a><button class="button-delete bg-cyan-600"style="width: 120px; height: 30px" ><a data-bs-toggle="modal" data-bs-target="#createTaskModal" onclick="selesai(${data[i].pk})">Tandai Selesai</a></button></a>
-                        </div>
                       </div>
                       </div>
                       </div>
@@ -27,17 +24,6 @@
                 }
             }
           })
-
-          selesai = (permohonanId) => {
-            $.ajax({
-                url: `/Admin/pengaduan-selesai/${permohonanId}`,
-                type: 'POST',
-                success: function(response){
-                    $(`#${permohonanId}--pengaduan`).remove()
-                }
-            })
-            $('.modal-body').html('')
-          }
         })
     </script>
 </head>
