@@ -12,8 +12,6 @@ from info_kuliner.models import MenuKuliner
 def show_tempat_kuliner(request):
     return render(request, 'show_tempat_kuliner.html')
 
-@login_required(login_url='/login/')
-@allowed_users(allowed_roles=['Pelaku Usaha', 'Pengguna'])
 def manage_kuliner_json(request):
     data = MenuKuliner.objects.filter(tempatKuliner = request.GET.get('id'))
     return HttpResponse(serializers.serialize("json", data), content_type="application/json")
