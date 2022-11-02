@@ -49,7 +49,7 @@ def add_deskripsi_wisata(request):
 @allowed_users(allowed_roles=['Pelaku Usaha', 'Pengguna'])
 def delete_deskripsi_wisata(request):
     if request.method == 'POST':
-        idMenuString = request.POST.get('PKMenu')
+        idMenuString = request.POST.get('PKWisata')
         if (DaftarWisata.objects.filter(pk = idMenuString).exists()):
             DaftarWisata.objects.filter(pk = idMenuString).delete()
             response = {'status':'YES'}
