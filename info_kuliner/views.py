@@ -9,8 +9,6 @@ from sisolo.decorators import admin_only, allowed_users
 from django.shortcuts import redirect
 from info_kuliner.models import MenuKuliner
 
-@login_required(login_url='/login/')
-@allowed_users(allowed_roles=['Pelaku Usaha', 'Pengguna'])
 def show_tempat_kuliner(request):
     return render(request, 'show_tempat_kuliner.html')
 
