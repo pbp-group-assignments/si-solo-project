@@ -1,14 +1,13 @@
 from django.urls import path
 
-from Admin.views import get_json_berita, show_admin_page, list_pendaftaran_json, list_pendaftaran_diajukan, get_detail_pendaftaran, set_diproses_pendaftaran, tempat_wisata_baru
+from Admin.views import show_admin_page, list_pendaftaran_json, list_pendaftaran_diajukan, get_detail_pendaftaran, set_diproses_pendaftaran
 from Admin.views import list_pendaftaran_diproses, set_ditolak_pendaftaran, list_pendaftaran_ditolak, list_pendaftaran_diterima, set_diterima_pendaftaran
-from Admin.views import add_berita, add_kebutuhan, show_list_kebutuhan, show_list_berita
-from Admin.views import add_berita, add_news, add_beritaterkini, get_json_berita
+from Admin.views import add_kebutuhan, show_list_kebutuhan
 
 from Admin.views import show_admin_page, list_pendaftaran_json, list_pendaftaran_diajukan, get_detail_pendaftaran, set_diproses_pendaftaran, show_list_wisata 
 from Admin.views import list_pendaftaran_diproses, set_ditolak_pendaftaran, list_pendaftaran_ditolak, list_pendaftaran_diterima, set_diterima_pendaftaran
-from Admin.views import add_berita, add_kebutuhan
-from Admin.views import add_berita, set_pengaduan_selesai
+from Admin.views import add_kebutuhan
+from Admin.views import set_pengaduan_selesai
 
 from Admin.views import  pendaftaran_pelaku_usaha_json, list_pendaftaran_pelaku_usaha_diproses, set_diterima_pelaku_usaha, list_pendaftaran_pelaku_usaha_diterima
 from Admin.views import set_ditolak_pelaku_usaha, list_pendaftaran_pelaku_usaha_ditolak

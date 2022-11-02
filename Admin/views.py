@@ -2,20 +2,13 @@ from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 
 from info_kebutuhan_pokok.models import KebutuhanPokok
-from info_tempat_wisata.models import TempatWisata
-
-from info_kebutuhan_pokok.models import Kebutuhan_Pokok
 
 from sisolo.decorators import admin_only
 from pendaftaran_izin_usaha.models import Usaha, PelakuUsaha
 from django.http import HttpResponse, JsonResponse
 from django.core import serializers
-
-from berita_isu_terkini.forms import BeritaForms
 import datetime
 from django.shortcuts import redirect
-
-from berita_isu_terkini.models import Berita
 from sisolo.models import User
 from Admin.forms import AlasanDitolak, NomorIzinUsaha
 from django.views.decorators.csrf import csrf_exempt
