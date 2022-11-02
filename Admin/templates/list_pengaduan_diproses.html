@@ -120,10 +120,8 @@
     <nav aria-label="Page navigation example">
 
         <ul class="pagination justify-content-center mt-3">
-          <li class="page-item"><a class="page-link" href="{% url 'Admin:list_pendaftaran_diajukan' %}">Diajukan</a></li>
-          <li class="page-item"><a class="page-link" href="{% url 'Admin:list_pendaftaran_diproses' %}">Diproses</a></li>
-          <li class="page-item"><a class="page-link" href="{% url 'Admin:list_pendaftaran_diterima' %}">Diterima</a></li>
-          <li class="page-item"><a class="page-link" href="{% url 'Admin:list_pendaftaran_ditolak' %}">Ditolak</a></li>
+            <li class="page-item"><a class="page-link" href="{% url 'Admin:list_pengaduan_verifikasi' %}">Verifikasi</a></li>
+            <li class="page-item"><a class="page-link" href="{% url 'Admin:list_pengaduan_diproses' %}">Diproses</a></li>
         </ul>
       </nav>
 
@@ -131,12 +129,12 @@
         <div class="modal-dialog" role="document">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title text-black" id="createTaskModalLabel1">Detail Pendaftaran</h5>
+              <h5 class="modal-title text-black" id="createTaskModalLabel1">Detail Pengaduan</h5>
             </div>
             <div class="modal-body">
             </div>
             <div class="modal-footer">
-                <button id="proses" type="button" class="btn btn-primary text-black data-bs-dismiss="modal">Proses</button>
+                <button id="proses" type="button" class="btn btn-primary text-black data-bs-dismiss="modal>Batalkan Proses</button>
             </div>
           </div>
         </div>
