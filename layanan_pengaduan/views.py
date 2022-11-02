@@ -33,7 +33,12 @@ def show_pengaduan(request):
 
 @login_required(login_url='/login/')
 def pengaduan_json(request):
-    daftar_pengaduan = Pengaduan.objects.filter(user = request.user)
+    daftar_pengaduan = Pengaduan.objects.all()
+    return HttpResponse(serializers.serialize("json", daftar_pengaduan), content_type="application/json")
+
+@login_required(login_url='/login/')
+def pengaduan_json_by_id(request, id):
+    daftar_pengaduan = Pengaduan.objects.filter(pk=id)
     return HttpResponse(serializers.serialize("json", daftar_pengaduan), content_type="application/json")
 
 @login_required(login_url='/login/')
