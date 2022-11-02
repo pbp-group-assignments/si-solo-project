@@ -230,29 +230,29 @@ def add_news(request):
 
         return HttpResponse(request, 'add_news.html', response)
 
-# def add_beritaterkini(request):
+def add_beritaterkini(request):
    
-#     form = BeritaForms(request.POST)
-#     response_data = {}
+    form = BeritaForms(request.POST)
+    response_data = {}
     
-#     # Handle jika form valid dan method request adl. POST
-#     if request.method == 'POST' and form.is_valid():
-#         # Ambil title & description dari form, buat task baru, lalu redirect
-#         # ke halaman utama
-#         judul = form.cleaned_data['judul']
-#         highlight = form.cleaned_data['highlight']
-#         berita_baru = Berita.objects.create(judul=judul, highlight=highlight,
-#                                             user=request.user, date=datetime.date.today())
-#         response_data['judul'] = judul
-#         response_data['highlight'] = highlight
-#         response_data['tanggal'] = datetime.date.today()
-#         return JsonResponse(response_data)
+    # Handle jika form valid dan method request adl. POST
+    if request.method == 'POST' and form.is_valid():
+        # Ambil title & description dari form, buat task baru, lalu redirect
+        # ke halaman utama
+        judul = form.cleaned_data['judul']
+        highlight = form.cleaned_data['highlight']
+        berita_baru = Berita.objects.create(judul=judul, highlight=highlight,
+                                            user=request.user, date=datetime.date.today())
+        response_data['judul'] = judul
+        response_data['highlight'] = highlight
+        response_data['tanggal'] = datetime.date.today()
+        return JsonResponse(response_data)
 
-#     # Render halaman add task
-#     context = {
-#         'form': form,
-#     }
-#     return render(request, 'addBerita.html', context)
+    # Render halaman add task
+    context = {
+        'form': form,
+    }
+    return render(request, 'addBerita.html', context)
 
 # def show_news(request):
 #     if request.user.is_authenticated:
@@ -267,9 +267,9 @@ def add_news(request):
 #     else:
 #         return redirect('todolist:login')
 
-# def get_json_berita(request):
-#     berita = Berita.objects.filter(user=request.user)
-#     return HttpResponse(serializers.serialize("json", berita), content_type="application/json")
+def get_json_berita(request):
+    berita = Berita.objects.filter(user=request.user)
+    return HttpResponse(serializers.serialize("json", berita), content_type="application/json")
    
 
 def add_transport(request):
