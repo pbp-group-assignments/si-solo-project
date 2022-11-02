@@ -7,39 +7,7 @@
 {% block content %}
 <head>
 
-    <script>
-        $(document).ready(function(){
-          $.get('/layanan-pengaduan/pengaduan-json/', function(data){
-            for (let i = 0; i < data.length; i++){
-                if (data[i].fields.status_pengaduan  == false){
-                    $('#list-pendaftaran').append(`<div id="${data[i].pk}--pengaduan" class="card text-white bg-dark mb-3 transform transition duration-500 hover:scale-105 flex-auto" style="max-width: 17rem; min-width: 17rem;">
-                      <div class="card-header text-white bg-dark mb-3"> ${data[i].fields.judul_pengaduan}
-                      <div class="card-body text-white bg-dark mb-3">
-                        <h4 class="card-title text-white bg-dark mb-3" style="text-align: center;">Deskripsi Pengaduan: ${data[i].fields.deskripsi_pengaduan}</h4>
-                        <p class="card-text text-white bg-dark mb-4" style="text-align: center;">Tanggal Pengaduan: ${data[i].fields.tanggal_pengaduan}</p>
-                        <div class="container text-white bg-dark" style="text-align: center;">
-                          <a><button class="button-delete bg-cyan-600"style="width: 120px; height: 30px" ><a data-bs-toggle="modal" data-bs-target="#createTaskModal" onclick="selesai(${data[i].pk})">Tandai Selesai</a></button></a>
-                        </div>
-                      </div>
-                      </div>
-                      </div>
-                    </div>`)
-                }
-            }
-          })
 
-          selesai = (permohonanId) => {
-            $.ajax({
-                url: `/Admin/pengaduan-selesai/${permohonanId}`,
-                type: 'POST',
-                success: function(response){
-                    $(`#${permohonanId}--pengaduan`).remove()
-                }
-            })
-            $('.modal-body').html('')
-          }
-        })
-    </script>
 
 </head>
 
@@ -104,8 +72,5 @@
       </nav>
 
 
-    <div class="items-center flex justify-center">
-      <div class="grid gap-4 grid-cols-1 sm:grid-flow-cols-1 md:grid-cols-3 lg:grid-cols-4 m-4" id="list-pendaftaran"></div>
-    </div>
 </body>
 {% endblock content %}
