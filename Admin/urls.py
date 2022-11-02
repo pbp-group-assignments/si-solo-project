@@ -20,7 +20,6 @@ urlpatterns = [
     path('list-pendaftaran-diterima', list_pendaftaran_diterima, name='list_pendaftaran_diterima'),
     path('set-ditolak/<permohonanId>', set_ditolak_pendaftaran, name='set_ditolak_pendaftaran'),
     path('set-diterima/<permohonanId>', set_diterima_pendaftaran, name='set_diterima_pendaftaran'),
-    path('add-berita/', add_beritaterkini, name='add_berita'),
     path('add-kebutuhan/', add_kebutuhan, name='add_kebutuhan'),
     path('pendaftaran-pelaku-usaha-json', pendaftaran_pelaku_usaha_json, name='pendaftaran_pelaku_usaha_json'),
     path('pendaftaran-pelaku-usaha', list_pendaftaran_pelaku_usaha_diproses, name='list_pendaftaran_pelaku_usaha_diproses'),
@@ -37,7 +36,5 @@ urlpatterns = [
     path('list-kuliner', show_list_kuliner, name='show_list_kuliner'),
     path('hapus-usaha/<permohonanId>', hapus_usaha, name='hapus_usaha'),
     path('list-kebutuhan', show_list_kebutuhan, name='show_list_kebutuhan'),
-    path('list-berita', show_list_berita, name='show_list_berita'),
-    path('berita-json/', get_json_berita, name="get_jsonberita"),
 
 ]

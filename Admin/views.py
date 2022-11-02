@@ -199,77 +199,6 @@ def show_list_kuliner(request):  #Untuk nampilin data kuliner
 def show_list_kebutuhan(request):  
     context = {}
     return render(request, 'list_kebutuhan.html', context)
-
-@login_required(login_url='/sisolo/login/')
-@admin_only
-def show_list_berita(request):  
-    context = {}
-    return render(request, 'list_berita.html', context)
-
-@login_required(login_url='/login/')
-@csrf_exempt
-# @allowed_users(allowed_roles=['Pelaku Usaha', 'Pengguna'])
-def add_news(request):
-    if request.method == 'POST':
-        idUsaha = request.POST.get('daftarId')
-        penulisBerita = Usaha.objects.get(pk = idUsaha)
-        judulBerita = request.POST.get('judulBerita')
-        highlightBerita = request.POST.get('highlightBerita')
-        tanggalBerita = request.POST.get('tanggalBerita')
-        berita = Berita(penulisBerita = penulisBerita, judulBerita = judulBerita, highlightBerita = highlightBerita, tanggalBerita = tanggalBerita)
-        berita.save()
-
-        response = {
-            'pk':berita.pk,
-            'fields':{
-                'judulBerita':berita.judulBerita,
-                'highlightBerita':berita.highlightBerita,
-                'tanggalBerita':berita.tanggalBerita,
-            }
-        }
-
-        return HttpResponse(request, 'add_news.html', response)
-
-def add_beritaterkini(request):
-   
-    form = BeritaForms(request.POST)
-    response_data = {}
-    
-    # Handle jika form valid dan method request adl. POST
-    if request.method == 'POST' and form.is_valid():
-        # Ambil title & description dari form, buat task baru, lalu redirect
-        # ke halaman utama
-        judul = form.cleaned_data['judul']
-        highlight = form.cleaned_data['highlight']
-        berita_baru = Berita.objects.create(judul=judul, highlight=highlight,
-                                            user=request.user, date=datetime.date.today())
-        response_data['judul'] = judul
-        response_data['highlight'] = highlight
-        response_data['tanggal'] = datetime.date.today()
-        return JsonResponse(response_data)
-
-    # Render halaman add task
-    context = {
-        'form': form,
-    }
-    return render(request, 'addBerita.html', context)
-
-# def show_news(request):
-#     if request.user.is_authenticated:
-#         berita = Berita.objects.filter(user=request.user)
-#         context = {
-#             'list_kerjaan' : berita,
-#             'user_name' : request.user.username,
-#             'last_login': request.COOKIES['last_login'],
-#         }
-#         return render(request, 'todolist.html', context)
-    
-#     else:
-#         return redirect('todolist:login')
-
-def get_json_berita(request):
-    berita = Berita.objects.filter(user=request.user)
-    return HttpResponse(serializers.serialize("json", berita), content_type="application/json")
    
 
 def add_transport(request):
@@ -284,21 +213,7 @@ def add_transport(request):
     context = {'form': TransportationForm()}
     return render(request, 'add_transportation.html', context)
 
-@login_required(login_url='/login/')
-@admin_only
-def add_berita(request):
-    if request.method == "POST":
-        news_title = request.POST.get('news_title')
-        news_date = request.POST.get('news_date')
-        news_image = request.POST.get('news_image')
-        news_highlight = request.POST.get('news_highlight')
-        berita = Berita(news_title=news_title, news_date=news_date, news_image=news_image, news_highlight=news_highlight)
-        berita.save()
 
-        return HttpResponse("Berita: " + news_title + " berhasil ditambahkan!")
-    
-    context = {}
-    return render(request, 'add_news.html', context)
 
 @login_required(login_url='/login/')
 @admin_only
