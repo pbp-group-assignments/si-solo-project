@@ -1,5 +1,5 @@
 from django.urls import path
-from pendaftaran_izin_usaha.views import show_pendaftaran, usaha_json, daftar_usaha_baru, cancel, daftar_pelaku_usaha, ubah_group_pengguna, proses_daftar_pelaku_usaha, daftar_ulang
+from pendaftaran_izin_usaha.views import show_pendaftaran, usaha_json, daftar_usaha_baru, cancel, daftar_pelaku_usaha, ubah_group_pengguna, proses_daftar_pelaku_usaha, daftar_ulang, semua_usaha_json
 
 app_name = 'pendaftaran_izin_usaha'
 
@@ -11,5 +11,6 @@ urlpatterns = [
     path('daftar-pelaku-usaha/', daftar_pelaku_usaha, name='daftar_pelaku_usaha'),
     path('ubah-group-pengguna/', ubah_group_pengguna, name='ubah_group_pengguna'),
     path('proses-daftar-pelaku-usaha', proses_daftar_pelaku_usaha, name='proses_daftar_pelaku_usaha'),
-    path('daftar-ulang', daftar_ulang, name='daftar_ulang')
+    path('daftar-ulang', daftar_ulang, name='daftar_ulang'),
+    path('semua-usaha-json', semua_usaha_json, name='semua_usaha_json')
 ]

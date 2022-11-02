@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block meta %}
-<title>Daftar Pengaduan</title>
+<title>List Usaha Kuliner</title>
 {% endblock meta %}
 
 {% block content %}
@@ -10,12 +10,13 @@
         $(document).ready(function(){
           $.get('list-pendaftaran-json', function(data){
             for (let i = 0; i < data.length; i++){
-                if (data[i].fields.statusPendaftaran  == 'Diajukan'){
-                    $('#list-pendaftaran').append(`<div id="${data[i].pk}--daftar" class="card text-white bg-dark mb-3 transform transition duration-500 hover:scale-105 flex-auto" style="max-width: 17rem; min-width: 17rem;">
-                      <div class="card-header text-white bg-dark mb-3"> ${data[i].fields.statusPendaftaran}  -  ${data[i].fields.namaPemilik}
+                if (data[i].fields.statusPendaftaran  == 'Diterima' && data[i].fields.jenisUsaha == 'Kuliner'){
+                    $('#list-pendaftaran').append(`<div id="${data[i].pk}--usaha" class="card text-white bg-dark mb-3 transform transition duration-500 hover:scale-105 flex-auto" style="max-width: 17rem; min-width: 17rem;">
+                      <div class="card-header text-white bg-dark mb-3"> ${data[i].fields.namaUsaha}  -  ${data[i].fields.namaPemilik}
                       <div class="card-body text-white bg-dark mb-3">
-                        <h4 class="card-title text-white bg-dark mb-3" style="text-align: center;">Nama Usaha: ${data[i].fields.namaUsaha}</h4>
-                        <p class="card-text text-white bg-dark mb-4" style="text-align: center;">Jenis Usaha: ${data[i].fields.jenisUsaha}</p>
+                        <h4 class="card-title text-white bg-dark mb-3" style="text-align: center;">Nama Usaha: ${data[i].fields.alamatUsaha}</h4>
+                        <p class="card-text text-white bg-dark mb-4" style="text-align: center;">Nomer Telepon Usaha: ${data[i].fields.nomorTeleponUsaha}</p>
+                        <p class="card-text text-white bg-dark mb-4" style="text-align: center;">Nomer Izin Usaha: ${data[i].fields.nomorIzinUsaha}</p>
                         <div class="container text-white bg-dark" style="text-align: center;">
                           <a><button class="button-delete bg-cyan-600"style="width: 75px; height: 30px" ><a data-bs-toggle="modal" data-bs-target="#createTaskModal" onclick="detailPermohonan(${data[i].pk})">Detail</a></button></a>
                         </div>
@@ -34,11 +35,11 @@
                 type: 'GET',
                 success: function(response){
                     tempPermohonan = permohonanId
-                    $('.modal-body').append(`<label class="text-black">Nama Pendaftar: ${response.fields.namaPemilik}</label>
+                    $('.modal-body').append(`<label class="text-black">Nama Pemilik: ${response.fields.namaPemilik}</label>
                     <br>
-                    <label class="text-black">Nomor Telepon Pendaftar: ${response.fields.nomorTeleponPemilik}</label>
+                    <label class="text-black">Nomor Telepon Pemilik: ${response.fields.nomorTeleponPemilik}</label>
                     <br>
-                    <label class="text-black">Alamat Pendaftar: ${response.fields.alamatPemilik}</label>
+                    <label class="text-black">Alamat Pemilik: ${response.fields.alamatPemilik}</label>
                     <br>
                     <label class="text-black">Nama Usaha: ${response.fields.namaUsaha}</label>
                     <br>
@@ -52,12 +53,12 @@
             $('.modal-body').html('')
           }
 
-          $('#proses').click(function(){
+          $('#hapus').click(function(){
               $.ajax({
-                  url:`set-diproses/${tempPermohonan}`,
+                  url:`hapus-usaha/${tempPermohonan}`,
                   type: 'POST',
                   success: function(response){
-                      $(`#${tempPermohonan}--daftar`).remove()
+                      $(`#${tempPermohonan}--usaha`).remove()
                   }
               })
           })
@@ -117,16 +118,6 @@
     </div>
 </nav>
 
-    <nav aria-label="Page navigation example">
-
-        <ul class="pagination justify-content-center mt-3">
-          <li class="page-item"><a class="page-link" href="{% url 'Admin:list_pendaftaran_diajukan' %}">Diajukan</a></li>
-          <li class="page-item"><a class="page-link" href="{% url 'Admin:list_pendaftaran_diproses' %}">Diproses</a></li>
-          <li class="page-item"><a class="page-link" href="{% url 'Admin:list_pendaftaran_diterima' %}">Diterima</a></li>
-          <li class="page-item"><a class="page-link" href="{% url 'Admin:list_pendaftaran_ditolak' %}">Ditolak</a></li>
-        </ul>
-      </nav>
-
     <div class="modal fade" id="createTaskModal" tabindex="-1" role="dialog" aria-labelledby="createTaskModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
           <div class="modal-content">
@@ -136,7 +127,7 @@
             <div class="modal-body">
             </div>
             <div class="modal-footer">
-                <button id="proses" type="button" class="btn btn-primary text-black data-bs-dismiss="modal">Proses</button>
+                <button id="hapus" type="button" class="btn btn-primary text-white bg-red-700" data-bs-dismiss="modal">Hapus Usaha</button>
             </div>
           </div>
         </div>
@@ -146,4 +137,5 @@
       <div class="grid gap-4 grid-cols-1 sm:grid-flow-cols-1 md:grid-cols-3 lg:grid-cols-4 m-4" id="list-pendaftaran"></div>
     </div>
 </body>
+
 {% endblock content %}

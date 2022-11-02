@@ -22,7 +22,13 @@
               ${data[i].fields.statusPendaftaran == 'Diajukan' ? `<a><button class="button-delete bg-red-600"style="width: 75px; height: 30px" ><a class="font-delete" onclick="batalkanPermohonan(${data[i].pk})">Batalkan</a></button></a>`:``}
             </div>
             <div class="container text-white bg-dark mb-3" style="text-align: center;">
-              ${data[i].fields.statusPendaftaran == 'Diterima' ? `<p class="card-text text-white bg-dark mb-3" style="text-align: center;">Nomor Izin Usaha: ${data[i].fields.nomorIzinUsaha}</p>`:``}
+              ${data[i].fields.statusPendaftaran == 'Diterima' && data[i].fields.jenisUsaha == 'Kuliner' ? `<p class="card-text text-white bg-dark mb-3" style="text-align: center;">Nomor Izin Usaha: ${data[i].fields.nomorIzinUsaha}</p> <a><button class="button-delete bg-cyan-500 hover:bg-cyan-400"style="width: 90px; height: 30px" ><a class="font-delete" onclick="manage(${data[i].pk}, 'Kuliner')" data-bs-toggle="modal" data-bs-target="#ManageModal">Manajemen</a></button></a>`:``}
+            </div>
+            <div class="container text-white bg-dark mb-3" style="text-align: center;">
+              ${data[i].fields.statusPendaftaran == 'Diterima' && data[i].fields.jenisUsaha == 'Tempat Wisata' ? `<p class="card-text text-white bg-dark mb-3" style="text-align: center;">Nomor Izin Usaha: ${data[i].fields.nomorIzinUsaha}</p> <a><button class="button-delete bg-cyan-500 hover:bg-cyan-400"style="width: 90px; height: 30px" ><a class="font-delete" onclick="manage(${data[i].pk}, 'Tempat Wisata')" data-bs-toggle="modal" data-bs-target="#ManageModal">Manajemen</a></button></a>`:``}
+            </div>
+            <div class="container text-white bg-dark mb-3" style="text-align: center;">
+              ${data[i].fields.statusPendaftaran == 'Diterima' && data[i].fields.jenisUsaha == 'Menjual Bahan Pokok' ? `<p class="card-text text-white bg-dark mb-3" style="text-align: center;">Nomor Izin Usaha: ${data[i].fields.nomorIzinUsaha}</p> <a><button class="button-delete bg-cyan-500 hover:bg-cyan-400"style="width: 90px; height: 30px" ><a class="font-delete" onclick="manage(${data[i].pk}, 'Menjual Bahan Pokok')" data-bs-toggle="modal" data-bs-target="#ManageModal">Manajemen</a></button></a>`:``}
             </div>
             <div class="container text-white bg-dark mb-3" style="text-align: center;">
               ${data[i].fields.statusPendaftaran == 'Ditolak' ? `<p class="card-text text-white bg-dark mb-3" style="text-align: center;">Alasan Ditolak: ${data[i].fields.alasanDitolak}</p>`:``}
@@ -91,6 +97,136 @@
               }
             })
           }
+
+          let tempDaftarId;
+          manage = (daftarId, jenis) => {
+            tempDaftarId = daftarId;
+            if (jenis == 'Kuliner'){
+              $.ajax({
+                url: `/tempat-kuliner/manage-json`,
+                type: 'GET',
+                data:{id:daftarId},
+                success: function(response){
+                  for (let i = 0; i < response.length; i++){
+                    $('#manage-modal-body').append(`<div id='${response[i].pk}--menu'><p>PK (Kode Unik Objek): ${response[i].pk}</p>
+                    <p>Nama Menu: ${response[i].fields.namaMenu}</p>
+                    <p>Harga Menu: ${response[i].fields.hargaMenu}</p>
+                    <p>Deskripsi Menu: ${response[i].fields.deskripsiMenu}</p>
+                    <hr></div>`)
+                  }
+                  $('#manage-modal-footer').append(`<button id="tambahMenu" type="button" class="btn btn-secondary text-black" data-bs-toggle="modal" data-bs-target="#TambahMenuModal">Tambah Menu</button>
+                  <button type="button" class="btn btn-secondary text-black" data-bs-toggle="modal" data-bs-target="#HapusMenuModal">Hapus Menu</button>
+                  <button type="button" class="btn btn-secondary text-black" data-bs-dismiss="modal">Tutup</button>`)
+                }
+              })
+            }else if (jenis == 'Tempat Wisata'){
+              $.ajax({
+                url: `/tempat-wisata/manage-json`,
+                type: 'GET',
+                data:{id:daftarId},
+                success: function(response){
+                  for (let i = 0; i < response.length; i++){
+                    $('#manage-modal-body').append(`<div id='${response[i].pk}--wisata'><p>PK (Kode Unik Objek): ${response[i].pk}</p>
+                    <p>Nama Wisata: ${response[i].fields.namaWisata}</p>
+                    <p>Harga Wisata: ${response[i].fields.hargaWisata}</p>
+                    <p>Deskripsi Wisata: ${response[i].fields.deskripsiWisata}</p>
+                    <hr></div>`)
+                  }
+                  $('#manage-modal-footer').append(`<button id="tambahWisata" type="button" class="btn btn-secondary text-black" data-bs-toggle="modal" data-bs-target="#TambahWisataModal">Tambah Wisata</button>
+                  <button type="button" class="btn btn-secondary text-black" data-bs-toggle="modal" data-bs-target="#HapusWisataModal">Hapus Wisata</button>
+                  <button type="button" class="btn btn-secondary text-black" data-bs-dismiss="modal">Tutup</button>`)
+                }
+              })
+            }
+            $('#manage-modal-body').html('')
+            $('#manage-modal-footer').html('')
+          }
+
+          $('#tambah-menu').click(function(){
+            if ($('#inputNamaMenu').val() == '' || $('#inputHargaMenu').val() == '' || $('#inputDeskripsiMenu').val() == ''){
+              window.alert('Mohon Isi Data Dengan Lengkap')
+            }else{
+              $.ajax({
+                    url: `/tempat-kuliner/add-menu-kuliner`,
+                    type: 'POST',
+                    data: {daftarId:tempDaftarId,namaMenu:$('#inputNamaMenu').val(), hargaMenu:$('#inputHargaMenu').val(), deskripsiMenu:$('#inputDeskripsiMenu').val()},
+                    success: function(response){
+                      $('#manage-modal-body').append(`<p>PK (Kode Unik Objek): ${response.pk}</p>
+                      <p>Nama Menu: ${response.fields.namaMenu}</p>
+                      <p>Harga Menu: ${response.fields.hargaMenu}</p>
+                      <p>Deskripsi Menu: ${response.fields.deskripsiMenu}</p>
+                      <p>Deskripsi Menu: ${response.fields.tempatKuliner.jenisUsaha}</p>
+                      <hr>`)
+                    }
+                  })
+                  $('#inputNamaMenu').val('')
+                  $('#inputHargaMenu').val('')
+                  $('#inputDeskripsiMenu').val('')
+            }
+          })
+
+          $('#hapus-menu').click(function(){
+            if ($('#inputPKMenu').val() == ''){
+              window.alert('Mohon Isi Data Dengan Lengkap')
+            }else if (isNaN($('#inputPKMenu').val())){
+              window.alert('Mohon Isi Data Dengan Benar')
+            }else{
+              $.ajax({
+                  url: `/tempat-kuliner/delete-menu-kuliner`,
+                  type: 'POST',
+                  data: {PKMenu:$('#inputPKMenu').val()},
+                  success: function(response){
+                    if (response.status == 'NO'){
+                      window.alert('PK yang Anda Masukkan Salah!')
+                    }
+                  }
+                })
+            }
+            $('#inputPKMenu').val('')
+          })
+
+          $('#tambah-wisata').click(function(){
+            if ($('#inputNamaWisata').val() == '' || $('#inputHargaWisata').val() == '' || $('#inputDeskripsiWisata').val() == ''){
+              window.alert('Mohon Isi Data Dengan Lengkap')
+            }else{
+              $.ajax({
+                    url: `/tempat-wisata/add-deskripsi-wisata`,
+                    type: 'POST',
+                    data: {daftarId:tempDaftarId,namaWisata:$('#inputNamaWisata').val(), hargaWisata:$('#inputHargaWisata').val(), deskripsiWisata:$('#inputDeskripsiWisata').val()},
+                    success: function(response){
+                      $('#manage-modal-body').append(`<p>PK (Kode Unik Objek): ${response.pk}</p>
+                      <p>Nama Fasilitas: ${response.fields.namaWisata}</p>
+                      <p>Harga Fasilitas: ${response.fields.hargaWisata}</p>
+                      <p>Deskripsi Fasilitas: ${response.fields.deskripsiWisata}</p>
+                      <p>Deskripsi Fasilitas: ${response.fields.tempatWisata.jenisUsaha}</p>
+                      <hr>`)
+                    }
+                  })
+                  $('#inputNamaWisata').val('')
+                  $('#inputHargaWisata').val('')
+                  $('#inputDeskripsiWisata').val('')
+            }
+          })
+
+          $('#hapus-wisata').click(function(){
+            if ($('#inputPKWisata').val() == ''){
+              window.alert('Mohon Isi Data Dengan Lengkap')
+            }else if (isNaN($('#inputPKWisata').val())){
+              window.alert('Mohon Isi Data Dengan Benar')
+            }else{
+              $.ajax({
+                  url: `/tempat-wisata/delete-deskripsi-wisata`,
+                  type: 'POST',
+                  data: {PKWisata:$('#inputPKWisata').val()},
+                  success: function(response){
+                    if (response.status == 'NO'){
+                      window.alert('PK yang Anda Masukkan Salah!')
+                    }
+                  }
+                })
+            }
+            $('#inputPKWisata').val('')
+          })
         })
     </script>
 </head>
@@ -182,6 +318,112 @@
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary text-black" data-bs-dismiss="modal">Cancel</button>
           <button id="daftar-usaha" type="button" class="btn btn-primary text-black">Daftar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="ManageModal" tabindex="-1" role="dialog" aria-labelledby="ManageModal" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title text-black" id="DaftarUsahaBaruModal">Manage Usaha</h5>
+        </div>
+        <div class="modal-body" id="manage-modal-body">
+        </div>
+        <div class="modal-footer" id="manage-modal-footer">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="TambahMenuModal" tabindex="-1" role="dialog" aria-labelledby="TambahMenuModal" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title text-black" id="DaftarUsahaBaruModal">Tambah Menu Baru</h5>
+        </div>
+        <div class="modal-body">
+          <form class="rounded px-8 pt-6 pb-8" method="POST">
+          {% csrf_token %}
+          <label class="text-black">Nama Menu</label>
+          <input class="shadow appearance-none border rounded w-full py-2 px-3 text-zinc-800 leading-tight focus:outline-none focus:shadow-outline" id="inputNamaMenu">
+          <label class="text-black">Harga Menu</label>
+          <input class="shadow appearance-none border rounded w-full py-2 px-3 text-zinc-800 leading-tight focus:outline-none focus:shadow-outline" id="inputHargaMenu">
+          <label class="text-black">Deskripsi Menu</label>
+          <input class="shadow appearance-none border rounded w-full py-2 px-3 text-zinc-800 leading-tight focus:outline-none focus:shadow-outline" id="inputDeskripsiMenu">
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary text-black" data-bs-dismiss="modal">Batalkan / Tutup</button>
+          <button id="tambah-menu" type="button" class="btn btn-primary text-black" >Tambah</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="TambahWisataModal" tabindex="-1" role="dialog" aria-labelledby="TambahWisataModal" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title text-black" id="DaftarUsahaBaruModal">Tambah Fasilitas Baru</h5>
+        </div>
+        <div class="modal-body">
+          <form class="rounded px-8 pt-6 pb-8" method="POST">
+          {% csrf_token %}
+          <label class="text-black">Nama Fasilitas</label>
+          <input class="shadow appearance-none border rounded w-full py-2 px-3 text-zinc-800 leading-tight focus:outline-none focus:shadow-outline" id="inputNamaWisata">
+          <label class="text-black">Harga Fasilitas</label>
+          <input class="shadow appearance-none border rounded w-full py-2 px-3 text-zinc-800 leading-tight focus:outline-none focus:shadow-outline" id="inputHargaWisata">
+          <label class="text-black">Deskripsi Fasilitas</label>
+          <input class="shadow appearance-none border rounded w-full py-2 px-3 text-zinc-800 leading-tight focus:outline-none focus:shadow-outline" id="inputDeskripsiWisata">
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary text-black" data-bs-dismiss="modal">Batalkan / Tutup</button>
+          <button id="tambah-wisata" type="button" class="btn btn-primary text-black" >Tambah</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="HapusMenuModal" tabindex="-1" role="dialog" aria-labelledby="HapusMenuModal" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title text-black" id="DaftarUsahaBaruModal">Hapus Menu</h5>
+        </div>
+        <div class="modal-body">
+          <form class="rounded px-8 pt-6 pb-8" method="POST">
+          {% csrf_token %}
+          <label class="text-black">PK (Kode Unik Objek) yang Ingin Dihapus</label>
+          <input class="shadow appearance-none border rounded w-full py-2 px-3 text-zinc-800 leading-tight focus:outline-none focus:shadow-outline" id="inputPKMenu">
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button id="hapus-menu" type="button" class="btn btn-primary text-black">Hapus</button>
+          <button type="button" class="btn btn-secondary text-black" data-bs-dismiss="modal">Cancel</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="HapusWisataModal" tabindex="-1" role="dialog" aria-labelledby="HapusWisataModal" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title text-black" id="DaftarUsahaBaruModal">Hapus Wisata</h5>
+        </div>
+        <div class="modal-body">
+          <form class="rounded px-8 pt-6 pb-8" method="POST">
+          {% csrf_token %}
+          <label class="text-black">PK (Kode Unik Objek) yang Ingin Dihapus</label>
+          <input class="shadow appearance-none border rounded w-full py-2 px-3 text-zinc-800 leading-tight focus:outline-none focus:shadow-outline" id="inputPKWisata">
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button id="hapus-wisata" type="button" class="btn btn-primary text-black">Hapus</button>
+          <button type="button" class="btn btn-secondary text-black" data-bs-dismiss="modal">Cancel</button>
         </div>
       </div>
     </div>

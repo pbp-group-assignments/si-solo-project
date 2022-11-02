@@ -149,7 +149,7 @@
         <div class="row featurette" style="margin: 50px">
             <div class="col-md-7 order-md-2">
                 <div style="margin-top: 50px">
-                    <a class="featurette-heading" href="" style="margin-top: 50px">Forum Pemberian Saran</a>
+                    <a class="featurette-heading" href="/saran-pembangunan-kota/" style="margin-top: 50px">Forum Pemberian Saran</a>
                 </div>
                 {% if user.is_authenticated %}
                 <p class="lead">Berikanlah saran untuk memajukan dan membangun Kota Solo!</p>
@@ -201,7 +201,7 @@
         <div class="row featurette" style="margin: 50px"> 
             <div class="col-md-7">
                 <div style="margin-top: 50px">
-                    <a class="featurette-heading" href="" style="margin-top: 50px">Kuliner<span class="text-muted"></a>
+                    <a class="featurette-heading" href="{% url 'info_kuliner:show_tempat_kuliner' %}" style="margin-top: 50px">Kuliner<span class="text-muted"></a>
                 </div>
                 <p class="lead">Informasi mengenai kuliner di Solo.</p>
             </div>
@@ -217,7 +217,7 @@
         <div class="row featurette" style="margin: 50px">
             <div class="col-md-7 order-md-2">
                 <div style="margin-top: 50px">
-                    <a class="featurette-heading" href="" style="margin-top: 50px">Tempat Wisata</a>
+                    <a class="featurette-heading" href="{% url 'info_tempat_wisata:show_tempat_wisata' %}" style="margin-top: 50px">Tempat Wisata</a>
                 </div>
                 <p class="lead">Informasi mengenai tempat wisata di Solo.</p>
             </div>
@@ -227,7 +227,6 @@
                 </div>  
             </div>
         </div>
-
         <hr class="featurette-divider">
 
         <div class="row featurette" style="margin: 50px"> 

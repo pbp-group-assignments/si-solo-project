@@ -1,0 +1,165 @@
+{% extends 'base.html' %}
+{% load filters %}
+
+{% block meta %}
+<title>List Pendaftaran Usaha</title>
+{% endblock meta %}
+
+{% block content %}
+<head>
+    <script>
+        $(document).ready(function(){
+          var jumlahDaftar = 0;
+          var tempPK;
+          $.get('usaha-json', function(data){
+            for (let i = 0; i < data.length; i++){
+                $('#list-pendaftaran').append(`<div id="${data[i].pk}--daftar" class="card text-white bg-dark mb-3 transform transition duration-500 hover:scale-105 flex-auto" style="max-width: 17rem; min-width: 17rem;">
+          <div class="card-header text-white bg-dark mb-3"> ${data[i].fields.statusPendaftaran}  -  ${data[i].fields.namaUsaha}
+          <div class="card-body text-white bg-dark mb-3">
+            <h4 class="card-title text-white bg-dark mb-3" style="text-align: center;">Jenis Usaha: ${data[i].fields.jenisUsaha}</h4>
+            <p class="card-text text-white bg-dark mb-3" style="text-align: center;">Alamat Usaha: ${data[i].fields.alamatUsaha}</p>
+            <p class="card-text text-white bg-dark mb-3" style="text-align: center;">Nomor Telepon Usaha: ${data[i].fields.nomorTeleponUsaha}</p>
+            <div class="container text-white bg-dark mb-3" style="text-align: center;">
+              ${data[i].fields.statusPendaftaran == 'Diajukan' ? `<a><button class="button-delete bg-red-600"style="width: 75px; height: 30px" ><a class="font-delete" onclick="batalkanPermohonan(${data[i].pk})">Batalkan</a></button></a>`:``}
+            </div>
+            <div class="container text-white bg-dark mb-3" style="text-align: center;">
+              ${data[i].fields.statusPendaftaran == 'Diterima' ? `<p class="card-text text-white bg-dark mb-3" style="text-align: center;">Nomor Izin Usaha: ${data[i].fields.nomorIzinUsaha}</p> <a><button class="button-delete bg-cyan-500 hover:bg-cyan-400"style="width: 90px; height: 30px" ><a class="font-delete" onclick="manage(${data[i].pk})">Manajemen</a></button></a>`:``}
+            </div>
+            <div class="container text-white bg-dark mb-3" style="text-align: center;">
+              ${data[i].fields.statusPendaftaran == 'Ditolak' ? `<p class="card-text text-white bg-dark mb-3" style="text-align: center;">Alasan Ditolak: ${data[i].fields.alasanDitolak}</p>`:``}
+            </div>
+          </div>
+          </div>
+          </div>
+          </div>`)
+
+              if (data[i].fields.statusPendaftaran == 'Diajukan' || data[i].fields.statusPendaftaran == 'Diproses'){
+                jumlahDaftar++;
+              }
+            }
+          })
+          
+          $('#daftar-usaha').click(function(){
+            if (jumlahDaftar >= 3){
+              window.alert('Maaf Anda telah mendaftarkan 3 usaha, mohon tunggu sampai proses pendaftaran selesai')
+              $('.namaUsaha-input').val('')
+              $('#jenisUsaha').val('Pilih jenis usaha')
+              $('.alamatUsaha-input').val('')
+              $('.nomorTeleponUsaha-input').val('')
+            }else{
+              if ($('.namaUsaha-input').val() != '' && $('#jenisUsaha').val() != 'Pilih jenis usaha' && $('.alamatUsaha-input').val() != '' && $('.nomorTeleponUsaha-input').val() != ''){
+                $.ajax({
+                  url: 'daftar-usaha-baru/',
+                  type: 'POST',
+                  data: {namaUsaha: $('.namaUsaha-input').val(), jenisUsaha: $('#jenisUsaha').val(), alamatUsaha: $('.alamatUsaha-input').val(), nomorTeleponUsaha: $('.nomorTeleponUsaha-input').val()},
+                  success: function(response){
+                    $('#list-pendaftaran').append(`<div id="${response.pk}--daftar" class="card text-white bg-dark mb-3 transform transition duration-500 hover:scale-105 flex-auto" style="max-width: 17rem; min-width: 17rem;">
+            <div class="card-header text-white bg-dark mb-3"> ${response.fields.statusPendaftaran}  -  ${response.fields.namaUsaha}
+            <div class="card-body text-white bg-dark mb-3">
+              <h4 class="card-title text-white bg-dark mb-3" style="text-align: center;">${response.fields.jenisUsaha}</h4>
+              <p class="card-text text-white bg-dark mb-3" style="text-align: center;">${response.fields.alamatUsaha}</p>
+              <p class="card-text text-white bg-dark mb-3" style="text-align: center;">${response.fields.nomorTeleponUsaha}</p>
+              <div class="container text-white bg-dark mb-3" style="text-align: center;">
+                  <a><button class="button-delete bg-red-600"style="width: 75px; height: 30px" ><a class="font-delete" onclick="batalkanPermohonan(${response.pk})">Batalkan</a></button></a>
+              </div>
+            </div>
+            </div>
+            </div>
+            </div>`)
+                  }
+                })
+
+                jumlahDaftar++;
+                $('.namaUsaha-input').val('')
+                $('#jenisUsaha').val('Pilih jenis usaha')
+                $('.alamatUsaha-input').val('')
+                $('.nomorTeleponUsaha-input').val('')
+              }else if($('.namaUsaha-input').val() != '' && $('#jenisUsaha').val() == 'Pilih jenis usaha' && $('.alamatUsaha-input').val() != '' && $('.nomorTeleponUsaha-input').val() != ''){
+                window.alert('Mohon pilih jenis usaha yang ingin didaftarkan')
+              }else{
+                window.alert('Mohon lengkapi data usaha')
+              }
+            }
+          })
+
+          batalkanPermohonan = (daftarId) => {
+            $.ajax({
+              url: `/daftar-usaha/cancel/${daftarId}`,
+              type: 'DELETE',
+              success: function(response){
+                $(`#${daftarId}--daftar`).remove()
+                jumlahDaftar--;
+              }
+            })
+          }
+
+          manage = (daftarId) => {
+            console.log(daftarId)
+            $.ajax({
+              url: `/tempat-wisata/json`,
+              type: 'GET',
+              data:{id:daftarId},
+              success: function(response){$('body').html(response)}
+            })
+          }
+        })
+    </script>
+</head>
+
+<body>
+  <nav class="navbar navbar-custom">
+    <div class="container-fluid">
+        <a href="/" class="navbar-brand">SISOLO</a>
+    
+        <div class="navbar-right">
+            
+            <div class="modal fade" id="nomord" tabindex="-1">
+                <div class="modal-dialog">
+                    <div class="modal-content" style="color:black;">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Nomor Darurat</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div>
+                                <a href="tel:+62-271712600">Poltabes Solo: (0271)712600</a>
+                            </div>
+                            <div>
+                                <a href="tel:+62-119">Ambulans SPGDT: 119</a>
+                            </div>
+                            <div>
+                                <a href="tel:+62-113">Pemadam Kebakaran: 113</a>
+                            </div>
+                            <div>
+                                <a href="tel:+62-271722091">Gangguan Listrik PLN: (0271)722091</a>
+                            </div>
+                            <div>
+                                <a href="tel:+62-271714039">Stasiun Solo Balapan: (0271)714039</a>
+                            </div>
+                            <div>
+                                <a href="tel:+62-271738900">Terminal Tortonadi: (0271)738900</a>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary text-black" data-bs-dismiss="modal">Close</button>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+            
+            
+            <a class="btn btn-danger btn-sm btn-outline-secondary" style="margin:5px; color: white;" data-bs-toggle="modal" data-bs-target="#nomord">Nomor Darurat</a>   
+            
+            <a class="btn btn-sm btn-outline-secondary" style="margin:5px; color: black;" href="{% url 'sisolo:landing_page' %}" >Halaman Utama</a>
+            
+            <a class="btn btn-sm btn-outline-secondary" style="margin:5px; color: black;" href="{% url 'sisolo:logout_user' %}" >Logout</a>
+        </div>
+    </div>
+</nav>
+
+  <div class="items-center flex justify-center">
+    <div class="grid gap-4 grid-cols-1 sm:grid-flow-cols-1 md:grid-cols-3 lg:grid-cols-4 m-4" id="list-pendaftaran"></div>
+  </div>
+</body>
+{% endblock content %}
