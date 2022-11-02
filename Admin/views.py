@@ -1,19 +1,16 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from info_kebutuhan_pokok.models import Kebutuhan_Pokok
-from info_tempat_wisata.models import DaftarWisata
 from sisolo.decorators import admin_only
 from pendaftaran_izin_usaha.models import Usaha, PelakuUsaha
 from django.http import HttpResponse, JsonResponse
 from django.core import serializers
-from berita_isu_terkini.forms import Create
-from django.shortcuts import redirect
 from berita_isu_terkini.models import Berita
 from sisolo.models import User
 from Admin.forms import AlasanDitolak, NomorIzinUsaha
 from django.views.decorators.csrf import csrf_exempt
-from info_transportasi_umum.models import Transportation, Route, StopPoint
 from info_transportasi_umum.forms import TransportationForm, RouteForm, StopPointForm, DeleteTransportationForm
+from layanan_pengaduan.models import Pengaduan
 
 @login_required(login_url='/login/')
 @admin_only
@@ -294,3 +291,14 @@ def list_pengaduan_verifikasi(request):
 @admin_only
 def list_saran(request):
     return render(request, "list_saran.html", {})
+
+@login_required(login_url='/login/')
+@csrf_exempt
+@admin_only
+def set_pengaduan_selesai(request, permohonanId):
+    if request.method == 'POST':
+        pengaduan = Pengaduan.objects.get(pk = permohonanId)
+        pengaduan.status_pengaduan = True
+        pengaduan.save()
+
+        return HttpResponse(status=202)

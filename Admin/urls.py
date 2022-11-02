@@ -2,7 +2,7 @@ from django.urls import path
 from Admin.views import show_admin_page, list_pendaftaran_json, list_pendaftaran_diajukan, get_detail_pendaftaran, set_diproses_pendaftaran, show_list_wisata 
 from Admin.views import list_pendaftaran_diproses, set_ditolak_pendaftaran, list_pendaftaran_ditolak, list_pendaftaran_diterima, set_diterima_pendaftaran
 from Admin.views import add_berita, add_kebutuhan
-from Admin.views import add_berita
+from Admin.views import add_berita, set_pengaduan_selesai
 from Admin.views import  pendaftaran_pelaku_usaha_json, list_pendaftaran_pelaku_usaha_diproses, set_diterima_pelaku_usaha, list_pendaftaran_pelaku_usaha_diterima
 from Admin.views import set_ditolak_pelaku_usaha, list_pendaftaran_pelaku_usaha_ditolak
 from Admin.views import add_transport, add_route, add_stop_point, delete_transport, pengaturan_info_transport
@@ -40,5 +40,6 @@ urlpatterns = [
     path('list-pengaduan-verifikasi/', list_pengaduan_verifikasi, name='list_pengaduan_verifikasi'),
     path('list-saran/', list_saran, name='list_saran'),
     path('list-kuliner', show_list_kuliner, name='show_list_kuliner'),
-    path('hapus-usaha/<permohonanId>', hapus_usaha, name='hapus_usaha')
+    path('hapus-usaha/<permohonanId>', hapus_usaha, name='hapus_usaha'),
+    path('pengaduan-selesai/<permohonanId>', set_pengaduan_selesai, name='set_pengaduan_selesai')
 ]
