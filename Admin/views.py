@@ -13,6 +13,8 @@ from sisolo.models import User
 from Admin.forms import AlasanDitolak, NomorIzinUsaha
 from django.views.decorators.csrf import csrf_exempt
 from info_transportasi_umum.models import Transportation, Route, StopPoint
+from info_sarana_kesehatan.models import HealthCenter
+from info_transportasi_umum.forms import TransportationForm, RouteForm, StopPointForm, DeleteTransportationForm
 from info_sarana_kesehatan.forms import HealthCenterForm, DeleteHealthCenterForm
 
 @login_required(login_url='/login/')
