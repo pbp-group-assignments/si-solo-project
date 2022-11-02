@@ -3,7 +3,7 @@ from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse, JsonResponse, HttpResponseBadRequest
-from sisolo.decorators import allowed_users
+from sisolo.decorators import admin_only
 from sisolo.models import User
 from datetime import datetime
 from django.core import serializers
@@ -11,7 +11,6 @@ from . import forms
 from saran_pembangunan_kota.forms import FormSaran
 from saran_pembangunan_kota.models import Saran
 from django.shortcuts import redirect
-
 
 
 # Create your views here.
@@ -50,10 +49,9 @@ def show_saran(request):
     return HttpResponseBadRequest()
 
 @login_required(login_url='/login/')
-@allowed_users(allowed_roles=['Admin'])
+@admin_only
 def saran_json(request):
-    user = User.objects.get(user = request.user)
-    data = Saran.objects.filter(user = user)
+    data = Saran.objects.all()
     return HttpResponse(serializers.serialize("json", data), content_type="application/json")
 
 @login_required(login_url='/login/')
@@ -63,7 +61,9 @@ def kirim_saran(request):
     if request.method == 'POST':
         form = FormSaran(request.POST)
         if form.is_valid():
-            saran = FormSaran(
+            user = User.objects.get(user = request.user)
+            saran = Saran(
+                        user = user,
                         nama = form.cleaned_data['nama'],
                         email = form.cleaned_data['email'],
                         saran_pembangunan = form.cleaned_data['saran_pembangunan'],

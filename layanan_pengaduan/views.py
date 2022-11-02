@@ -4,7 +4,7 @@ from layanan_pengaduan.models import Pengaduan
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse, JsonResponse, HttpResponseBadRequest
-from sisolo.decorators import allowed_users
+from sisolo.decorators import admin_only
 from sisolo.models import User
 from datetime import datetime
 from django.core import serializers
@@ -54,8 +54,7 @@ def show_pengaduan(request):
     return HttpResponseBadRequest()
 
 @login_required(login_url='/login/')
-@allowed_users(allowed_roles=['Admin'])
+@admin_only
 def pengaduan_json(request):
-    user = User.objects.get(user = request.user)
-    data = Pengaduan.objects.filter(user = user)
+    data = Pengaduan.objects.all()
     return HttpResponse(serializers.serialize("json", data), content_type="application/json")
