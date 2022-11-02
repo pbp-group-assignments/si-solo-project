@@ -1,12 +1,14 @@
 from django.urls import path
-from Admin.views import show_admin_page, list_pendaftaran_json, list_pendaftaran_diajukan, get_detail_pendaftaran, set_diproses_pendaftaran, tempat_kuliner_baru, tempat_wisata_baru
+from Admin.views import show_admin_page, list_pendaftaran_json, list_pendaftaran_diajukan, get_detail_pendaftaran, set_diproses_pendaftaran, show_list_wisata 
 from Admin.views import list_pendaftaran_diproses, set_ditolak_pendaftaran, list_pendaftaran_ditolak, list_pendaftaran_diterima, set_diterima_pendaftaran
 from Admin.views import add_berita, add_kebutuhan
-from Admin.views import add_berita
+from Admin.views import add_berita, set_pengaduan_selesai
 from Admin.views import  pendaftaran_pelaku_usaha_json, list_pendaftaran_pelaku_usaha_diproses, set_diterima_pelaku_usaha, list_pendaftaran_pelaku_usaha_diterima
 from Admin.views import set_ditolak_pelaku_usaha, list_pendaftaran_pelaku_usaha_ditolak
 from Admin.views import add_transport, add_route, add_stop_point, delete_transport, pengaturan_info_transport
 from Admin.views import list_pengaduan_diproses, list_pengaduan_verifikasi, list_saran
+from Admin.views import add_transport, add_route, add_stop_point, delete_transport, pengaturan_info_transport, show_list_kuliner, hapus_usaha
+from Admin.views import add_healthcenter, delete_healthcenter, pengaturan_info_sarana_kesehatan
 
 app_name = 'Admin'
 
@@ -29,14 +31,19 @@ urlpatterns = [
     path('list-pendaftaran-pelaku-usaha-diterima', list_pendaftaran_pelaku_usaha_diterima, name='list_pendaftaran_pelaku_usaha_diterima'),
     path('set-ditolak-pelaku-usaha/<pkPemohon>', set_ditolak_pelaku_usaha, name='set_ditolak_pelaku_usaha'),
     path('list-pendaftaran-pelaku-usaha-ditolak', list_pendaftaran_pelaku_usaha_ditolak, name='list_pendaftaran_pelaku_usaha_ditolak'),
-    path('tempat-wisata-baru/', tempat_wisata_baru, name='tempat_wisata_baru'),
-    path('tempat-kuliner-baru/', tempat_kuliner_baru, name='tempat_kuliner_baru'),
+    path('list-wisata/', show_list_wisata, name='show_list_wisata'),
     path('add-transport/', add_transport, name='add_transport'),
     path('add-route/', add_route, name='add_route'),
     path('add-stop-point/', add_stop_point, name='add_stop_point'),
     path('delete-transport/', delete_transport, name='delete_transport'),
+    path('add-healthcenter/', add_healthcenter, name='add_healthcenter'),
+    path('delete-transport/', delete_healthcenter, name='delete_healthcenter'),
     path('pengaturan-info-transport/', pengaturan_info_transport, name='pengaturan_info_transport'),
+    path('pengaturan-info-sarana-kesehatan/', pengaturan_info_sarana_kesehatan, name='pengaturan_info_sarana_kesehatan'),
     path('list-pengaduan-diproses/', list_pengaduan_diproses, name='list_pengaduan_diproses'),
     path('list-pengaduan-verifikasi/', list_pengaduan_verifikasi, name='list_pengaduan_verifikasi'),
     path('list-saran/', list_saran, name='list_saran'),
+    path('list-kuliner', show_list_kuliner, name='show_list_kuliner'),
+    path('hapus-usaha/<permohonanId>', hapus_usaha, name='hapus_usaha'),
+    path('pengaduan-selesai/<permohonanId>', set_pengaduan_selesai, name='set_pengaduan_selesai')
 ]

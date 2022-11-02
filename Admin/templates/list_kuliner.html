@@ -1,24 +1,24 @@
 {% extends 'base.html' %}
 
 {% block meta %}
-<title>List Pengaduan</title>
+<title>List Usaha Kuliner</title>
 {% endblock meta %}
 
 {% block content %}
 <head>
-
     <script>
         $(document).ready(function(){
-          $.get('/layanan-pengaduan/pengaduan-json/', function(data){
+          $.get('list-pendaftaran-json', function(data){
             for (let i = 0; i < data.length; i++){
-                if (data[i].fields.status_pengaduan  == false){
-                    $('#list-pendaftaran').append(`<div id="${data[i].pk}--pengaduan" class="card text-white bg-dark mb-3 transform transition duration-500 hover:scale-105 flex-auto" style="max-width: 17rem; min-width: 17rem;">
-                      <div class="card-header text-white bg-dark mb-3"> ${data[i].fields.judul_pengaduan}
+                if (data[i].fields.statusPendaftaran  == 'Diterima' && data[i].fields.jenisUsaha == 'Kuliner'){
+                    $('#list-pendaftaran').append(`<div id="${data[i].pk}--usaha" class="card text-white bg-dark mb-3 transform transition duration-500 hover:scale-105 flex-auto" style="max-width: 17rem; min-width: 17rem;">
+                      <div class="card-header text-white bg-dark mb-3"> ${data[i].fields.namaUsaha}  -  ${data[i].fields.namaPemilik}
                       <div class="card-body text-white bg-dark mb-3">
-                        <h4 class="card-title text-white bg-dark mb-3" style="text-align: center;">Deskripsi Pengaduan: ${data[i].fields.deskripsi_pengaduan}</h4>
-                        <p class="card-text text-white bg-dark mb-4" style="text-align: center;">Tanggal Pengaduan: ${data[i].fields.tanggal_pengaduan}</p>
+                        <h4 class="card-title text-white bg-dark mb-3" style="text-align: center;">Nama Usaha: ${data[i].fields.alamatUsaha}</h4>
+                        <p class="card-text text-white bg-dark mb-4" style="text-align: center;">Nomer Telepon Usaha: ${data[i].fields.nomorTeleponUsaha}</p>
+                        <p class="card-text text-white bg-dark mb-4" style="text-align: center;">Nomer Izin Usaha: ${data[i].fields.nomorIzinUsaha}</p>
                         <div class="container text-white bg-dark" style="text-align: center;">
-                          <a><button class="button-delete bg-cyan-600"style="width: 120px; height: 30px" ><a data-bs-toggle="modal" data-bs-target="#createTaskModal" onclick="selesai(${data[i].pk})">Tandai Selesai</a></button></a>
+                          <a><button class="button-delete bg-cyan-600"style="width: 75px; height: 30px" ><a data-bs-toggle="modal" data-bs-target="#createTaskModal" onclick="detailPermohonan(${data[i].pk})">Detail</a></button></a>
                         </div>
                       </div>
                       </div>
@@ -28,19 +28,42 @@
             }
           })
 
-          selesai = (permohonanId) => {
+          var tempPermohonan = 0;
+          detailPermohonan = (permohonanId) => {
             $.ajax({
-                url: `/Admin/pengaduan-selesai/${permohonanId}`,
-                type: 'POST',
+                url: `/Admin/detail-pendaftaran/${permohonanId}`,
+                type: 'GET',
                 success: function(response){
-                    $(`#${permohonanId}--pengaduan`).remove()
+                    tempPermohonan = permohonanId
+                    $('.modal-body').append(`<label class="text-black">Nama Pemilik: ${response.fields.namaPemilik}</label>
+                    <br>
+                    <label class="text-black">Nomor Telepon Pemilik: ${response.fields.nomorTeleponPemilik}</label>
+                    <br>
+                    <label class="text-black">Alamat Pemilik: ${response.fields.alamatPemilik}</label>
+                    <br>
+                    <label class="text-black">Nama Usaha: ${response.fields.namaUsaha}</label>
+                    <br>
+                    <label class="text-black">Jenis Usaha: ${response.fields.jenisUsaha}</label>
+                    <br>
+                    <label class="text-black">Alamat Usaha: ${response.fields.alamatUsaha}</label>
+                    <br>
+                    <label class="text-black">Nomor Telepon Usaha: ${response.fields.nomorTeleponUsaha}</label>`)
                 }
             })
             $('.modal-body').html('')
           }
+
+          $('#hapus').click(function(){
+              $.ajax({
+                  url:`hapus-usaha/${tempPermohonan}`,
+                  type: 'POST',
+                  success: function(response){
+                      $(`#${tempPermohonan}--usaha`).remove()
+                  }
+              })
+          })
         })
     </script>
-
 </head>
 
 <body>
@@ -95,17 +118,24 @@
     </div>
 </nav>
 
-    <nav aria-label="Page navigation example">
-
-        <ul class="pagination justify-content-center mt-3">
-          <li class="page-item"><a class="page-link" href="{% url 'Admin:list_pengaduan_diproses' %}">Laporan Pengaduan Baru</a></li>
-          <li class="page-item"><a class="page-link" href="{% url 'Admin:list_pengaduan_verifikasi' %}">Laporan Pengaduan Selesai</a></li>
-        </ul>
-      </nav>
-
+    <div class="modal fade" id="createTaskModal" tabindex="-1" role="dialog" aria-labelledby="createTaskModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title text-black" id="createTaskModalLabel1">Detail Pendaftaran</h5>
+            </div>
+            <div class="modal-body">
+            </div>
+            <div class="modal-footer">
+                <button id="hapus" type="button" class="btn btn-primary text-white bg-red-700" data-bs-dismiss="modal">Hapus Usaha</button>
+            </div>
+          </div>
+        </div>
+      </div>
 
     <div class="items-center flex justify-center">
       <div class="grid gap-4 grid-cols-1 sm:grid-flow-cols-1 md:grid-cols-3 lg:grid-cols-4 m-4" id="list-pendaftaran"></div>
     </div>
 </body>
+
 {% endblock content %}

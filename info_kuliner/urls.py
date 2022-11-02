@@ -1,11 +1,12 @@
+from unicodedata import name
 from django.urls import path
-from info_kuliner.views import show_tempatkuliner, show_json, show_json_by_id
+from info_kuliner.views import manage_kuliner_json, add_menu_kuliner, delete_menu_kuliner, show_tempat_kuliner
 
 app_name = 'info_kuliner'
 
 urlpatterns = [
-    path('', show_tempatkuliner, name = "show_tempatkuliner"),
-    path('html/', show_tempatkuliner, name = "show_tempatkuliner"),
-    path('json/', show_json, name = "show_json"),
-    path('json/<int:id>/', show_json_by_id, name = "show_json_by_id"),
+    path('', show_tempat_kuliner, name='show_tempat_kuliner'),
+    path('manage-json/', manage_kuliner_json, name = "manage_kuliner_json"),
+    path('add-menu-kuliner', add_menu_kuliner, name='add_menu_kuliner'),
+    path('delete-menu-kuliner', delete_menu_kuliner, name='delete_menu_kuliner')
 ]

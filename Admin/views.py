@@ -1,21 +1,18 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from info_kebutuhan_pokok.models import Kebutuhan_Pokok
-from info_kuliner.models import TempatKuliner
-from info_tempat_wisata.forms import TempatWisataForms
-from info_tempat_wisata.models import TempatWisata
 from sisolo.decorators import admin_only
 from pendaftaran_izin_usaha.models import Usaha, PelakuUsaha
 from django.http import HttpResponse, JsonResponse
 from django.core import serializers
-from berita_isu_terkini.forms import Create
-from django.shortcuts import redirect
 from berita_isu_terkini.models import Berita
 from sisolo.models import User
 from Admin.forms import AlasanDitolak, NomorIzinUsaha
 from django.views.decorators.csrf import csrf_exempt
-from info_transportasi_umum.models import Transportation, Route, StopPoint
 from info_transportasi_umum.forms import TransportationForm, RouteForm, StopPointForm, DeleteTransportationForm
+from layanan_pengaduan.models import Pengaduan
+from info_transportasi_umum.forms import TransportationForm, RouteForm, StopPointForm, DeleteTransportationForm
+from info_sarana_kesehatan.forms import HealthCenterForm, DeleteHealthCenterForm
 
 @login_required(login_url='/login/')
 @admin_only
@@ -109,15 +106,17 @@ def set_diterima_pendaftaran(request, permohonanId):
             usaha.statusPendaftaran = 'Diterima'
             usaha.nomorIzinUsaha = form.cleaned_data['nomorIzinUsaha']
             usaha.save()
-
-            if (usaha.jenisUsaha == 'Kuliner'):
-                print('Kuliner')
-            elif (usaha.jenisUsaha == 'Tempat Wisata'):
-                print('Tempat Wisata')
-            else:
-                print('Menjual Bahan Pokok')
-
             return HttpResponse(status=202)
+
+@login_required(login_url='/login/')
+@csrf_exempt
+@admin_only
+def hapus_usaha(request, permohonanId):  #Semuanya pake ini kalau mau hapus usaha
+    if request.method == 'POST':
+        usaha = Usaha.objects.get(pk = permohonanId)
+        usaha.delete()
+        return HttpResponse(status=202)
+
 
 @login_required(login_url='/login/')
 @admin_only
@@ -173,59 +172,30 @@ def set_ditolak_pelaku_usaha(request, pkPemohon):
 
 @login_required(login_url='/sisolo/login/')
 @admin_only
-def tempat_wisata_baru(request):
-    if request.method == 'POST':
-        wisata_title = request.POST.get['wisata_title']
-        wisata_description = request.POST.get['wisata_description']
-        wisata_highlight = request.POST.get['wisata_highlight']
-        wisata_image = request.POST.get['wisata_image']
-        tempatwisata = TempatWisata(wisata_title=wisata_title, wisata_description=wisata_description, wisata_image=wisata_image, wisata_highlight=wisata_highlight)
-        tempatwisata.save()
-        return HttpResponse("Tempat wisata: " + wisata_title + " berhasil ditambahkan!")
-
+def show_list_wisata(request):  #Untuk nampilin data wisata
     context = {}
-    return render(request, 'add_tempat_wisata.html', context)
-
-# @login_required(login_url='/sisolo/login/')
-# @admin_only
-# def delete_wisata(request, id):
-#      if request.method == "POST":
-#         ref_name = request.POST.get('ref_name')
-#         tempatwisata = TempatWisata.objects.get(ref_name=ref_name)
-#         tempatwisata.delete()
-
-#         return HttpResponse("Transportasi: " + tempatwisata.name + " berhasil dihapus!")
-    
-#     context = {}
-#     return render(request, 'delete_wisata.html', context)
+    return render(request, 'list_wisata.html', context)
 
 @login_required(login_url='/sisolo/login/')
 @admin_only
-def tempat_kuliner_baru(request):
-    if request.method == 'POST':
-        kuliner_title = request.POST.get['kuliner_title']
-        kuliner_description = request.POST.get['kuliner_description']
-        kuliner_highlight = request.POST.get['kuliner_highlight']
-        kuliner_image = request.POST.get['kuliner_image']
-        tempatkuliner = TempatKuliner(kuliner_title=kuliner_title, kuliner_description=kuliner_description, kuliner_image=kuliner_image, kuliner_highlight=kuliner_highlight)
-        tempatkuliner.save()
-        return HttpResponse("Tempat kuliner: " + kuliner_title + " berhasil ditambahkan!")
-
+def show_list_kuliner(request):  #Untuk nampilin data kuliner
     context = {}
-    return render(request, 'add_tempat_kuliner.html', context)
+    return render(request, 'list_kuliner.html', context)
+
+@login_required(login_url='/sisolo/login/')
+@admin_only
 def add_transport(request):
     if request.method == "POST":
         form = TransportationForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
+            request.session['last_activity'] = "add transportation"
             return HttpResponse("Transportasi: " + form.cleaned_data['name'] + " berhasil ditambahkan!")
         else:
             return HttpResponse("Transportasi tidak berhasil ditambahkan!")
     
     context = {'form': TransportationForm()}
     return render(request, 'add_transportation.html', context)
-
-    return HttpResponse(status=202)
 
 @login_required(login_url='/login/')
 @admin_only
@@ -268,6 +238,7 @@ def add_route(request):
         form = RouteForm(request.POST)
         if form.is_valid():
             form.save()
+            request.session['last_activity'] = "add route"
             return HttpResponse("Rute: " + form.cleaned_data['from_to'] + " berhasil ditambahkan!")
         else:
             return HttpResponse("Rute tidak berhasil ditambahkan!")
@@ -282,6 +253,7 @@ def add_stop_point(request):
         form = StopPointForm(request.POST)
         if form.is_valid():
             form.save()
+            request.session['last_activity'] = "add stop point"
             return HttpResponse("Titik pemberhentian: " + form.cleaned_data['stop_name'] + " berhasil ditambahkan!")
         else:
             return HttpResponse("Titik pemberhentian tidak berhasil ditambahkan!")
@@ -298,6 +270,7 @@ def delete_transport(request):
             transportation = form.cleaned_data['transportation']
             transport_name = transportation.name
             transportation.delete()
+            request.session['last_activity'] = "delete transportation"
             return HttpResponse("Transportasi: " + transport_name + " berhasil dihapus!")
         else:
             return HttpResponse("Transportasi tidak berhasil dihapus!")
@@ -308,7 +281,46 @@ def delete_transport(request):
 @login_required(login_url='/login/')
 @admin_only
 def pengaturan_info_transport(request):
-    return render(request, "pengaturan_info_transport.html", {})
+    context = {'last_activity': request.session.get('last_activity', "")}
+    return render(request, "pengaturan_info_transport.html", context)
+
+@login_required(login_url='/sisolo/login/')
+@admin_only
+def add_healthcenter(request):
+    if request.method == "POST":
+        form = HealthCenterForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            request.session['last_activity'] = "add health center"
+            return HttpResponse("Tempat layanan kesehatan: " + form.cleaned_data['name'] + " berhasil ditambahkan!")
+        else:
+            return HttpResponse("Tempat layanan kesehatan tidak berhasil ditambahkan!")
+    
+    context = {'form': HealthCenterForm()}
+    return render(request, 'add_healthcenter.html', context)
+
+@login_required(login_url='/sisolo/login/')
+@admin_only
+def delete_healthcenter(request):
+    if request.method == "POST":
+        form = DeleteHealthCenterForm(request.POST)
+        if form.is_valid():
+            healthcenter = form.cleaned_data['healthcenter']
+            healthcenter_name = healthcenter.name
+            healthcenter.delete()
+            request.session['last_activity'] = "delete transportation"
+            return HttpResponse("Tempat layanan kesehatan: " + healthcenter_name + " berhasil dihapus!")
+        else:
+            return HttpResponse("Tempat layanan kesehatan tidak berhasil dihapus!")
+    
+    context = {'form': DeleteTransportationForm()}
+    return render(request, 'delete_transportation.html', context)
+
+@login_required(login_url='/login/')
+@admin_only
+def pengaturan_info_sarana_kesehatan(request):
+    context = {'last_activity': request.session.get('last_activity', "")}
+    return render(request, "pengaturan_info_sarana_kesehatan.html", context)
 
 @login_required(login_url='/login/')
 @admin_only
@@ -324,3 +336,29 @@ def list_pengaduan_verifikasi(request):
 @admin_only
 def list_saran(request):
     return render(request, "list_saran.html", {})
+
+@login_required(login_url='/login/')
+@admin_only
+def list_pengaduan_diproses(request):
+    return render(request, "list_pengaduan_diproses.html", {})
+
+@login_required(login_url='/login/')
+@admin_only
+def list_pengaduan_verifikasi(request):
+    return render(request, "list_pengaduan_verifikasi.html", {})
+
+@login_required(login_url='/login/')
+@admin_only
+def list_saran(request):
+    return render(request, "list_saran.html", {})
+
+@login_required(login_url='/login/')
+@csrf_exempt
+@admin_only
+def set_pengaduan_selesai(request, permohonanId):
+    if request.method == 'POST':
+        pengaduan = Pengaduan.objects.get(pk = permohonanId)
+        pengaduan.status_pengaduan = True
+        pengaduan.save()
+
+        return HttpResponse(status=202)

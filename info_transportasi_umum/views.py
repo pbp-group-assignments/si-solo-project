@@ -12,20 +12,14 @@ def show_transport_info(request):
 
     return render(request, 'transportation_info.html', context)
 
-def search_transport(request):
-    if request.method == "GET":
-        search_keyword = request.GET.get('search_keyword')
-        context = {
-        'transportation': Transportation.objects.filter(name__icontains=search_keyword)
-        }
+# def search_transport(request):
+#     if request.method == "POST":
+#         search_keyword = request.POST.get('search_keyword')
+#         show_json_transport(request)
 
-        return render(request, 'transportation_info.html', context)
-    
-    context = {
-        'transportation': Transportation.objects.all()
-    }
+#         return HttpResponse("Status code: 200")
 
-    return render(request, 'transportation_info.html', context)
+#     return render(request, 'transportation_info.html', {})
 
 def show_json_transport(request):
     data = Transportation.objects.all()
