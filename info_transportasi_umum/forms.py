@@ -7,9 +7,9 @@ class TransportationForm(ModelForm):
         model = Transportation
         fields = '__all__'
         labels = {
-            "name": "Nama transportasi:",
+            "name": "Nama transportasi umum:",
             "description": "Deskripsi:",
-            "image": "Gambar transportasi berukuran 4x3:"
+            "image": "Foto transportasi umum:"
         }
 
     def __init__(self, *args, **kwargs):

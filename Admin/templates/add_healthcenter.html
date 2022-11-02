@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block meta %}
+<title>Tambah Tempat Layanan Kesehatan</title>
+{% endblock meta %}
+
+{% block content %}
+<div class="row-center" style="height: 100px; display: flex; justify-content: center; align-items: center; background-color: black;">
+    <strong style="font-size: 30px; color: white">Tambah Tempat Layanan Kesehatan</strong>
+</div>
+<br>
+
+<div class="add-healthcenter">
+    <div class="card border-dark" style="margin:auto; width:60%; padding:10px">
+        <div class="card-body">
+            <h4 class="card-title" style="font-size: 25px; font-weight: bold; padding-bottom: 5px">Tambah tempat layanan kesehatan baru disini:</h4>
+            <form method="POST" id="add-healthcenter" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <br>
+                <button class="btn" type="submit" style="align-self: center; width: 100%; padding-bottom: 5px; background-color: #721ad6; color: white">Tambah</button>
+            </form>
+        </div>
+    </div>
+    <br>
+</div>
+
+<script>
+    $(document).ready(function(){
+        $('#add-healthcenter').submit(function() {
+            // create an AJAX call
+            var formData = new FormData(this);
+            $.ajax({
+                data: formData,
+                method: 'POST', // GET or POST
+                url: "{% url 'Admin:add_healthcenter' %}",
+                // on success
+                success: function(response) {
+                    alert(response);
+                },
+                error: function(response) {
+                    alert("Penambahan tempat layanan kesehatan gagal!")
+                },
+                cache: false,
+                contentType: false,
+                processData: false
+            });
+            return false;
+        });
+    });
+</script>
+{% endblock content %}
