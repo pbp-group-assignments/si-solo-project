@@ -8,13 +8,9 @@ from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
 # Create your views here.
 
-@login_required(login_url='/login/')
-@allowed_users(allowed_roles=['Pelaku Usaha', 'Pengguna'])
 def show_kebutuhan_pokok(request):
     return render(request, 'show_kebutuhan_pokok.html')
 
-@login_required(login_url='/login/')
-@allowed_users(allowed_roles=['Pelaku Usaha', 'Pengguna'])
 def manage_kebutuhan_json(request):
     data = KebutuhanPokok.objects.filter(tokoKebutuhan = request.GET.get('id'))
     return HttpResponse(serializers.serialize("json", data), content_type="application/json")

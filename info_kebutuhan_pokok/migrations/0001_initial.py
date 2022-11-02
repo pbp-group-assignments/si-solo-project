@@ -21,16 +21,7 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.CreateModel(
-
-            name='KebutuhanPokok',
-            fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('namaKebutuhan', models.CharField(blank=True, max_length=150)),
-                ('hargaKebutuhan', models.CharField(blank=True, max_length=50)),
-                ('deskripsiKebutuhan', models.CharField(blank=True, max_length=150)),
-                ('tokoKebutuhan', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='pendaftaran_izin_usaha.usaha')),
-
+        migrations.CreateModel(            
             name='Kebutuhan_Pokok',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
