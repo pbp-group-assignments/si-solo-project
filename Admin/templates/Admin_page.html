@@ -88,22 +88,6 @@
     </div>
   </div>
 
-<div class="card text-white bg-dark mb-3 transform transition duration-500 hover:scale-105 flex-auto" style="width: 17rem;">
-    <img class="card-img-top" src="https://t4.ftcdn.net/jpg/02/55/73/91/360_F_255739172_533jjNvdeTQFm1gtkDcPyd3RSKTMe5Ta.jpg" alt="Card image cap">
-    <div class="card-body">
-      <h5 class="card-title">Tambah Berita</h5>
-      <a href="{% url 'Admin:add_berita' %}" class="btn btn-primary">Tambah</a>
-    </div>
-  </div>
-
-<div class="card text-white bg-dark mb-3 transform transition duration-500 hover:scale-105 flex-auto" style="width: 17rem;">
-    <img class="card-img-top" src="https://cdn.ajnn.net/files/images/20200401-shutterstock-422690395-converted.png" alt="Card image cap">
-    <div class="card-body">
-      <h5 class="card-title">Tambah Kebutuhan</h5>
-      <a href="{% url 'Admin:add_kebutuhan' %}" class="btn btn-primary">Tambah</a>
-    </div>
-  </div>
-
     <div class="card text-white bg-dark mb-3 transform transition duration-500 hover:scale-105 flex-auto" style="width: 17rem;">
       <img class="card-img-top" src="{% static 'images/info-transport-adminpage.jpg' %}" alt="Card image cap">
       <div class="card-body">
@@ -111,13 +95,7 @@
         <a href="{% url 'Admin:pengaturan_info_transport' %}" class="btn btn-primary">Lihat Pengaturan</a>
       </div>
     </div>
-    <div class="card text-white bg-dark mb-3 transform transition duration-500 hover:scale-105 flex-auto" style="width: 17rem;">
-      <img class="card-img-top" src="{% static 'images/saran_pembangunan_cover.jpg' %}" alt="Card image cap">
-      <div class="card-body">
-        <h5 class="card-title">Saran Pembangunan</h5>
-        <a href="" class="btn btn-primary">Lihat Daftar Saran</a>
-      </div>
-    </div>
+    
     <div class="card text-white bg-dark mb-3 transform transition duration-500 hover:scale-105 flex-auto" style="width: 17rem;">
       <img class="card-img-top" src="https://asset.kompas.com/crops/30D92p6kGSJ30LJcZGhfC3HW3fw=/89x120:788x586/750x500/data/photo/2019/07/09/3088223511.jpg" alt="Card image cap">
       <div class="card-body">
@@ -134,28 +112,21 @@
         </div>
     </div>
 
-</div>
-<div class="card text-white bg-dark mb-3 transform transition duration-500 hover:scale-105 flex-auto" style="width: 17rem;">
-  <img class="card-img-top" src="{% static 'images/pengaduan_cover.jpg' %}" alt="Card image cap">
-  <div class="card-body">
-    <h5 class="card-title">Layanan Pengaduan</h5>
-    <a href="{% url 'Admin:list_pengaduan_verifikasi' %}" class="btn btn-primary">Lihat Daftar Pengaduan</a>
-  </div>
-</div>
-</div>
-<div class="card text-white bg-dark mb-3 transform transition duration-500 hover:scale-105 flex-auto" style="width: 17rem;">
-  <img class="card-img-top" src="{% static 'images/saran_cover.jpg' %}" alt="Card image cap">
-      <img class="card-img-top" src="{% static 'images/layanan_pengaduan_cover.jpg' %}" alt="Card image cap">
-
-
-</div>
-<div class="card text-white bg-dark mb-3 transform transition duration-500 hover:scale-105 flex-auto" style="width: 17rem;">
-  <img class="card-img-top" src="{% static 'images/saran_pembangunan_cover.jpg' %}" alt="Card image cap">
-  <div class="card-body">
-    <h5 class="card-title">Saran Pembangunan</h5>
-    <a href="{% url 'Admin:list_saran' %}" class="btn btn-primary">Lihat Daftar Saran</a>
-  </div>
-</div>
+    <div class="card text-white bg-dark mb-3 transform transition duration-500 hover:scale-105 flex-auto" style="width: 17rem;">
+      <img class="card-img-top" src="{% static 'images/pengaduan_cover.jpg' %}" alt="Card image cap">
+      <div class="card-body">
+        <h5 class="card-title">Layanan Pengaduan</h5>
+        <a href="{% url 'Admin:list_pengaduan_verifikasi' %}" class="btn btn-primary">Lihat Daftar Pengaduan</a>
+      </div>
     </div>
+
+    <div class="card text-white bg-dark mb-3 transform transition duration-500 hover:scale-105 flex-auto" style="width: 17rem;">
+      <img class="card-img-top" src="{% static 'images/saran_pembangunan_cover.jpg' %}" alt="Card image cap">
+      <div class="card-body">
+        <h5 class="card-title">Saran Pembangunan</h5>
+        <a href="{% url 'Admin:list_saran' %}" class="btn btn-primary">Lihat Daftar Saran</a>
+      </div>
+    </div>
+</div>
 
 {% endblock content %}
