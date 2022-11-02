@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from info_kebutuhan_pokok.models import Kebutuhan_Pokok
-from info_tempat_wisata.models import TempatWisata
+from info_tempat_wisata.models import DaftarWisata
 from sisolo.decorators import admin_only
 from pendaftaran_izin_usaha.models import Usaha, PelakuUsaha
 from django.http import HttpResponse, JsonResponse
@@ -173,19 +173,9 @@ def set_ditolak_pelaku_usaha(request, pkPemohon):
 
 @login_required(login_url='/sisolo/login/')
 @admin_only
-@csrf_exempt
-def tempat_wisata_baru(request):
-    if request.method == 'POST':
-        wisata_title = request.POST.get['wisata_title']
-        wisata_description = request.POST.get['wisata_description']
-        wisata_highlight = request.POST.get['wisata_highlight']
-        wisata_image = request.POST.get['wisata_image']
-        tempatwisata = TempatWisata(wisata_title=wisata_title, wisata_description=wisata_description, wisata_image=wisata_image, wisata_highlight=wisata_highlight)
-        tempatwisata.save()
-        return HttpResponse("Tempat wisata: " + wisata_title + " berhasil ditambahkan!")
-
+def show_list_wisata(request):  #Untuk nampilin data wisata
     context = {}
-    return render(request, 'add_tempat_wisata.html', context)
+    return render(request, 'list_wisata.html', context)
 
 @login_required(login_url='/sisolo/login/')
 @admin_only

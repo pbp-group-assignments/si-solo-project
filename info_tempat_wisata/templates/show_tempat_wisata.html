@@ -13,7 +13,7 @@
           $.get(`/daftar-usaha/semua-usaha-json`, function(data){
             console.log(data)
             for (let i = 0; i < data.length; i++){
-                $('#list-pendaftaran').append(`${data[i].fields.statusPendaftaran == 'Diterima' && data[i].fields.jenisUsaha == 'Kuliner' ? 
+                $('#list-pendaftaran').append(`${data[i].fields.statusPendaftaran == 'Diterima' && data[i].fields.jenisUsaha == 'Tempat Wisata' ? 
                 `<div id="${data[i].pk}--daftar" class="card text-white bg-dark mb-3 transform transition duration-500 hover:scale-105 flex-auto" style="max-width: 17rem; min-width: 17rem;"> 
                 <div class="card-header text-white bg-dark mb-3">${data[i].fields.namaUsaha}
           <div class="card-body text-white bg-dark mb-3">
@@ -27,14 +27,14 @@
 
           menu = (daftarId) => {
               $.ajax({
-                url: `/tempat-kuliner/manage-json`,
+                url: `/tempat-wisata/manage-json`,
                 type: 'GET',
                 data:{id:daftarId},
                 success: function(response){
                   for (let i = 0; i < response.length; i++){
-                    $('#menu-modal-body').append(`<p>Nama Menu: ${response[i].fields.namaMenu}</p>
-                    <p>Harga Menu: ${response[i].fields.hargaMenu}</p>
-                    <p>Deskripsi Menu: ${response[i].fields.deskripsiMenu}</p>
+                    $('#menu-modal-body').append(`<p>Nama Menu: ${response[i].fields.namaWisata}</p>
+                    <p>Harga Menu: ${response[i].fields.hargaWisata}</p>
+                    <p>Deskripsi Menu: ${response[i].fields.deskripsiWisata}</p>
                     <hr>`)
                   }
                 }
