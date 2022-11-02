@@ -4,6 +4,7 @@ from layanan_pengaduan.models import Pengaduan
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse, JsonResponse, HttpResponseBadRequest
+from sisolo.decorators import allowed_users
 from sisolo.models import User
 from datetime import datetime
 from django.core import serializers
@@ -17,43 +18,44 @@ import layanan_pengaduan
 # Create your views here.
 @login_required(login_url='/login/')
 @csrf_exempt
+def index(request):
+    form = FormPengaduan()
+    return render(request, "daftar_pengaduan.html", {'form':form})
+
+@login_required(login_url='/login/')
+@csrf_exempt
 def show_pengaduan(request):
     form = forms.FormPengaduan()
     if request.method == 'POST':
         form = FormPengaduan(request.POST)
         if form.is_valid():
-            pengaduan_baru = FormPengaduan(
-                                        judul_pengaduan = form.cleaned_data['judul_pengaduan'],
-                                        deskripsi_pengaduan = form.cleaned_data['deskripsi_pengaduan']
+            user = User.objects.get(user = request.user)
+            tanggal_pengaduan = datetime.date.today()
+            judul_pengaduan = form.cleaned_data['judul_pengaduan']
+            deskripsi_pengaduan = form.cleaned_data['deskripsi_pengaduan']
+            status_pengaduan = False
+            pengaduan_baru = Pengaduan(user = user,
+                                            tanggal_pengaduan = tanggal_pengaduan,
+                                            judul_pengaduan = judul_pengaduan,
+                                            deskripsi_pengaduan = deskripsi_pengaduan,
+                                            status_pengaduan = status_pengaduan
             )
             pengaduan_baru.save()
-            return redirect('layanan_pengaduan:show_pengaduan')
-    context = {'form': form}
-    return render(request, 'daftar_pengaduan.html', context)
+            response = {
+                'pk':pengaduan_baru.pk,
+                'fields':{
+                    'tanggal_pengaduan':pengaduan_baru.tanggal_pengaduan,
+                    'judul_pengaduan':pengaduan_baru.judul_pengaduan,
+                    'deskripsi_pengaduan':pengaduan_baru.deskripsi_pengaduan,
+                    'status_pengaduan':pengaduan_baru.status_pengaduan,
+                }
+            }
+            return JsonResponse(response)
+    return HttpResponseBadRequest()
 
 @login_required(login_url='/login/')
+@allowed_users(allowed_roles=['Admin'])
 def pengaduan_json(request):
-    daftar_pengaduan = Pengaduan.objects.all()
-    return HttpResponse(serializers.serialize("json", daftar_pengaduan), content_type="application/json")
-
-@login_required(login_url='/login/')
-def pengaduan_json_by_id(request, id):
-    daftar_pengaduan = Pengaduan.objects.filter(pk=id)
-    return HttpResponse(serializers.serialize("json", daftar_pengaduan), content_type="application/json")
-
-@login_required(login_url='/login/')
-@csrf_exempt
-def ajukan_pengaduan(request):
-    form = forms.FormPengaduan()
-    if request.method == 'POST':
-        form = FormPengaduan(request.POST)
-        if form.is_valid():
-            pengaduan_baru = FormPengaduan(
-                                        judul_pengaduan = form.cleaned_data['judul_pengaduan'],
-                                        deskripsi_pengaduan = form.cleaned_data['deskripsi_pengaduan']
-            )
-            pengaduan_baru.save()
-            return redirect('layanan_pengaduan:show_pengaduan')
-    form = FormPengaduan()
-    context = {'form': form}
-    return render(request, 'daftar_pengaduan.html', context)
+    user = User.objects.get(user = request.user)
+    data = Pengaduan.objects.filter(user = user)
+    return HttpResponse(serializers.serialize("json", data), content_type="application/json")
