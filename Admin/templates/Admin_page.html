@@ -6,6 +6,55 @@
 {% endblock meta %}
 
 {% block content %}
+<nav class="navbar navbar-custom">
+  <div class="container-fluid">
+      <a href="/" class="navbar-brand">SISOLO</a>
+  
+      <div class="navbar-right">
+          
+          <div class="modal fade" id="nomord" tabindex="-1">
+              <div class="modal-dialog">
+                  <div class="modal-content" style="color:black;">
+                      <div class="modal-header">
+                          <h5 class="modal-title">Nomor Darurat</h5>
+                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                      </div>
+                      <div class="modal-body">
+                          <div>
+                              <a href="tel:+62-271712600">Poltabes Solo: (0271)712600</a>
+                          </div>
+                          <div>
+                              <a href="tel:+62-119">Ambulans SPGDT: 119</a>
+                          </div>
+                          <div>
+                              <a href="tel:+62-113">Pemadam Kebakaran: 113</a>
+                          </div>
+                          <div>
+                              <a href="tel:+62-271722091">Gangguan Listrik PLN: (0271)722091</a>
+                          </div>
+                          <div>
+                              <a href="tel:+62-271714039">Stasiun Solo Balapan: (0271)714039</a>
+                          </div>
+                          <div>
+                              <a href="tel:+62-271738900">Terminal Tortonadi: (0271)738900</a>
+                          </div>
+                      </div>
+                      <div class="modal-footer">
+                          <button type="button" class="btn btn-secondary text-black" data-bs-dismiss="modal">Close</button>
+                      </div>
+                      
+                  </div>
+              </div>
+          </div>
+          
+          
+          <a class="btn btn-danger btn-sm btn-outline-secondary" style="margin:5px; color: white;" data-bs-toggle="modal" data-bs-target="#nomord">Nomor Darurat</a>
+          
+          <a class="btn btn-sm btn-outline-secondary" style="margin:5px; color: black;" href="{% url 'sisolo:logout_user' %}" >Logout</a>
+      </div>
+  </div>
+</nav>
+
 <div class="grid gap-4 grid-cols-1 sm:grid-flow-cols-1 md:grid-cols-3 lg:grid-cols-4 m-4">
   <div class="card text-white bg-dark mb-3 transform transition duration-500 hover:scale-105 flex-auto" style="width: 17rem;">
       <img class="card-img-top" src="{% static 'images/176-1765378_business-silhouette-png-business-silhouette-transparent.png' %}" alt="Card image cap">
@@ -39,6 +88,22 @@
       </div>
     </div>
 
+<div class="card text-white bg-dark mb-3 transform transition duration-500 hover:scale-105 flex-auto" style="width: 17rem;">
+    <img class="card-img-top" src="https://t4.ftcdn.net/jpg/02/55/73/91/360_F_255739172_533jjNvdeTQFm1gtkDcPyd3RSKTMe5Ta.jpg" alt="Card image cap">
+    <div class="card-body">
+      <h5 class="card-title">Tambah Berita</h5>
+      <a href="{% url 'Admin:add_berita' %}" class="btn btn-primary">Tambah</a>
+    </div>
+  </div>
+
+<div class="card text-white bg-dark mb-3 transform transition duration-500 hover:scale-105 flex-auto" style="width: 17rem;">
+    <img class="card-img-top" src="https://cdn.ajnn.net/files/images/20200401-shutterstock-422690395-converted.png" alt="Card image cap">
+    <div class="card-body">
+      <h5 class="card-title">Tambah Kebutuhan</h5>
+      <a href="{% url 'Admin:add_kebutuhan' %}" class="btn btn-primary">Tambah</a>
+    </div>
+  </div>
+
     <div class="card text-white bg-dark mb-3 transform transition duration-500 hover:scale-105 flex-auto" style="width: 17rem;">
       <img class="card-img-top" src="{% static 'images/info-transport-adminpage.jpg' %}" alt="Card image cap">
       <div class="card-body">
@@ -57,6 +122,7 @@
     <div class="card text-white bg-dark mb-3 transform transition duration-500 hover:scale-105 flex-auto" style="width: 17rem;">
       <img class="card-img-top" src="{% static 'images/info-transport-adminpage.jpg' %}" alt="Card image cap">
       <div class="card-body">
+
         <h5 class="card-title">Info Transportasi Umum</h5>
         <a href="{% url 'Admin:pengaturan_info_transport' %}" class="btn btn-primary">Lihat Pengaturan</a>
       </div>
@@ -79,10 +145,23 @@
 </div>
 <div class="card text-white bg-dark mb-3 transform transition duration-500 hover:scale-105 flex-auto" style="width: 17rem;">
   <img class="card-img-top" src="{% static 'images/saran_cover.jpg' %}" alt="Card image cap">
+      <img class="card-img-top" src="{% static 'images/layanan_pengaduan_cover.jpg' %}" alt="Card image cap">
+      <div class="card-body">
+        <h5 class="card-title">Layanan Pengaduan</h5>
+        <a href="{% url 'Admin:list_pengaduan_verifikasi' %}" class="btn btn-primary">Lihat Daftar Pengaduan</a>
+      </div>
+    </div>
+</div>
+<div class="card text-white bg-dark mb-3 transform transition duration-500 hover:scale-105 flex-auto" style="width: 17rem;">
+  <img class="card-img-top" src="{% static 'images/saran_pembangunan_cover.jpg' %}" alt="Card image cap">
   <div class="card-body">
     <h5 class="card-title">Saran Pembangunan</h5>
     <a href="{% url 'Admin:list_saran' %}" class="btn btn-primary">Lihat Daftar Saran</a>
   </div>
 </div>
+        <h5 class="card-title">Usaha Kuliner</h5>
+        <a href="{% url 'Admin:show_list_kuliner' %}" class="btn btn-primary">Lihat List Usaha Kuliner</a>
+      </div>
+    </div>
 </div>
 {% endblock content %}
