@@ -1,83 +1,58 @@
-import json
+from urllib import response
 from django.shortcuts import render
-from info_tempat_wisata.forms import TempatWisataForms
-from info_tempat_wisata.models import TempatWisata
 from django.http import HttpResponse, JsonResponse, HttpResponseBadRequest
 from django.core import serializers
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
+from info_tempat_wisata.models import DaftarWisata
+from pendaftaran_izin_usaha.models import Usaha
 from sisolo.decorators import admin_only, allowed_users
 from django.shortcuts import redirect
 
-def is_ajax(request):
-    return request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest'
+@login_required(login_url='/login/')
+@allowed_users(allowed_roles=['Pelaku Usaha', 'Pengguna'])
+def show_tempat_wisata(request):
+    return render(request, 'show_tempat_wisata.html')
 
-def show_tempatwisata(request):
-    if is_ajax(request=request) : 
-        p = TempatWisata(wisata_title='Test', wisata_description='Berkeley', wisata_highlight='Data baru', image_url='https://filestore.community.support.microsoft.com/api/images/371db990-f99c-49e3-a230-c7de0458f791?upload=true')
-        p.save()
-        context = TempatWisata.objects.all().values()
-        arr = []
-        for i in context :
-            arr += [i]
-        return JsonResponse(arr, safe=False)
-    else :
-        return render(request, "tempat_wisata.html", {})
-    
+@login_required(login_url='/login/')
+@allowed_users(allowed_roles=['Pelaku Usaha', 'Pengguna'])
+def manage_wisata_json(request):
+    data = DaftarWisata.objects.filter(tempatWisata = request.GET.get('id'))
+    return HttpResponse(serializers.serialize("json", data), content_type="application/json")
 
-#    return render(request, "tempatwisata.html", context)
+@login_required(login_url='/login/')
+@csrf_exempt
+@allowed_users(allowed_roles=['Pelaku Usaha', 'Pengguna'])
+def add_deskripsi_wisata(request):
+    if request.method == 'POST':
+        idUsaha = request.POST.get('daftarId')
+        tempatWisata = Usaha.objects.get(pk = idUsaha)
+        namaWisata = request.POST.get('namaWisata')
+        hargaWisata = request.POST.get('hargaWisata')
+        deskripsiWisata = request.POST.get('deskripsiWisata')
+        tempatWisata = DaftarWisata(tempatWisata = tempatWisata, namaWisata = namaWisata, hargaWisata = hargaWisata, deskripsiWisata = deskripsiWisata)
+        tempatWisata.save()
 
-def show_json(request):
-    tempatwisata_data = TempatWisata.objects.all()
-    return HttpResponse(serializers.serialize("json", tempatwisata_data), content_type="application/json")
+        response = {
+            'pk':tempatWisata.pk,
+            'fields':{
+                'namaWisata':tempatWisata.namaWisata,
+                'hargaWisata':tempatWisata.hargaWisata,
+                'deskripsiWisata':tempatWisata.deskripsiWisata,
+            }
+        }
 
-def show_json_by_id(request, id):
-    tempatwisata_data = TempatWisata.objects.filter(pk=id)
-    return HttpResponse(serializers.serialize("json", tempatwisata_data), content_type="application/json")
+        return JsonResponse(response)
 
-# @login_required(login_url='/sisolo/login/')
-# @csrf_exempt
-# @admin_only
-# def add_tempat_wisata(request):
-#     if request.user.is_authenticated:
-#         form = TempatWisataForms(request.POST)
-#         if request.method == 'POST' and form.is_valid():
-#             wisata_title = form.cleaned_data['title']
-#             wisata_description = form.cleaned_data['description']
-#             wisata_highlight = form.cleaned_data['highlight']
-#             wisata_image = request.POST.get('image')
-#             tempat_baru = TempatWisata.objects.create(title=wisata_title, description=wisata_description, highlight=wisata_highlight,
-#                                                 image=wisata_image)
-#             return redirect('info_tempat_wisata:show_tempatwisata')
-        
-#         context = {
-#             'form' : form,
-#         }
-#         return render(request, 'add_tempat_wisata.html', context)
-#     else:
-#         return HttpResponseBadRequest()
-
-
-# @login_required(login_url='/login/')
-# @csrf_exempt
-# @allowed_users(allowed_roles=['Pelaku Usaha'])
-# def daftar_wisata_baru(request):
-#     if request.method == 'POST':
-#         wisata_title = request.POST.get('wisata_title')
-#         wisata_description = request.POST.get('wisata_description')
-#         wisata_highlight = request.POST.get('wisata_highlight')
-#         #( wisata_title = wisata_title, wisata_description = wisata_description, wisata_highlight = wisata_highlight)
-#         usaha.save()
-
-#         response = {
-#             'pk':usaha.pk,
-#             'fields':{
-#                 'statusPendaftaran':usaha.statusPendaftaran,
-#                 'namaUsaha':usaha.namaUsaha,
-#                 'jenisUsaha':usaha.jenisUsaha,
-#                 'alamatUsaha':usaha.alamatUsaha,
-#                 'nomorTeleponUsaha':usaha.nomorTeleponUsaha,
-#             }
-#         }
-
-#       return JsonResponse(response)
+@login_required(login_url='/login/')
+@csrf_exempt
+@allowed_users(allowed_roles=['Pelaku Usaha', 'Pengguna'])
+def delete_deskripsi_wisata(request):
+    if request.method == 'POST':
+        idMenuString = request.POST.get('PKMenu')
+        if (DaftarWisata.objects.filter(pk = idMenuString).exists()):
+            DaftarWisata.objects.filter(pk = idMenuString).delete()
+            response = {'status':'YES'}
+        else:
+            response = {'status':'NO'}
+        return JsonResponse(response)

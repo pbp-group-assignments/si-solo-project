@@ -1,22 +1,23 @@
 {% extends 'base.html' %}
 
 {% block meta %}
-<title>List Usaha Kuliner</title>
+<title>List Tempat Wisata</title>
 {% endblock meta %}
 
 {% block content %}
 <head>
     <script>
         $(document).ready(function(){
-          $.get('list-pendaftaran-json', function(data){
+          $.get('/Admin/list-pendaftaran-json', function(data){
             for (let i = 0; i < data.length; i++){
-                if (data[i].fields.statusPendaftaran  == 'Diterima' && data[i].fields.jenisUsaha == 'Kuliner'){
+                console.log('masuks')
+                if (data[i].fields.statusPendaftaran  == 'Diterima' && data[i].fields.jenisUsaha == 'Tempat Wisata'){
                     $('#list-pendaftaran').append(`<div id="${data[i].pk}--usaha" class="card text-white bg-dark mb-3 transform transition duration-500 hover:scale-105 flex-auto" style="max-width: 17rem; min-width: 17rem;">
                       <div class="card-header text-white bg-dark mb-3"> ${data[i].fields.namaUsaha}  -  ${data[i].fields.namaPemilik}
                       <div class="card-body text-white bg-dark mb-3">
                         <h4 class="card-title text-white bg-dark mb-3" style="text-align: center;">Nama Usaha: ${data[i].fields.alamatUsaha}</h4>
                         <p class="card-text text-white bg-dark mb-4" style="text-align: center;">Nomer Telepon Usaha: ${data[i].fields.nomorTeleponUsaha}</p>
-                        <p class="card-text text-white bg-dark mb-4" style="text-align: center;">Nomer Izin Usaha: ${data[i].fields.nomorIzinUsaha}</p>
+                        <p class="card-text text-white bg-dark mb-4" style="text-align: center;">Nomor Izin Usaha: ${data[i].fields.nomorIzinUsaha}</p>
                         <div class="container text-white bg-dark" style="text-align: center;">
                           <a><button class="button-delete bg-cyan-600"style="width: 75px; height: 30px" ><a data-bs-toggle="modal" data-bs-target="#createTaskModal" onclick="detailPermohonan(${data[i].pk})">Detail</a></button></a>
                         </div>
@@ -55,7 +56,7 @@
 
           $('#hapus').click(function(){
               $.ajax({
-                  url:`hapus-usaha/${tempPermohonan}`,
+                  url:`/Admin/hapus-usaha/${tempPermohonan}`,
                   type: 'POST',
                   success: function(response){
                       $(`#${tempPermohonan}--usaha`).remove()
