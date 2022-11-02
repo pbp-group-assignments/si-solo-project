@@ -195,6 +195,8 @@ def add_transport(request):
     context = {'form': TransportationForm()}
     return render(request, 'add_transportation.html', context)
 
+    return HttpResponse(status=202)
+
 @login_required(login_url='/login/')
 @admin_only
 def add_berita(request):
@@ -277,3 +279,18 @@ def delete_transport(request):
 @admin_only
 def pengaturan_info_transport(request):
     return render(request, "pengaturan_info_transport.html", {})
+
+@login_required(login_url='/login/')
+@admin_only
+def list_pengaduan_diproses(request):
+    return render(request, "list_pengaduan_diproses.html", {})
+
+@login_required(login_url='/login/')
+@admin_only
+def list_pengaduan_verifikasi(request):
+    return render(request, "list_pengaduan_verifikasi.html", {})
+
+@login_required(login_url='/login/')
+@admin_only
+def list_saran(request):
+    return render(request, "list_saran.html", {})
