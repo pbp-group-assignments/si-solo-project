@@ -6,6 +6,7 @@ from Admin.views import add_berita
 from Admin.views import  pendaftaran_pelaku_usaha_json, list_pendaftaran_pelaku_usaha_diproses, set_diterima_pelaku_usaha, list_pendaftaran_pelaku_usaha_diterima
 from Admin.views import set_ditolak_pelaku_usaha, list_pendaftaran_pelaku_usaha_ditolak
 from Admin.views import add_transport, add_route, add_stop_point, delete_transport, pengaturan_info_transport
+from Admin.views import list_pengaduan_diproses, list_pengaduan_verifikasi, list_saran
 
 app_name = 'Admin'
 
@@ -35,4 +36,7 @@ urlpatterns = [
     path('add-stop-point/', add_stop_point, name='add_stop_point'),
     path('delete-transport/', delete_transport, name='delete_transport'),
     path('pengaturan-info-transport/', pengaturan_info_transport, name='pengaturan_info_transport'),
+    path('list-pengaduan-diproses/', list_pengaduan_diproses, name='list_pengaduan_diproses'),
+    path('list-pengaduan-verifikasi/', list_pengaduan_verifikasi, name='list_pengaduan_verifikasi'),
+    path('list-saran/', list_saran, name='list_saran'),
 ]
