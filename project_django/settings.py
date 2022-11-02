@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     'info_kebutuhan_pokok',
     'info_transportasi_umum',
     'info_kuliner',
+    'info_sarana_kesehatan',
 ]
 
 MIDDLEWARE = [

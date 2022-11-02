@@ -13,7 +13,7 @@ from sisolo.models import User
 from Admin.forms import AlasanDitolak, NomorIzinUsaha
 from django.views.decorators.csrf import csrf_exempt
 from info_transportasi_umum.models import Transportation, Route, StopPoint
-from info_transportasi_umum.forms import TransportationForm, RouteForm, StopPointForm, DeleteTransportationForm
+from info_sarana_kesehatan.forms import HealthCenterForm, DeleteHealthCenterForm
 
 @login_required(login_url='/login/')
 @admin_only
@@ -193,17 +193,20 @@ def show_list_kuliner(request):  #Untuk nampilin data kuliner
     context = {}
     return render(request, 'list_kuliner.html', context)
 
+@login_required(login_url='/sisolo/login/')
+@admin_only
 def add_transport(request):
     if request.method == "POST":
         form = TransportationForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
+            request.session['last_activity'] = "add transportation"
             return HttpResponse("Transportasi: " + form.cleaned_data['name'] + " berhasil ditambahkan!")
         else:
             return HttpResponse("Transportasi tidak berhasil ditambahkan!")
     
     context = {'form': TransportationForm()}
-    return render(request, 'add_transportation.html', context)
+    return render(request, 'add_healthcenter.html', context)
 
 @login_required(login_url='/login/')
 @admin_only
@@ -246,6 +249,7 @@ def add_route(request):
         form = RouteForm(request.POST)
         if form.is_valid():
             form.save()
+            request.session['last_activity'] = "add route"
             return HttpResponse("Rute: " + form.cleaned_data['from_to'] + " berhasil ditambahkan!")
         else:
             return HttpResponse("Rute tidak berhasil ditambahkan!")
@@ -260,6 +264,7 @@ def add_stop_point(request):
         form = StopPointForm(request.POST)
         if form.is_valid():
             form.save()
+            request.session['last_activity'] = "add stop point"
             return HttpResponse("Titik pemberhentian: " + form.cleaned_data['stop_name'] + " berhasil ditambahkan!")
         else:
             return HttpResponse("Titik pemberhentian tidak berhasil ditambahkan!")
@@ -276,6 +281,7 @@ def delete_transport(request):
             transportation = form.cleaned_data['transportation']
             transport_name = transportation.name
             transportation.delete()
+            request.session['last_activity'] = "delete transportation"
             return HttpResponse("Transportasi: " + transport_name + " berhasil dihapus!")
         else:
             return HttpResponse("Transportasi tidak berhasil dihapus!")
@@ -286,4 +292,43 @@ def delete_transport(request):
 @login_required(login_url='/login/')
 @admin_only
 def pengaturan_info_transport(request):
-    return render(request, "pengaturan_info_transport.html", {})
+    context = {'last_activity': request.session.get('last_activity', "")}
+    return render(request, "pengaturan_info_transport.html", context)
+
+@login_required(login_url='/sisolo/login/')
+@admin_only
+def add_healthcenter(request):
+    if request.method == "POST":
+        form = HealthCenterForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            request.session['last_activity'] = "add health center"
+            return HttpResponse("Tempat layanan kesehatan: " + form.cleaned_data['name'] + " berhasil ditambahkan!")
+        else:
+            return HttpResponse("Tempat layanan kesehatan tidak berhasil ditambahkan!")
+    
+    context = {'form': HealthCenterForm()}
+    return render(request, 'add_healthcenter.html', context)
+
+@login_required(login_url='/sisolo/login/')
+@admin_only
+def delete_healthcenter(request):
+    if request.method == "POST":
+        form = DeleteHealthCenterForm(request.POST)
+        if form.is_valid():
+            healthcenter = form.cleaned_data['healthcenter']
+            healthcenter_name = healthcenter.name
+            healthcenter.delete()
+            request.session['last_activity'] = "delete transportation"
+            return HttpResponse("Tempat layanan kesehatan: " + healthcenter_name + " berhasil dihapus!")
+        else:
+            return HttpResponse("Tempat layanan kesehatan tidak berhasil dihapus!")
+    
+    context = {'form': DeleteTransportationForm()}
+    return render(request, 'delete_transportation.html', context)
+
+@login_required(login_url='/login/')
+@admin_only
+def pengaturan_info_sarana_kesehatan(request):
+    context = {'last_activity': request.session.get('last_activity', "")}
+    return render(request, "pengaturan_info_sarana_kesehatan.html", context)
