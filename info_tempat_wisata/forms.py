@@ -1,6 +1,6 @@
 from django import forms
 
-class TempatWisataForms(forms.Form):
-    wisata_title = forms.CharField(max_length=255)
-    wisata_description = forms.CharField(max_length=500)
-    wisata_highlight = forms.CharField(max_length=500)
+class DaftarWisataForms(forms.Form):
+    namaWisata = forms.CharField(max_length=150, label='NamaWisata')
+    hargaWisata = forms.CharField(max_length=50, label='HargaWisata')
+    deskripsiWisata = forms.CharField(max_length=150, label='DeskripsiWisata')

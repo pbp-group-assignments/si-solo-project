@@ -25,8 +25,7 @@ Aplikasi yang kami ajukan adalah Solo smart city, bernama 'Si Solo' atau kepende
 6. Informasi tentang kuliner: Halaman yang berisi tentang informasi kuliner (nama, menu, lokasi, dll) yang ada di Kota Solo.
 7. Informasi tentang tempat wisata: Halaman yang berisi tentang informasi tempat wisata yang ada di Kota Solo.
 8. Informasi tentang penjualan kebutuhan pokok: Halaman yang berisi tentang penjualan kebutuhan pokok yang ada di Kota Solo.
-9. Berita atau isu terkini di Solo: Halaman yang berisi tentang berita atau isu terkini yang ada di Kota Solo.
-10. Pendaftaran izin usaha: Halaman yang berisi form beserta status pendaftaran izin usaha, dimana ketika pendaftaran telah selesai maka pelaku usaha dapat memanage langsung usahanya pada website Si Solo.
+9. Pendaftaran izin usaha: Halaman yang berisi form beserta status pendaftaran izin usaha, dimana ketika pendaftaran telah selesai maka pelaku usaha dapat memanage langsung usahanya pada website Si Solo.
 
 ## Role atau peran pengguna beserta deskripsinya
 1. Pengguna asing: Merupakan pengguna yang belum login ke website. Pengguna asing hanya dapat mengakses landing page, page informasi tentang lokasi kuliner & wisata, page informasi tentang sarana kesehatan, page informasi tentang transportasi umum, dan page informasi tentang lokasi penjualan kebutuhan pokok.
