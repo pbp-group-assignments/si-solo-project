@@ -31,11 +31,6 @@
               ${data[i].fields.statusPendaftaran == 'Diterima' && data[i].fields.jenisUsaha == 'Menjual Bahan Pokok' ? `<p class="card-text text-white bg-dark mb-3" style="text-align: center;">Nomor Izin Usaha: ${data[i].fields.nomorIzinUsaha}</p> <a><button class="button-delete bg-cyan-500 hover:bg-cyan-400"style="width: 90px; height: 30px" ><a class="font-delete" onclick="manage(${data[i].pk}, 'Menjual Bahan Pokok')" data-bs-toggle="modal" data-bs-target="#ManageModal">Manajemen</a></button></a>`:``}
             </div>
             <div class="container text-white bg-dark mb-3" style="text-align: center;">
-              ${data[i].fields.statusPendaftaran == 'Diterima' && data[i].fields.jenisUsaha == 'Berita' ? `<p class="card-text text-white bg-dark mb-3" style="text-align: center;">Nomor Izin Usaha: ${data[i].fields.nomorIzinUsaha}</p> <a><button class="button-delete bg-cyan-500 hover:bg-cyan-400"style="width: 90px; height: 30px" ><a class="font-delete" onclick="manage(${data[i].pk}, 'Berita')" data-bs-toggle="modal" data-bs-target="#ManageModal">Manajemen</a></button></a>`:``}
-            </div>
-            
-            
-            <div class="container text-white bg-dark mb-3" style="text-align: center;">
               ${data[i].fields.statusPendaftaran == 'Ditolak' ? `<p class="card-text text-white bg-dark mb-3" style="text-align: center;">Alasan Ditolak: ${data[i].fields.alasanDitolak}</p>`:``}
             </div>
           </div>
@@ -142,47 +137,6 @@
                   <button type="button" class="btn btn-secondary text-black" data-bs-dismiss="modal">Tutup</button>`)
                 }
               })
-
-              
-            }else if(jenis == 'Menjual Bahan Pokok'){
-              $.ajax({
-                url: `/info-kebutuhan-pokok/manage-json`,
-                type: 'GET',
-                data:{id:daftarId},
-                success: function(response){
-                  for (let i = 0; i < response.length; i++){
-                    $('#manage-modal-body').append(`<div id='${response[i].pk}--kebutuhan'><p>PK (Kode Unik Objek): ${response[i].pk}</p>
-                    <p>Nama Kebutuhan: ${response[i].fields.namaKebutuhan}</p>
-                    <p>Harga Kebutuhan: ${response[i].fields.hargaKebutuhan}</p>
-                    <p>Deskripsi Kebutuhan: ${response[i].fields.deskripsiKebutuhan}</p>
-                    <hr></div>`)
-                  }
-                  $('#manage-modal-footer').append(`<button id="tambahKebutuhan" type="button" class="btn btn-secondary text-black" data-bs-toggle="modal" data-bs-target="#TambahKebutuhanModal">Tambah Kebutuhan</button>
-                  <button type="button" class="btn btn-secondary text-black" data-bs-toggle="modal" data-bs-target="#HapusKebutuhanModal">Hapus Kebutuhan</button>
-                  <button type="button" class="btn btn-secondary text-black" data-bs-dismiss="modal">Tutup</button>`)
-                }
-              })
-
-            }else if(jenis == 'Berita'){
-              $.ajax({
-                url: `/berita-isu-terkini/manage-json`,
-                type: 'GET',
-                data:{id:daftarId},
-                success: function(response){
-                  for (let i = 0; i < response.length; i++){
-                    $('#manage-modal-body').append(`<div id='${response[i].pk}--menu'><p>PK (Kode Unik Objek): ${response[i].pk}</p>
-                    <p>Judul: ${response[i].fields.judul}</p>
-                    <p>Tanggal: ${response[i].fields.tanggal}</p>
-                    <p>Highlight: ${response[i].fields.highlight}</p>
-                    <hr></div>`)
-                  }
-                  $('#manage-modal-footer').append(`<button id="tambahBerita" type="button" class="btn btn-secondary text-black" data-bs-toggle="modal" data-bs-target="#TambahBeritaModal">Tambah Berita</button>
-                  <button type="button" class="btn btn-secondary text-black" data-bs-toggle="modal" data-bs-target="#HapusBeritaModal">Hapus Berita</button>
-                  <button type="button" class="btn btn-secondary text-black" data-bs-dismiss="modal">Tutup</button>`)
-                }
-              })
-
-
             }
             $('#manage-modal-body').html('')
             $('#manage-modal-footer').html('')
@@ -211,6 +165,26 @@
             }
           })
 
+          $('#hapus-menu').click(function(){
+            if ($('#inputPKMenu').val() == ''){
+              window.alert('Mohon Isi Data Dengan Lengkap')
+            }else if (isNaN($('#inputPKMenu').val())){
+              window.alert('Mohon Isi Data Dengan Benar')
+            }else{
+              $.ajax({
+                  url: `/tempat-kuliner/delete-menu-kuliner`,
+                  type: 'POST',
+                  data: {PKMenu:$('#inputPKMenu').val()},
+                  success: function(response){
+                    if (response.status == 'NO'){
+                      window.alert('PK yang Anda Masukkan Salah!')
+                    }
+                  }
+                })
+            }
+            $('#inputPKMenu').val('')
+          })
+
           $('#tambah-wisata').click(function(){
             if ($('#inputNamaWisata').val() == '' || $('#inputHargaWisata').val() == '' || $('#inputDeskripsiWisata').val() == ''){
               window.alert('Mohon Isi Data Dengan Lengkap')
@@ -233,73 +207,6 @@
                   $('#inputDeskripsiWisata').val('')
             }
           })
-
-          $('#tambah-kebutuhan').click(function(){
-            if ($('#inputNamaKebutuhan').val() == '' || $('#inputHargaKebutuhan').val() == '' || $('#inputDeskripsiKebutuhan').val() == ''){
-              window.alert('Mohon Isi Data Dengan Lengkap')
-            }else{
-              $.ajax({
-                    url: `/info-kebutuhan-pokok/add-kebutuhan`,
-                    type: 'POST',
-                    data: {daftarId:tempDaftarId,namaKebutuhan:$('#inputNamaKebutuhan').val(), hargaKebutuhan:$('#inputHargaKebutuhan').val(), deskripsiKebutuhan:$('#inputDeskripsiKebutuhan').val()},
-                    success: function(response){
-                      $('#manage-modal-body').append(`<p>PK (Kode Unik Objek): ${response.pk}</p>
-                      <p>Nama Kebutuhan: ${response.fields.namaKebutuhan}</p>
-                      <p>Harga Kebutuhan: ${response.fields.hargaKebutuhan}</p>
-                      <p>Deskripsi Kebutuhan: ${response.fields.deskripsiKebutuhan}</p>
-                      <p>Deskripsi Kebutuhan: ${response.fields.tokoKebutuhan.jenisUsaha}</p>
-                      <hr>`)
-                    }
-                  })
-                  $('#inputNamaKebutuhan').val('')
-                  $('#inputHargaKebutuhan').val('')
-                  $('#inputDeskripsiKebutuhanu').val('')
-            }
-          })
-
-          $('#tambah-berita').click(function(){
-            if ($('#inputJudul').val() == '' || $('#inputTanggal').val() == '' || $('#inputHighlight').val() == ''){
-              window.alert('Mohon Isi Data Dengan Lengkap')
-            }else{
-              $.ajax({
-                    url: `/berita-isu-terkini/add-berita`,
-                    type: 'POST',
-                    data: {daftarId:tempDaftarId,judul:$('#inputJudul').val(), tanggal:$('#inputTanggal').val(), highlight:$('#inputHighlight').val()},
-                    success: function(response){
-                      $('#manage-modal-body').append(`<p>PK (Kode Unik Objek): ${response.pk}</p>
-                      <p>Judul: ${response.fields.judul}</p>
-                      <p>Tanggal: ${response.fields.tanggal}</p>
-                      <p>Highlight: ${response.fields.highlight}</p>
-                      <p>Penulis: ${response.fields.penulis.jenisUsaha}</p>
-                      <hr>`)
-                    }
-                  })
-                  $('#inputJudul').val('')
-                  $('#inputTanggal').val('')
-                  $('#inputHighlight').val('')
-            }
-          })
-
-          $('#hapus-menu').click(function(){
-            if ($('#inputPKMenu').val() == ''){
-              window.alert('Mohon Isi Data Dengan Lengkap')
-            }else if (isNaN($('#inputPKMenu').val())){
-              window.alert('Mohon Isi Data Dengan Benar')
-            }else{
-              $.ajax({
-                  url: `/tempat-kuliner/delete-menu-kuliner`,
-                  type: 'POST',
-                  data: {PKMenu:$('#inputPKMenu').val()},
-                  success: function(response){
-                    if (response.status == 'NO'){
-                      window.alert('PK yang Anda Masukkan Salah!')
-                    }
-                  }
-                })
-            }
-            $('#inputPKMenu').val('')
-          })
-
 
           $('#hapus-wisata').click(function(){
             if ($('#inputPKWisata').val() == ''){
@@ -340,72 +247,7 @@
             }
             $('#inputPKKebutuhan').val('')
           })
-
-          $('#hapus-berita').click(function(){
-            if ($('#inputPKBerita').val() == ''){
-              window.alert('Mohon Isi Data Dengan Lengkap')
-            }else if (isNaN($('#inputPKBerita').val())){
-              window.alert('Mohon Isi Data Dengan Benar')
-            }else{
-              $.ajax({
-                  url: `/berita-isu-terkini/delete-berita`,
-                  type: 'POST',
-                  data: {PKMenu:$('#inputPKBerita').val()},
-
-          $('#tambah-wisata').click(function(){
-            if ($('#inputNamaWisata').val() == '' || $('#inputHargaWisata').val() == '' || $('#inputDeskripsiWisata').val() == ''){
-              window.alert('Mohon Isi Data Dengan Lengkap')
-            }else{
-              $.ajax({
-                    url: `/tempat-wisata/add-deskripsi-wisata`,
-                    type: 'POST',
-                    data: {daftarId:tempDaftarId,namaWisata:$('#inputNamaWisata').val(), hargaWisata:$('#inputHargaWisata').val(), deskripsiWisata:$('#inputDeskripsiWisata').val()},
-                    success: function(response){
-                      $('#manage-modal-body').append(`<p>PK (Kode Unik Objek): ${response.pk}</p>
-                      <p>Nama Fasilitas: ${response.fields.namaWisata}</p>
-                      <p>Harga Fasilitas: ${response.fields.hargaWisata}</p>
-                      <p>Deskripsi Fasilitas: ${response.fields.deskripsiWisata}</p>
-                      <p>Deskripsi Fasilitas: ${response.fields.tempatWisata.jenisUsaha}</p>
-                      <hr>`)
-                    }
-                  })
-                  $('#inputNamaWisata').val('')
-                  $('#inputHargaWisata').val('')
-                  $('#inputDeskripsiWisata').val('')
-            }
-          })
-
-          $('#hapus-wisata').click(function(){
-            if ($('#inputPKWisata').val() == ''){
-              window.alert('Mohon Isi Data Dengan Lengkap')
-            }else if (isNaN($('#inputPKWisata').val())){
-              window.alert('Mohon Isi Data Dengan Benar')
-            }else{
-              $.ajax({
-                  url: `/tempat-wisata/delete-deskripsi-wisata`,
-                  type: 'POST',
-                  data: {PKWisata:$('#inputPKWisata').val()},
-
-                  success: function(response){
-                    if (response.status == 'NO'){
-                      window.alert('PK yang Anda Masukkan Salah!')
-                    }
-                  }
-                })
-            }
-
-            $('#inputPKBerita').val('')
-          })
-
-
-            $('#inputPKWisata').val('')
-          })
-
         })
-
-        
-
-          
     </script>
 </head>
 
@@ -486,7 +328,6 @@
             <option value="Kuliner" class="text-black">Kuliner</option>
             <option value="Tempat Wisata" class="text-black">Tempat Wisata</option>
             <option value="Menjual Bahan Pokok" class="text-black">Menjual Bahan Pokok</option>
-            <option value="Berita" class="text-black">Berita</option>
           </select>
           <label class="text-black">Alamat Usaha</label>
           {{form.alamatUsaha|addclass:"shadow appearance-none border rounded w-full py-2 px-3 text-zinc-800 leading-tight focus:outline-none focus:shadow-outline alamatUsaha-input"}}
@@ -497,6 +338,45 @@
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary text-black" data-bs-dismiss="modal">Cancel</button>
           <button id="daftar-usaha" type="button" class="btn btn-primary text-black">Daftar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="TambahKebutuhanModal" tabindex="-1" role="dialog" aria-labelledby="TambahWisataModal" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title text-black" id="DaftarUsahaBaruModal">Tambah Fasilitas Baru</h5>
+
+        </div>
+        <div class="modal-body">
+          <form class="rounded px-8 pt-6 pb-8" method="POST">
+          {% csrf_token %}
+
+          <label class="text-black">Nama Kebutuhan</label>
+          <input class="shadow appearance-none border rounded w-full py-2 px-3 text-zinc-800 leading-tight focus:outline-none focus:shadow-outline" id="inputNamaKebutuhan">
+          <label class="text-black">Harga Kebutuhan</label>
+          <input class="shadow appearance-none border rounded w-full py-2 px-3 text-zinc-800 leading-tight focus:outline-none focus:shadow-outline" id="inputHargaKebutuhan">
+          <label class="text-black">Deskripsi Kebutuhan</label>
+          <input class="shadow appearance-none border rounded w-full py-2 px-3 text-zinc-800 leading-tight focus:outline-none focus:shadow-outline" id="inputDeskripsiKebutuhan">
+
+          <label class="text-black">Nama Fasilitas</label>
+          <input class="shadow appearance-none border rounded w-full py-2 px-3 text-zinc-800 leading-tight focus:outline-none focus:shadow-outline" id="inputNamaWisata">
+          <label class="text-black">Harga Fasilitas</label>
+          <input class="shadow appearance-none border rounded w-full py-2 px-3 text-zinc-800 leading-tight focus:outline-none focus:shadow-outline" id="inputHargaWisata">
+          <label class="text-black">Deskripsi Fasilitas</label>
+          <input class="shadow appearance-none border rounded w-full py-2 px-3 text-zinc-800 leading-tight focus:outline-none focus:shadow-outline" id="inputDeskripsiWisata">
+
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary text-black" data-bs-dismiss="modal">Batalkan / Tutup</button>
+
+          <button id="tambah-kebutuhan" type="button" class="btn btn-primary text-black" >Tambah</button>
+
+          <button id="tambah-wisata" type="button" class="btn btn-primary text-black" >Tambah</button>
+
         </div>
       </div>
     </div>
@@ -541,78 +421,30 @@
     </div>
   </div>
 
-  <div class="modal fade" id="TambahKebutuhanModal" tabindex="-1" role="dialog" aria-labelledby="TambahKebutuhanModal" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title text-black" id="DaftarUsahaBaruModal">Tambah Kebutuhan Baru</h5>
-
   <div class="modal fade" id="TambahWisataModal" tabindex="-1" role="dialog" aria-labelledby="TambahWisataModal" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title text-black" id="DaftarUsahaBaruModal">Tambah Fasilitas Baru</h5>
-
         </div>
         <div class="modal-body">
           <form class="rounded px-8 pt-6 pb-8" method="POST">
           {% csrf_token %}
-
-          <label class="text-black">Nama Kebutuhan</label>
-          <input class="shadow appearance-none border rounded w-full py-2 px-3 text-zinc-800 leading-tight focus:outline-none focus:shadow-outline" id="inputNamaKebutuhan">
-          <label class="text-black">Harga Kebutuhan</label>
-          <input class="shadow appearance-none border rounded w-full py-2 px-3 text-zinc-800 leading-tight focus:outline-none focus:shadow-outline" id="inputHargaKebutuhan">
-          <label class="text-black">Deskripsi Kebutuhan</label>
-          <input class="shadow appearance-none border rounded w-full py-2 px-3 text-zinc-800 leading-tight focus:outline-none focus:shadow-outline" id="inputDeskripsiKebutuhan">
-
           <label class="text-black">Nama Fasilitas</label>
           <input class="shadow appearance-none border rounded w-full py-2 px-3 text-zinc-800 leading-tight focus:outline-none focus:shadow-outline" id="inputNamaWisata">
           <label class="text-black">Harga Fasilitas</label>
           <input class="shadow appearance-none border rounded w-full py-2 px-3 text-zinc-800 leading-tight focus:outline-none focus:shadow-outline" id="inputHargaWisata">
           <label class="text-black">Deskripsi Fasilitas</label>
           <input class="shadow appearance-none border rounded w-full py-2 px-3 text-zinc-800 leading-tight focus:outline-none focus:shadow-outline" id="inputDeskripsiWisata">
-
           </form>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary text-black" data-bs-dismiss="modal">Batalkan / Tutup</button>
-
-          <button id="tambah-kebutuhan" type="button" class="btn btn-primary text-black" >Tambah</button>
-
           <button id="tambah-wisata" type="button" class="btn btn-primary text-black" >Tambah</button>
-
         </div>
       </div>
     </div>
   </div>
-
-
-  <div class="modal fade" id="TambahBeritaModal" tabindex="-1" role="dialog" aria-labelledby="TambahBeritaModal" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title text-black" id="DaftarUsahaBaruModal">Tambah Berita Baru</h5>
-        </div>
-        <div class="modal-body">
-          <form class="rounded px-8 pt-6 pb-8" method="POST">
-          {% csrf_token %}
-          <label class="text-black">Judul</label>
-          <input class="shadow appearance-none border rounded w-full py-2 px-3 text-zinc-800 leading-tight focus:outline-none focus:shadow-outline" id="inputJudul">
-          <label class="text-black">Tanggal</label>
-          <input class="shadow appearance-none border rounded w-full py-2 px-3 text-zinc-800 leading-tight focus:outline-none focus:shadow-outline" id="inputTanggal">
-          <label class="text-black">Highlight</label>
-          <input class="shadow appearance-none border rounded w-full py-2 px-3 text-zinc-800 leading-tight focus:outline-none focus:shadow-outline" id="inputHighlight">
-          </form>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary text-black" data-bs-dismiss="modal">Batalkan / Tutup</button>
-          <button id="tambah-berita" type="button" class="btn btn-primary text-black" >Tambah</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-
 
   <div class="modal fade" id="HapusMenuModal" tabindex="-1" role="dialog" aria-labelledby="HapusMenuModal" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -635,58 +467,21 @@
     </div>
   </div>
 
-
-  <div class="modal fade" id="HapusKebutuhanModal" tabindex="-1" role="dialog" aria-labelledby="HapusKebutuhanuModal" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title text-black" id="DaftarUsahaBaruModal">Hapus Kebutuhan</h5>
-
   <div class="modal fade" id="HapusWisataModal" tabindex="-1" role="dialog" aria-labelledby="HapusWisataModal" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title text-black" id="DaftarUsahaBaruModal">Hapus Wisata</h5>
-
         </div>
         <div class="modal-body">
           <form class="rounded px-8 pt-6 pb-8" method="POST">
           {% csrf_token %}
           <label class="text-black">PK (Kode Unik Objek) yang Ingin Dihapus</label>
-
-          <input class="shadow appearance-none border rounded w-full py-2 px-3 text-zinc-800 leading-tight focus:outline-none focus:shadow-outline" id="inputPKKebutuhan">
-          </form>
-        </div>
-        <div class="modal-footer">
-          <button id="hapus-kebutuhan" type="button" class="btn btn-primary text-black">Hapus</button>
-          <button type="button" class="btn btn-secondary text-black" data-bs-dismiss="modal">Cancel</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="modal fade" id="HapusBeritaModal" tabindex="-1" role="dialog" aria-labelledby="HapusBeritauModal" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title text-black" id="DaftarUsahaBaruModal">Hapus Berita</h5>
-        </div>
-        <div class="modal-body">
-          <form class="rounded px-8 pt-6 pb-8" method="POST">
-          {% csrf_token %}
-          <label class="text-black">PK (Kode Unik Objek) yang Ingin Dihapus</label>
-          <input class="shadow appearance-none border rounded w-full py-2 px-3 text-zinc-800 leading-tight focus:outline-none focus:shadow-outline" id="inputPKBerita">
-          </form>
-        </div>
-        <div class="modal-footer">
-          <button id="hapus-Berita" type="button" class="btn btn-primary text-black">Hapus</button>
-
           <input class="shadow appearance-none border rounded w-full py-2 px-3 text-zinc-800 leading-tight focus:outline-none focus:shadow-outline" id="inputPKWisata">
           </form>
         </div>
         <div class="modal-footer">
           <button id="hapus-wisata" type="button" class="btn btn-primary text-black">Hapus</button>
-
           <button type="button" class="btn btn-secondary text-black" data-bs-dismiss="modal">Cancel</button>
         </div>
       </div>
