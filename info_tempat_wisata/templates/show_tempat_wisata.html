@@ -2,7 +2,7 @@
 {% load filters %}
 
 {% block meta %}
-<title>List Pendaftaran Usaha</title>
+<title>List Tempat Wisata</title>
 {% endblock meta %}
 
 {% block content %}
@@ -32,9 +32,9 @@
                 data:{id:daftarId},
                 success: function(response){
                   for (let i = 0; i < response.length; i++){
-                    $('#menu-modal-body').append(`<p>Nama Menu: ${response[i].fields.namaWisata}</p>
-                    <p>Harga Menu: ${response[i].fields.hargaWisata}</p>
-                    <p>Deskripsi Menu: ${response[i].fields.deskripsiWisata}</p>
+                    $('#menu-modal-body').append(`<p>Nama Wisata: ${response[i].fields.namaWisata}</p>
+                    <p>Harga Wisata: ${response[i].fields.hargaWisata}</p>
+                    <p>Deskripsi Wisata: ${response[i].fields.deskripsiWisata}</p>
                     <hr>`)
                   }
                 }
