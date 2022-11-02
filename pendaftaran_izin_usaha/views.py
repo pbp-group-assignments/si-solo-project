@@ -24,6 +24,10 @@ def usaha_json(request):
     data = Usaha.objects.filter(user = user)
     return HttpResponse(serializers.serialize("json", data), content_type="application/json")
 
+def semua_usaha_json(request):
+    data = Usaha.objects.all()
+    return HttpResponse(serializers.serialize("json", data), content_type="application/json")
+
 @login_required(login_url='/login/')
 @csrf_exempt
 @allowed_users(allowed_roles=['Pelaku Usaha'])
