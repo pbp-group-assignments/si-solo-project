@@ -1,7 +1,6 @@
-from django.forms import ModelForm
-from info_kebutuhan_pokok.models import Kebutuhan_Pokok
+from django import forms
 
-class Create(ModelForm):
-    class Meta:
-        model = Kebutuhan_Pokok
-        fields = ['item', 'harga', 'image' ]
+class KebutuhanPokokForms(forms.Form):
+    namaKebutuhan = forms.CharField(max_length=150, label='NamaKebutuhan')
+    hargaKebutuhan = forms.CharField(max_length=50, label='HargaKebutuhan')
+    deskripsiKebutuhan = forms.CharField(max_length=150, label='DeskripsiKebutuhan')

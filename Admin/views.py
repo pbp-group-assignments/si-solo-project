@@ -1,10 +1,20 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
+
+from info_kebutuhan_pokok.models import KebutuhanPokok
+from info_tempat_wisata.models import TempatWisata
+
 from info_kebutuhan_pokok.models import Kebutuhan_Pokok
+
 from sisolo.decorators import admin_only
 from pendaftaran_izin_usaha.models import Usaha, PelakuUsaha
 from django.http import HttpResponse, JsonResponse
 from django.core import serializers
+
+from berita_isu_terkini.forms import BeritaForms
+import datetime
+from django.shortcuts import redirect
+
 from berita_isu_terkini.models import Berita
 from sisolo.models import User
 from Admin.forms import AlasanDitolak, NomorIzinUsaha
@@ -184,6 +194,12 @@ def show_list_kuliner(request):  #Untuk nampilin data kuliner
 
 @login_required(login_url='/sisolo/login/')
 @admin_only
+
+def show_list_kebutuhan(request):  
+    context = {}
+    return render(request, 'list_kebutuhan.html', context)
+   
+
 def add_transport(request):
     if request.method == "POST":
         form = TransportationForm(request.POST, request.FILES)
@@ -197,34 +213,20 @@ def add_transport(request):
     context = {'form': TransportationForm()}
     return render(request, 'add_transportation.html', context)
 
-@login_required(login_url='/login/')
-@admin_only
-def add_berita(request):
-    if request.method == "POST":
-        news_title = request.POST.get('news_title')
-        news_date = request.POST.get('news_date')
-        news_image = request.POST.get('news_image')
-        news_highlight = request.POST.get('news_highlight')
-        berita = Berita(news_title=news_title, news_date=news_date, news_image=news_image, news_highlight=news_highlight)
-        berita.save()
 
-        return HttpResponse("Berita: " + news_title + " berhasil ditambahkan!")
-    
-    context = {}
-    return render(request, 'add_news.html', context)
 
 @login_required(login_url='/login/')
 @admin_only
 def add_kebutuhan(request):
     if request.method == "POST":
-        item = request.POST.get('item')
-        harga = request.POST.get('harga')
-        image = request.POST.get('image')
+        namaKebutuhan = request.POST.get('namaKebutuhan')
+        hargaKebutuhan = request.POST.get('hargaKebutuhan')
+        deskripsiKebutuhan = request.POST.get('deskripsiKebutuhan')
        
-        kebutuhan = Kebutuhan_Pokok(item=item, harga=harga, image=image)
+        kebutuhan = KebutuhanPokok(namaKebutuhan=namaKebutuhan, hargaKebutuhan=hargaKebutuhan, deskripsiKebutuhan=deskripsiKebutuhan)
         kebutuhan.save()
 
-        return HttpResponse("Item: " + item + " berhasil ditambahkan!")
+        return HttpResponse("Item: " + namaKebutuhan + " berhasil ditambahkan!")
     
     context = {}
     return render(request, 'add_kebutuhan.html', context)
