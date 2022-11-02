@@ -5,14 +5,88 @@
 {% endblock meta %}
 
 {% block content %}
-<div class="row-center" style="height: 100px; display: flex; justify-content: center; align-items: center; background-color: black;">
+<!-- <div class="row-center" style="height: 100px; display: flex; justify-content: center; align-items: center; background-color: black;">
     <strong style="font-size: 30px; color: white">Tambah Berita Baru</strong>
-</div>
+</div> -->
 <br>
+<nav class="navbar navbar-custom">
+    <div class="container-fluid">
+        <a href="/" class="navbar-brand">SISOLO</a>
+    
+        <div class="navbar-right">
+            
+            <div class="modal fade" id="nomord" tabindex="-1">
+                <div class="modal-dialog">
+                    <div class="modal-content" style="color:black;">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Nomor Darurat</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div>
+                                <a href="tel:+62-271712600">Poltabes Solo: (0271)712600</a>
+                            </div>
+                            <div>
+                                <a href="tel:+62-119">Ambulans SPGDT: 119</a>
+                            </div>
+                            <div>
+                                <a href="tel:+62-113">Pemadam Kebakaran: 113</a>
+                            </div>
+                            <div>
+                                <a href="tel:+62-271722091">Gangguan Listrik PLN: (0271)722091</a>
+                            </div>
+                            <div>
+                                <a href="tel:+62-271714039">Stasiun Solo Balapan: (0271)714039</a>
+                            </div>
+                            <div>
+                                <a href="tel:+62-271738900">Terminal Tortonadi: (0271)738900</a>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary text-black" data-bs-dismiss="modal">Close</button>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+            
+            
+            <a class="btn btn-danger btn-sm btn-outline-secondary" style="margin:5px; color: white;" data-bs-toggle="modal" data-bs-target="#nomord">Nomor Darurat</a>   
+            
+            <a class="btn btn-sm btn-outline-secondary" style="margin:5px; color: black;" href="{% url 'Admin:show_admin_page' %}" >Halaman Utama</a>
+            
+            <a class="btn btn-sm btn-outline-secondary" style="margin:5px; color: black;" href="{% url 'sisolo:logout_user' %}" >Logout</a>
+        </div>
+    </div>
+</nav>
+<div class="modal fade" id="TambahMenuModal" tabindex="-1" role="dialog" aria-labelledby="TambahMenuModal" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title text-black" id="DaftarUsahaBaruModal">Tambah Menu Baru</h5>
+        </div>
+        <div class="modal-body">
+          <form class="rounded px-8 pt-6 pb-8" method="POST">
+          {% csrf_token %}
+          <label class="text-black">Nama Menu</label>
+          <input class="shadow appearance-none border rounded w-full py-2 px-3 text-zinc-800 leading-tight focus:outline-none focus:shadow-outline" id="inputNamaMenu">
+          <label class="text-black">Harga Menu</label>
+          <input class="shadow appearance-none border rounded w-full py-2 px-3 text-zinc-800 leading-tight focus:outline-none focus:shadow-outline" id="inputHargaMenu">
+          <label class="text-black">Deskripsi Menu</label>
+          <input class="shadow appearance-none border rounded w-full py-2 px-3 text-zinc-800 leading-tight focus:outline-none focus:shadow-outline" id="inputDeskripsiMenu">
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary text-black" data-bs-dismiss="modal">Batalkan / Tutup</button>
+          <button id="tambah-menu" type="button" class="btn btn-primary text-black" >Tambah</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
-<div class="add-transportation">
+<div class="add-news">
 
-    <form method="POST" id="add-transportation">
+    <form method="POST" id="add-news">
         {% csrf_token %}
         <div class="card border-dark" style="margin:auto; width:60%; padding:10px">
             <strong class="card-title" style="font-size: 25px">Tambah berita baru:</strong>

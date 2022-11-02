@@ -1,9 +1,10 @@
 from django.db import models
+from pendaftaran_izin_usaha.models import Usaha
 
 # Create your models here.
 class Berita(models.Model):
-    news_title = models.CharField(max_length=500)
-    news_date = models.DateField()
-    news_highlight = models.TextField()
-    news_image = models.ImageField()
+    penulis = models.ForeignKey(Usaha, on_delete=models.CASCADE)
+    judul = models.CharField(max_length=250, blank=True)
+    tanggal = models.CharField(max_length=50, blank=True)
+    highlight = models.CharField(max_length=500, blank=True)
     

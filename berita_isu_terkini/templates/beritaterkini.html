@@ -12,6 +12,56 @@
   <link rel="stylesheet" href="style.css" type="text/css">
 
 <body>
+    <nav class="navbar navbar-custom">
+        <div class="container-fluid">
+            <a href="/" class="navbar-brand">SISOLO</a>
+        
+            <div class="navbar-right">
+                
+                <div class="modal fade" id="nomord" tabindex="-1">
+                    <div class="modal-dialog">
+                        <div class="modal-content" style="color:black;">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Nomor Darurat</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div>
+                                    <a href="tel:+62-271712600">Poltabes Solo: (0271)712600</a>
+                                </div>
+                                <div>
+                                    <a href="tel:+62-119">Ambulans SPGDT: 119</a>
+                                </div>
+                                <div>
+                                    <a href="tel:+62-113">Pemadam Kebakaran: 113</a>
+                                </div>
+                                <div>
+                                    <a href="tel:+62-271722091">Gangguan Listrik PLN: (0271)722091</a>
+                                </div>
+                                <div>
+                                    <a href="tel:+62-271714039">Stasiun Solo Balapan: (0271)714039</a>
+                                </div>
+                                <div>
+                                    <a href="tel:+62-271738900">Terminal Tortonadi: (0271)738900</a>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary text-black" data-bs-dismiss="modal">Close</button>
+                            </div>
+                            
+                        </div>
+                    </div>
+                </div>
+                
+                
+                <a class="btn btn-danger btn-sm btn-outline-secondary" style="margin:5px; color: white;" data-bs-toggle="modal" data-bs-target="#nomord">Nomor Darurat</a>   
+                
+                <a class="btn btn-sm btn-outline-secondary" style="margin:5px; color: black;" href="{% url 'sisolo:landing_page' %}" >Halaman Utama</a>
+                
+                <a class="btn btn-sm btn-outline-secondary" style="margin:5px; color: black;" href="{% url 'sisolo:logout_user' %}" >Logout</a>
+            </div>
+        </div>
+    </nav>
 
     <div class="container">
         <div class="row mb-3 mt-3">
