@@ -18,7 +18,7 @@ def show_pendaftaran(request):
     return render(request, "list_pendaftaran.html", {'form':form})
 
 @login_required(login_url='/login/')
-@allowed_users(allowed_roles=['Pelaku Usaha', 'Admin'])
+# @allowed_users(allowed_roles=['Pelaku Usaha', 'Admin'])
 def usaha_json(request):
     user = User.objects.get(user = request.user)
     data = Usaha.objects.filter(user = user)

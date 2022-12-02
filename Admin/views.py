@@ -122,7 +122,7 @@ def hapus_usaha(request, permohonanId):  #Semuanya pake ini kalau mau hapus usah
 
 
 @login_required(login_url='/login/')
-@admin_only
+# @admin_only
 def pendaftaran_pelaku_usaha_json(request):
     data = PelakuUsaha.objects.all()
     return HttpResponse(serializers.serialize("json", data), content_type="application/json")
