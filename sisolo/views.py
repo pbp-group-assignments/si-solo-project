@@ -8,7 +8,6 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect
 from sisolo.decorators import admin_only
-
 from sisolo.forms import Register
 from sisolo.models import User
 
