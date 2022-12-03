@@ -24,7 +24,7 @@ def show_admin_page(request):
     return render(request, 'Admin_page.html', context)
 
 @login_required(login_url='/login/')
-@admin_only
+# @admin_only
 def list_pendaftaran_json(request):
     data = Usaha.objects.all()
     return HttpResponse(serializers.serialize("json", data), content_type="application/json")

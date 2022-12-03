@@ -103,6 +103,39 @@ def daftar_pelaku_usaha(request):
         else:
             return redirect('pendaftaran_izin_usaha:show_pendaftaran')
 
+def daftar_pelaku_usaha_mobile(request, role, namaLengkap, nomorTeleponPemilik, alamatPemilik):
+    user = User.objects.get(role = role, namaLengkap = namaLengkap, nomorTeleponPemilik = nomorTeleponPemilik, alamatPemilik = alamatPemilik)
+    temp = PelakuUsaha.objects.filter(user = user)
+
+    if not temp.exists():
+        return JsonResponse({'status': 'belumDaftar'})
+    else:
+        pelakuUsaha = PelakuUsaha.objects.get(user = user)
+        if pelakuUsaha.status == 'Diproses':
+            response = {
+                'message': 'daftar',
+                'status': 'diproses',
+            }
+            return JsonResponse(response)
+        elif pelakuUsaha.status == 'Ditolak':
+            response = {
+                'message': 'daftar',
+                'status': 'ditolak',
+                'pesan': pelakuUsaha.pesan
+            }
+            return JsonResponse(response)
+        else:
+            response = {
+                'message': 'daftar',
+                'status': 'diterima',
+            }
+            return JsonResponse(response)
+
+def get_usaha_mobile(request, role, namaLengkap, nomorTeleponPemilik, alamatPemilik):
+    user = User.objects.get(role = role, namaLengkap = namaLengkap, nomorTeleponPemilik = nomorTeleponPemilik, alamatPemilik = alamatPemilik)
+    temp = Usaha.objects.filter(user = user)
+    return HttpResponse(serializers.serialize("json", temp), content_type="application/json")
+
 @login_required(login_url='/login/')
 @allowed_users(allowed_roles=['Pengguna'])
 def daftar_ulang(request):
