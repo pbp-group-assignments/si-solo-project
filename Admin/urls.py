@@ -2,19 +2,19 @@ from django.urls import path
 
 from Admin.views import show_admin_page, list_pendaftaran_json, list_pendaftaran_diajukan, get_detail_pendaftaran, set_diproses_pendaftaran
 from Admin.views import list_pendaftaran_diproses, set_ditolak_pendaftaran, list_pendaftaran_ditolak, list_pendaftaran_diterima, set_diterima_pendaftaran
-from Admin.views import add_kebutuhan, show_list_kebutuhan
+from Admin.views import add_kebutuhan, show_list_kebutuhan, set_ditolak_pendaftaran_mobile
 
 from Admin.views import show_admin_page, list_pendaftaran_json, list_pendaftaran_diajukan, get_detail_pendaftaran, set_diproses_pendaftaran, show_list_wisata 
 from Admin.views import list_pendaftaran_diproses, set_ditolak_pendaftaran, list_pendaftaran_ditolak, list_pendaftaran_diterima, set_diterima_pendaftaran
-from Admin.views import add_kebutuhan
-from Admin.views import set_pengaduan_selesai
+from Admin.views import add_kebutuhan, set_diterima_pendaftaran_mobile
+from Admin.views import set_pengaduan_selesai, set_diterima_pelaku_usaha_mobile, set_diproses_pendaftaran_mobile
 
 from Admin.views import  pendaftaran_pelaku_usaha_json, list_pendaftaran_pelaku_usaha_diproses, set_diterima_pelaku_usaha, list_pendaftaran_pelaku_usaha_diterima
 from Admin.views import set_ditolak_pelaku_usaha, list_pendaftaran_pelaku_usaha_ditolak
 from Admin.views import add_transport, add_route, add_stop_point, delete_transport, pengaturan_info_transport
 from Admin.views import list_pengaduan_diproses, list_pengaduan_verifikasi, list_saran
 from Admin.views import add_transport, add_route, add_stop_point, delete_transport, pengaturan_info_transport, show_list_kuliner, hapus_usaha
-from Admin.views import add_healthcenter, delete_healthcenter, pengaturan_info_sarana_kesehatan
+from Admin.views import add_healthcenter, delete_healthcenter, pengaturan_info_sarana_kesehatan, set_ditolak_pelaku_usaha_mobile
 
 app_name = 'Admin'
 
@@ -51,5 +51,10 @@ urlpatterns = [
     path('list-kuliner', show_list_kuliner, name='show_list_kuliner'),
     path('hapus-usaha/<permohonanId>', hapus_usaha, name='hapus_usaha'),
     path('list-kebutuhan', show_list_kebutuhan, name='show_list_kebutuhan'),
-    path('pengaduan-selesai/<permohonanId>', set_pengaduan_selesai, name='set_pengaduan_selesai')
+    path('pengaduan-selesai/<permohonanId>', set_pengaduan_selesai, name='set_pengaduan_selesai'),
+    path('set-diterima-pelaku-usaha-mobile', set_diterima_pelaku_usaha_mobile, name='set_diterima_pelaku_usaha_mobile'),
+    path('set-ditolak-pelaku-usaha-mobile', set_ditolak_pelaku_usaha_mobile, name='set_ditolak_pelaku_usaha_mobile'),
+    path('set-diproses-pendaftaran-mobile', set_diproses_pendaftaran_mobile, name='set_diproses_pendaftaran_mobile'),
+    path('set-diterima-pendaftaran-mobile', set_diterima_pendaftaran_mobile, name='set_diterima_pendaftaran_mobile'),
+    path('set-ditolak-pendaftaran-mobile', set_ditolak_pendaftaran_mobile, name='set_ditolak_pendaftaran_mobile'),
 ]
