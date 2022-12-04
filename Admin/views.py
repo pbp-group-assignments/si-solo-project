@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 
 from info_kebutuhan_pokok.models import KebutuhanPokok
-
+import json
 from sisolo.decorators import admin_only
 from pendaftaran_izin_usaha.models import Usaha, PelakuUsaha
 from django.http import HttpResponse, JsonResponse
@@ -83,6 +83,23 @@ def set_diproses_pendaftaran(request, permohonanId):
 
         return HttpResponse(status=202)
 
+@csrf_exempt
+def set_diproses_pendaftaran_mobile(request):
+    body_unicode = (request.body.decode('utf-8'))
+    body = json.loads(body_unicode)
+    namaLengkap = body['namaLengkap']
+    nomorTeleponPemilik = body['nomorTeleponPemilik']
+    alamatPemilik = body['alamatPemilik']
+    namaUsaha = body['namaUsaha']
+    jenisUsaha = body['jenisUsaha']
+    alamatUsaha = body['alamatUsaha']
+    nomorTeleponUsaha = body['nomorTeleponUsaha']
+    user = User.objects.get(namaLengkap = namaLengkap, nomorTeleponPemilik = nomorTeleponPemilik, alamatPemilik = alamatPemilik)
+    usaha = Usaha.objects.get(user = user, namaPemilik = namaLengkap, nomorTeleponPemilik = nomorTeleponPemilik, alamatPemilik = alamatPemilik, namaUsaha = namaUsaha, jenisUsaha = jenisUsaha, alamatUsaha = alamatUsaha, nomorTeleponUsaha = nomorTeleponUsaha)
+    usaha.statusPendaftaran = 'Diproses'
+    usaha.save()
+    return HttpResponse(status=202)
+
 @login_required(login_url='/login/')
 @csrf_exempt
 @admin_only
@@ -98,6 +115,25 @@ def set_ditolak_pendaftaran(request, permohonanId):
 
             return HttpResponse(status=202)
 
+@csrf_exempt
+def set_ditolak_pendaftaran_mobile(request):
+    body_unicode = (request.body.decode('utf-8'))
+    body = json.loads(body_unicode)
+    namaLengkap = body['namaLengkap']
+    nomorTeleponPemilik = body['nomorTeleponPemilik']
+    alamatPemilik = body['alamatPemilik']
+    namaUsaha = body['namaUsaha']
+    jenisUsaha = body['jenisUsaha']
+    alamatUsaha = body['alamatUsaha']
+    nomorTeleponUsaha = body['nomorTeleponUsaha']
+    alasanDitolak = body['alasanDitolak']
+    user = User.objects.get(namaLengkap = namaLengkap, nomorTeleponPemilik = nomorTeleponPemilik, alamatPemilik = alamatPemilik)
+    usaha = Usaha.objects.get(user = user, namaPemilik = namaLengkap, nomorTeleponPemilik = nomorTeleponPemilik, alamatPemilik = alamatPemilik, namaUsaha = namaUsaha, jenisUsaha = jenisUsaha, alamatUsaha = alamatUsaha, nomorTeleponUsaha = nomorTeleponUsaha)
+    usaha.statusPendaftaran = 'Ditolak'
+    usaha.alasanDitolak = alasanDitolak
+    usaha.save()
+    return HttpResponse(status=202)
+
 @login_required(login_url='/login/')
 @csrf_exempt
 @admin_only
@@ -111,6 +147,25 @@ def set_diterima_pendaftaran(request, permohonanId):
             usaha.save()
             return HttpResponse(status=202)
 
+@csrf_exempt
+def set_diterima_pendaftaran_mobile(request):
+    body_unicode = (request.body.decode('utf-8'))
+    body = json.loads(body_unicode)
+    namaLengkap = body['namaLengkap']
+    nomorTeleponPemilik = body['nomorTeleponPemilik']
+    alamatPemilik = body['alamatPemilik']
+    namaUsaha = body['namaUsaha']
+    jenisUsaha = body['jenisUsaha']
+    alamatUsaha = body['alamatUsaha']
+    nomorTeleponUsaha = body['nomorTeleponUsaha']
+    nomorIzinUsaha = body['nomorIzinUsaha']
+    user = User.objects.get(namaLengkap = namaLengkap, nomorTeleponPemilik = nomorTeleponPemilik, alamatPemilik = alamatPemilik)
+    usaha = Usaha.objects.get(user = user, namaPemilik = namaLengkap, nomorTeleponPemilik = nomorTeleponPemilik, alamatPemilik = alamatPemilik, namaUsaha = namaUsaha, jenisUsaha = jenisUsaha, alamatUsaha = alamatUsaha, nomorTeleponUsaha = nomorTeleponUsaha)
+    usaha.statusPendaftaran = 'Diterima'
+    usaha.nomorIzinUsaha = nomorIzinUsaha
+    usaha.save()
+    return HttpResponse(status=202)
+
 @login_required(login_url='/login/')
 @csrf_exempt
 @admin_only
@@ -121,7 +176,7 @@ def hapus_usaha(request, permohonanId):  #Semuanya pake ini kalau mau hapus usah
         return HttpResponse(status=202)
 
 
-@login_required(login_url='/login/')
+# @login_required(login_url='/login/')
 # @admin_only
 def pendaftaran_pelaku_usaha_json(request):
     data = PelakuUsaha.objects.all()
@@ -158,6 +213,25 @@ def set_diterima_pelaku_usaha(request, pkPemohon):
 
         return HttpResponse(status=202)
 
+@csrf_exempt
+def set_diterima_pelaku_usaha_mobile(request):
+    body_unicode = (request.body.decode('utf-8'))
+    body = json.loads(body_unicode)
+    namaLengkap = body['namaLengkap']
+    nomorTeleponPemilik = body['nomorTeleponPemilik']
+    alamatPemilik = body['alamatPemilik']
+    nik = body['nik']
+    user = User.objects.get(namaLengkap = namaLengkap, nomorTeleponPemilik = nomorTeleponPemilik, alamatPemilik = alamatPemilik)
+    pelakuUsaha = PelakuUsaha.objects.get(namaPemilik = namaLengkap, nomorTeleponPemilik = nomorTeleponPemilik, alamatPemilik = alamatPemilik, nik = nik)
+    pelakuUsaha.status = 'Diterima'
+    pelakuUsaha.save()
+
+    user = User.objects.get(user = pelakuUsaha.user.user)
+    user.role = 'Pelaku Usaha'
+    user.save()
+
+    return HttpResponse(status=202)
+
 @login_required(login_url='/login/')
 @csrf_exempt
 @admin_only
@@ -172,6 +246,22 @@ def set_ditolak_pelaku_usaha(request, pkPemohon):
             pelakuUsaha.save()
 
             return HttpResponse(status=202)
+
+@csrf_exempt
+def set_ditolak_pelaku_usaha_mobile(request):
+    body_unicode = (request.body.decode('utf-8'))
+    body = json.loads(body_unicode)
+    namaLengkap = body['namaLengkap']
+    nomorTeleponPemilik = body['nomorTeleponPemilik']
+    alamatPemilik = body['alamatPemilik']
+    nik = body['nik']
+    alasan = body['alasan']
+    pelakuUsaha = PelakuUsaha.objects.get(namaPemilik = namaLengkap, nomorTeleponPemilik = nomorTeleponPemilik, alamatPemilik = alamatPemilik, nik = nik)
+    pelakuUsaha.status = 'Ditolak'
+    pelakuUsaha.pesan = alasan
+    pelakuUsaha.save()
+
+    return HttpResponse(status=202)
 
 @login_required(login_url='/sisolo/login/')
 @admin_only
