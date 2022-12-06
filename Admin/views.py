@@ -85,6 +85,7 @@ def set_diproses_pendaftaran(request, permohonanId):
 
 @csrf_exempt
 def set_diproses_pendaftaran_mobile(request):
+    # print('masuk')
     body_unicode = (request.body.decode('utf-8'))
     body = json.loads(body_unicode)
     namaLengkap = body['namaLengkap']
