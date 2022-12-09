@@ -86,15 +86,24 @@ def set_diproses_pendaftaran(request, permohonanId):
 @csrf_exempt
 def set_diproses_pendaftaran_mobile(request):
     # print('masuk')
-    body_unicode = (request.body.decode('utf-8'))
-    body = json.loads(body_unicode)
-    namaLengkap = body['namaLengkap']
-    nomorTeleponPemilik = body['nomorTeleponPemilik']
-    alamatPemilik = body['alamatPemilik']
-    namaUsaha = body['namaUsaha']
-    jenisUsaha = body['jenisUsaha']
-    alamatUsaha = body['alamatUsaha']
-    nomorTeleponUsaha = body['nomorTeleponUsaha']
+    # print(request.POST.get('namaLengkap'))
+
+    # body_unicode = (request.body.decode('utf-8'))
+    # body = json.loads(body_unicode)
+    # namaLengkap = body['namaLengkap']
+    # nomorTeleponPemilik = body['nomorTeleponPemilik']
+    # alamatPemilik = body['alamatPemilik']
+    # namaUsaha = body['namaUsaha']
+    # jenisUsaha = body['jenisUsaha']
+    # alamatUsaha = body['alamatUsaha']
+    # nomorTeleponUsaha = body['nomorTeleponUsaha']
+    namaLengkap = request.POST.get('namaLengkap')
+    nomorTeleponPemilik = request.POST.get('nomorTeleponPemilik')
+    alamatPemilik = request.POST.get('alamatPemilik')
+    namaUsaha = request.POST.get('namaUsaha')
+    jenisUsaha = request.POST.get('jenisUsaha')
+    alamatUsaha = request.POST.get('alamatUsaha')
+    nomorTeleponUsaha = request.POST.get('nomorTeleponUsaha')
     user = User.objects.get(namaLengkap = namaLengkap, nomorTeleponPemilik = nomorTeleponPemilik, alamatPemilik = alamatPemilik)
     usaha = Usaha.objects.get(user = user, namaPemilik = namaLengkap, nomorTeleponPemilik = nomorTeleponPemilik, alamatPemilik = alamatPemilik, namaUsaha = namaUsaha, jenisUsaha = jenisUsaha, alamatUsaha = alamatUsaha, nomorTeleponUsaha = nomorTeleponUsaha)
     usaha.statusPendaftaran = 'Diproses'
@@ -108,9 +117,10 @@ def set_diproses_pendaftaran_mobile(request):
         'jenisUsaha': jenisUsaha,
         'alamatUsaha': alamatUsaha,
         'nomorTeleponUsaha': nomorTeleponUsaha,
-        'usaha': usaha
+        # 'usaha': usaha
     }
     return JsonResponse(response)
+    return HttpResponse(status=202)
 
 @login_required(login_url='/login/')
 @csrf_exempt
