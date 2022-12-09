@@ -99,7 +99,18 @@ def set_diproses_pendaftaran_mobile(request):
     usaha = Usaha.objects.get(user = user, namaPemilik = namaLengkap, nomorTeleponPemilik = nomorTeleponPemilik, alamatPemilik = alamatPemilik, namaUsaha = namaUsaha, jenisUsaha = jenisUsaha, alamatUsaha = alamatUsaha, nomorTeleponUsaha = nomorTeleponUsaha)
     usaha.statusPendaftaran = 'Diproses'
     usaha.save()
-    return HttpResponse(status=202)
+    response = {
+        'pk': usaha.pk,
+        'namaLengkap': namaLengkap,
+        'nomorTeleponPemilik': nomorTeleponPemilik,
+        'alamatPemilik': alamatPemilik,
+        'namaUsaha': namaUsaha,
+        'jenisUsaha': jenisUsaha,
+        'alamatUsaha': alamatUsaha,
+        'nomorTeleponUsaha': nomorTeleponUsaha,
+        'usaha': usaha
+    }
+    return JsonResponse(response)
 
 @login_required(login_url='/login/')
 @csrf_exempt
