@@ -184,26 +184,6 @@
             }
           })
 
-          $('#hapus-menu').click(function(){
-            if ($('#inputPKMenu').val() == ''){
-              window.alert('Mohon Isi Data Dengan Lengkap')
-            }else if (isNaN($('#inputPKMenu').val())){
-              window.alert('Mohon Isi Data Dengan Benar')
-            }else{
-              $.ajax({
-                  url: `/tempat-kuliner/delete-menu-kuliner`,
-                  type: 'POST',
-                  data: {PKMenu:$('#inputPKMenu').val()},
-                  success: function(response){
-                    if (response.status == 'NO'){
-                      window.alert('PK yang Anda Masukkan Salah!')
-                    }
-                  }
-                })
-            }
-            $('#inputPKMenu').val('')
-          })
-
           $('#tambah-wisata').click(function(){
             if ($('#inputNamaWisata').val() == '' || $('#inputHargaWisata').val() == '' || $('#inputDeskripsiWisata').val() == ''){
               window.alert('Mohon Isi Data Dengan Lengkap')
@@ -227,26 +207,6 @@
             }
           })
 
-          $('#hapus-wisata').click(function(){
-            if ($('#inputPKWisata').val() == ''){
-              window.alert('Mohon Isi Data Dengan Lengkap')
-            }else if (isNaN($('#inputPKWisata').val())){
-              window.alert('Mohon Isi Data Dengan Benar')
-            }else{
-              $.ajax({
-                  url: `/tempat-wisata/delete-deskripsi-wisata`,
-                  type: 'POST',
-                  data: {PKWisata:$('#inputPKWisata').val()},
-                  success: function(response){
-                    if (response.status == 'NO'){
-                      window.alert('PK yang Anda Masukkan Salah!')
-                    }
-                  }
-                })
-            }
-            $('#inputPKWisata').val('')
-          })
-
           $('#tambah-kebutuhan').click(function(){
             if ($('#inputNamaKebutuhan').val() == '' || $('#inputHargaKebutuhan').val() == '' || $('#inputDeskripsiKebutuhan').val() == ''){
               window.alert('Mohon Isi Data Dengan Lengkap')
@@ -268,6 +228,46 @@
                   $('#inputHargaKebutuhan').val('')
                   $('#inputDeskripsiKebutuhanu').val('')
             }
+          })
+
+          $('#hapus-menu').click(function(){
+            if ($('#inputPKMenu').val() == ''){
+              window.alert('Mohon Isi Data Dengan Lengkap')
+            }else if (isNaN($('#inputPKMenu').val())){
+              window.alert('Mohon Isi Data Dengan Benar')
+            }else{
+              $.ajax({
+                  url: `/tempat-kuliner/delete-menu-kuliner`,
+                  type: 'POST',
+                  data: {PKMenu:$('#inputPKMenu').val()},
+                  success: function(response){
+                    if (response.status == 'NO'){
+                      window.alert('PK yang Anda Masukkan Salah!')
+                    }
+                  }
+                })
+            }
+            $('#inputPKMenu').val('')
+          })
+
+          $('#hapus-wisata').click(function(){
+            if ($('#inputPKWisata').val() == ''){
+              window.alert('Mohon Isi Data Dengan Lengkap')
+            }else if (isNaN($('#inputPKWisata').val())){
+              window.alert('Mohon Isi Data Dengan Benar')
+            }else{
+              $.ajax({
+                  url: `/tempat-wisata/delete-deskripsi-wisata`,
+                  type: 'POST',
+                  data: {PKWisata:$('#inputPKWisata').val()},
+                  success: function(response){
+                    if (response.status == 'NO'){
+                      window.alert('PK yang Anda Masukkan Salah!')
+                    }
+                  }
+                })
+            }
+            $('#inputPKWisata').val('')
           })
 
           $('#hapus-kebutuhan').click(function(){
