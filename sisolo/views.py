@@ -9,7 +9,8 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect
 from sisolo.decorators import admin_only
 from sisolo.forms import Register
-from sisolo.models import User
+from sisolo.models import User as user1
+from django.contrib.auth.models import User as user2
 from django.views.decorators.csrf import csrf_exempt
 import json
 
@@ -18,31 +19,44 @@ from django.views.decorators.csrf import csrf_exempt
 
 @csrf_exempt
 def register_mobile(request):
+    # print('masuk')
     body_unicode = (request.body.decode('utf-8'))
     body = json.loads(body_unicode)
     username = body['username']
     password = body['password']
-    if username and password:
-        User.objects.create(username=username, password=password)
-    user = User (username = username, password = password)
+    # if username and password:
+    #     User.objects.create(username=username, password=password)
+    # user = User (username = username, password = password)
+    # user.save()
+    # user = User
+    user = user2.objects.create(username = username, password = password)
     user.save()
+    # print(user)
     return JsonResponse({'status': 'Success'})
+
+def register_addition(request):
+    body_unicode = (request.body.decode('utf-8'))
+    body = json.loads(body_unicode)
+    namaLengkap = body['namaLengkap']
+    nomorTelepon = body['nomorTelepon']
+    alamat = body['alamat']
+    user = user1(object)
 
 @csrf_exempt
 def edit_user_mobile(request):
     body_unicode = (request.body.decode('utf-8'))
-    user = User.objects.get(user=request.user)
+    # user = user.objects.get(user=request.user)
     body = json.loads(body_unicode)
     namaLengkap = body['namaLengkap']
     nomorTeleponPemilik = body['nomorTeleponPemilik']
     alamatPemilik = body['alamatPemilik']
-    user = User.objects.get(namaLengkap = namaLengkap, nomorTeleponPemilik = nomorTeleponPemilik, alamatPemilik = alamatPemilik)
+    user = user1.objects.get(namaLengkap = namaLengkap, nomorTeleponPemilik = nomorTeleponPemilik, alamatPemilik = alamatPemilik)
     user.save()
     return HttpResponse(status=202)
 
 def landing_page(request):
     if request.user.is_authenticated:
-        data = User.objects.filter(user=request.user)
+        data = user1.objects.filter(user=request.user)
         context = {
             'user': request.user,
             'data': data,
@@ -58,10 +72,10 @@ def login_user(request):
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
-            if not User.objects.filter(user = request.user).exists():
+            if not user1.objects.filter(user = request.user).exists():
                 response = HttpResponseRedirect(reverse("sisolo:registerAddition"))
             else:
-                if (User.objects.get(user = request.user).role == 'Admin'):
+                if (user1.objects.get(user = request.user).role == 'Admin'):
                     response = HttpResponseRedirect(reverse("Admin:show_admin_page"))
                 else:
                     response = HttpResponseRedirect(reverse("sisolo:landing_page"))
@@ -79,10 +93,10 @@ def login_user_mobile(request):
     password = body['password']
     userTemp = authenticate(request, username=username, password=password)
     if userTemp is not None:
-        if not User.objects.filter(user = userTemp).exists():
+        if not user1.objects.filter(user = userTemp).exists():
             return JsonResponse({'status':'notRegister'})
         else:
-            userLogin = User.objects.get(user = userTemp)
+            userLogin = user1.objects.get(user = userTemp)
             response = {
                 'status':'register',
                 'fields':{
@@ -105,7 +119,7 @@ def register(request):
             form.save()
             messages.success(request, 'Akun telah berhasil dibuat!')
             return redirect('sisolo:login_user')
-    
+
     context = {'form':form}
     return render(request, 'register.html', context)
 
@@ -118,7 +132,7 @@ def registerAddition(request):
             namaLengkap = request.POST.get('namaLengkap')
             nomorTelepon = request.POST.get('nomorTelepon')
             alamat = request.POST.get('alamat')
-            pengguna = User(user = request.user, nomorTeleponPemilik = nomorTelepon, alamatPemilik = alamat, namaLengkap = namaLengkap)
+            pengguna = user1(user = request.user, nomorTeleponPemilik = nomorTelepon, alamatPemilik = alamat, namaLengkap = namaLengkap)
             pengguna.save()
             return redirect('sisolo:landing_page')
     
@@ -132,7 +146,7 @@ def editProfile(request):
     if request.method == 'POST':
         form = Register(request.POST)
         if form.is_valid():
-            user = User.objects.get(user=request.user)
+            user = user1.objects.get(user=request.user)
             user.namaLengkap = request.POST.get('namaLengkap')
             user.nomorTeleponPemilik = request.POST.get('nomorTelepon')
             user.alamatPemilik = request.POST.get('alamat')
@@ -145,7 +159,7 @@ def editProfile(request):
 @login_required(login_url='/login/')
 @admin_only
 def all_user_data_json(request):
-    data = User.objects.all()
+    data = user1.objects.all()
     return HttpResponse(serializers.serialize("json", data), content_type="application/json")
 
 def logout_user(request):
