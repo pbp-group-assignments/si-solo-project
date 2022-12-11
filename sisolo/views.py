@@ -31,16 +31,16 @@ def register_mobile(request):
     # user = User
     user = user2.objects.create(username = username, password = password)
     user.save()
-    # print(user)
+    print(user)
     return JsonResponse({'status': 'Success'})
 
-def register_addition(request):
-    body_unicode = (request.body.decode('utf-8'))
-    body = json.loads(body_unicode)
-    namaLengkap = body['namaLengkap']
-    nomorTelepon = body['nomorTelepon']
-    alamat = body['alamat']
-    user = user1(object)
+# def register_addition(request):
+#     body_unicode = (request.body.decode('utf-8'))
+#     body = json.loads(body_unicode)
+#     namaLengkap = body['namaLengkap']
+#     nomorTelepon = body['nomorTelepon']
+#     alamat = body['alamat']
+#     user = user1(object)
 
 @csrf_exempt
 def edit_user_mobile(request):
@@ -91,10 +91,10 @@ def login_user_mobile(request):
     body = json.loads(body_unicode)
     username = body['username']
     password = body['password']
-    userTemp = authenticate(request, username=username, password=password)
+    userTemp = user2.objects.get(username = username, password = password)
     if userTemp is not None:
         if not user1.objects.filter(user = userTemp).exists():
-            return JsonResponse({'status':'notRegister'})
+            return JsonResponse({'status':'notRegister', 'username':username})
         else:
             userLogin = user1.objects.get(user = userTemp)
             response = {
@@ -110,6 +110,19 @@ def login_user_mobile(request):
             return JsonResponse(response)
     else:
         return JsonResponse({'status':'failed'})
+
+@csrf_exempt
+def register_addition_mobile(request):
+    body_unicode = (request.body.decode('utf-8'))
+    body = json.loads(body_unicode)
+    username = body['username']
+    nama = body['nama']
+    nomor = body['nomor']
+    alamat = body['alamat']
+    userTemp = user2.objects.get(username = username)
+    user = user1.objects.create(user = userTemp, namaLengkap = nama, nomorTeleponPemilik = nomor, alamatPemilik = alamat)
+    user.save()
+    return JsonResponse({'nama' : nama, 'nomor': nomor, 'alamat':alamat})
 
 def register(request):
     form = UserCreationForm()

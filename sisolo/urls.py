@@ -1,5 +1,5 @@
 from django.urls import path
-from sisolo.views import landing_page, login_user, register, registerAddition, editProfile, logout_user, all_user_data_json, login_user_mobile, register_mobile, logout_mobile, edit_user_mobile
+from sisolo.views import *
 
 app_name = 'sisolo'
 
@@ -15,4 +15,5 @@ urlpatterns = [
     path('register_mobile/', register_mobile, name='register_mobile'),
     path('logout_mobile/', logout_mobile, name='logout_mobile'),
     path('edit_user_mobile/', edit_user_mobile, name='edit_user_mobile'),
+    path('register-addition-mobile/', register_addition_mobile, name='register_addition_mobile'),
 ]
