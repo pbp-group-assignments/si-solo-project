@@ -11,7 +11,6 @@
         $(document).ready(function(){
           var jumlahDaftar = 0;
           $.get(`/daftar-usaha/semua-usaha-json`, function(data){
-            console.log(data)
             for (let i = 0; i < data.length; i++){
                 $('#list-pendaftaran').append(`${data[i].fields.statusPendaftaran == 'Diterima' && data[i].fields.jenisUsaha == 'Kuliner' ? 
                 `<div id="${data[i].pk}--daftar" class="card text-white bg-dark mb-3 transform transition duration-500 hover:scale-105 flex-auto" style="max-width: 17rem; min-width: 17rem;"> 

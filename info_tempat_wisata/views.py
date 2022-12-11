@@ -9,12 +9,11 @@ from pendaftaran_izin_usaha.models import Usaha
 from sisolo.decorators import admin_only, allowed_users
 from django.shortcuts import redirect
 
-@login_required(login_url='/login/')
-@allowed_users(allowed_roles=['Pelaku Usaha', 'Pengguna'])
 def show_tempat_wisata(request):
     return render(request, 'show_tempat_wisata.html')
 
-
+@login_required(login_url='/login/')
+@allowed_users(allowed_roles=['Pelaku Usaha', 'Pengguna'])
 def manage_wisata_json(request):
     data = DaftarWisata.objects.all()
     return HttpResponse(serializers.serialize("json", data), content_type="application/json")

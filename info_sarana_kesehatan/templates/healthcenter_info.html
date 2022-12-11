@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block meta %}
-<title>Info Transportasi Umum</title>
+<title>Info Sarana Kesehatan</title>
 {% endblock meta %}
 
 {% block content %}
@@ -111,14 +111,14 @@
     <div class="welcome p-4 p-md-5 text-white bg-dark">
         <div class="row mb-2">
             <div class="px-0">
-                <h1 class="display-4 font-italic" style="text-align: center; padding: 10px; font-weight: bold">Info Transportasi Umum</h1>
+                <h1 class="display-4 font-italic" style="text-align: center; padding: 10px; font-weight: bold">Info Sarana Kesehatan</h1>
             </div>
         </div>
     </div>
 </div>
 <br>
 
-<div class = "transportation-info">
+<div class = "healthcenter-info">
 
     <nav class="navbar navbar-light bg-light" style="padding: 10px">
         <div class="container-fluid" style="display: flex; justify-content: center; width: 100%">
@@ -131,59 +131,41 @@
     </nav>
     <br>
 
-    <div class="px-5" id="transportation-list"></div>
+    <div class="px-5" id="healthcenter-list"></div>
 
 </div>
 
 <script>
     function clearElement() {
-        $("#transportation-list").empty();
+        $("#healthcenter-list").empty();
     }
     function renderTransportation() {
         var flexContainer = $('<div class="flex-container"></div>')
-        var divCard = $('<div></div>')
-        $.get("{% url 'info_transportasi_umum:show_json_transport' %}", function(data) {
+        var cardContainer = $('<div></div>')
+        $.get("{% url 'info_sarana_kesehatan:show_json_healthcenter' %}", function(data) {
             console.log(data)
             for (i = 0; i < data.length; i++) {
-                var transportation = data[i]
+                var healthcenter = data[i]
                 var card = $('<div class="card" style="width: 100%; height: auto"></div>')
                 var cardHeader = $('<div class="card-header" id="image" style="width: 100%; height: auto"></div>')
                 var cardBody = $('<div class="card-body"></div>')
-                var routeContainer = $('<div class="container"></div>')
-                $.get(`json/route/${transportation.pk}/`, function(data) {
-                    console.log(data)
-                    for (j = 0; j < data.length; j++) {
-                        var route = data[j]
-                        var divRoute = $(`<div>Rute ${route.fields.from_to}:<br></div>`)
-                        var pStops = $('<p></p>')
-                        $.get(`json/stop-point/${route.pk}/`, function(data) {
-                            console.log(data)
-                            for (k = 0; k < data.length; k++) {
-                                pStops.append(`<a type="link" href="${data[k].fields.stop_location}">${data[k].fields.stop_name}</a>`)
-                                if (k + 1 != data.length) {
-                                    pStops.append(`<a> - </a>`)
-                                }
-                            }
-                        })
-                        divRoute.append(pStops)
-                        routeContainer.append(divRoute)
-                    }
-                })
-                cardHeader.append(`<img src="/media/${transportation.fields.image}" class="card-img-top img-fluid py-2" alt="Transportation mode image">`)
+                cardHeader.append(`<img src="/media/${healthcenter.fields.image}" class="card-img-top img-fluid py-2" alt="Healthcenter image">`)
                 cardBody.append(`
-                    <strong class="card-title" style="padding: 5px; font-size: 22px">${transportation.fields.name}</strong>
+                    <strong class="card-title" style="padding: 5px; font-size: 22px">${healthcenter.fields.name}</strong>
                     <hr>
-                    <p class="card-text" style="padding: 10px">${transportation.fields.description}</p>
+                    <p class="card-text" style="padding: 10px">
+                        Alamat: <a type="link" href="${healthcenter.fields.location_url}">${healthcenter.fields.address}<a><br>
+                        Kontak: ${healthcenter.fields.contact}
+                    </p>
                 `)
-                cardBody.append(routeContainer)
                 card.append(cardHeader)
                 card.append(cardBody)
-                divCard.append(card)
-                divCard.append('<br>')
+                cardContainer.append(card)
+                cardContainer.append('<br>')
             }
         })
-        flexContainer.append(divCard)
-        $("#transportation-list").append(flexContainer)
+        flexContainer.append(cardContainer)
+        $("#healthcenter-list").append(flexContainer)
     }
     $(document).ready(function(){
         clearElement();
