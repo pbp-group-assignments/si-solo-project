@@ -91,25 +91,33 @@ def login_user_mobile(request):
     body = json.loads(body_unicode)
     username = body['username']
     password = body['password']
-    userTemp = user2.objects.get(username = username, password = password)
+    userTemp = authenticate(request, username=username, password=password)
+    # userTemp = user2.objects.filter(username = username, password = password)
+    print(userTemp)
+    # if (user1)
+    # if len(userTemp) != 0:
     if userTemp is not None:
-        if not user1.objects.filter(user = userTemp).exists():
+        userLogin = user1.objects.get(user = userTemp)
+        response = {
+            'status':'register',
+            'fields':{
+                'username':username,
+                'role':userLogin.role,
+                'namaLengkap':userLogin.namaLengkap,
+                'nomorTeleponPemilik':userLogin.nomorTeleponPemilik,
+                'alamatPemilik':userLogin.alamatPemilik,
+            }
+        }
+        return JsonResponse(response)
+    else:
+        userTemp2 = user2.objects.filter(username = username, password = password)
+        # print(len(userTemp2))
+        if len(userTemp2) != 0:
+            print('masuk2')
             return JsonResponse({'status':'notRegister', 'username':username})
         else:
-            userLogin = user1.objects.get(user = userTemp)
-            response = {
-                'status':'register',
-                'fields':{
-                    'username':username,
-                    'role':userLogin.role,
-                    'namaLengkap':userLogin.namaLengkap,
-                    'nomorTeleponPemilik':userLogin.nomorTeleponPemilik,
-                    'alamatPemilik':userLogin.alamatPemilik,
-                }
-            }
-            return JsonResponse(response)
-    else:
-        return JsonResponse({'status':'failed'})
+            print('masuk3')
+            return JsonResponse({'status':'failed'})
 
 @csrf_exempt
 def register_addition_mobile(request):
@@ -119,9 +127,19 @@ def register_addition_mobile(request):
     nama = body['nama']
     nomor = body['nomor']
     alamat = body['alamat']
-    userTemp = user2.objects.get(username = username)
-    user = user1.objects.create(user = userTemp, namaLengkap = nama, nomorTeleponPemilik = nomor, alamatPemilik = alamat)
-    user.save()
+    # userFilter = user2.objects.filter(username = username)
+    # user = authenticate(request, username=userFilter[0].username, password=userFilter[0].password)
+    # print(user)
+    # print(userFilter[0].)
+    # print(username)
+    # userFilter = user2.objects.filter(username = username)
+    # # print(userTemp[0].pk)
+    # # print(user2.objects.get(id = userTemp[0].pk))
+    # userTemp = user2.objects.get(id = userFilter[0].pk)
+    # # userTemp = user2.objects.get(username = username)
+    # user = user1.objects.create(user = , namaLengkap = nama, nomorTeleponPemilik = nomor, alamatPemilik = alamat)
+    # user.save()
+    # print(user)
     return JsonResponse({'nama' : nama, 'nomor': nomor, 'alamat':alamat})
 
 def register(request):
@@ -145,6 +163,7 @@ def registerAddition(request):
             namaLengkap = request.POST.get('namaLengkap')
             nomorTelepon = request.POST.get('nomorTelepon')
             alamat = request.POST.get('alamat')
+            # print(request.user)
             pengguna = user1(user = request.user, nomorTeleponPemilik = nomorTelepon, alamatPemilik = alamat, namaLengkap = namaLengkap)
             pengguna.save()
             return redirect('sisolo:landing_page')
