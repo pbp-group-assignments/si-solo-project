@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.contrib.auth import authenticate, login, logout
-from django.http import HttpResponseRedirect, HttpResponse
+from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
 from django.core import serializers
 from django.urls import reverse
 from django.contrib import messages
@@ -8,9 +8,38 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect
 from sisolo.decorators import admin_only
-
 from sisolo.forms import Register
 from sisolo.models import User
+from django.views.decorators.csrf import csrf_exempt
+import json
+
+# from django.contrib.auth.models import User
+from django.views.decorators.csrf import csrf_exempt
+
+@csrf_exempt
+def register_mobile(request):
+    body_unicode = (request.body.decode('utf-8'))
+    body = json.loads(body_unicode)
+    username = body['username']
+    password = body['password']
+    if username and password:
+        User.objects.create(username=username, password=password)
+    user = User (username = username, password = password)
+    user.save()
+    return JsonResponse({'status': 'Success'})
+
+@csrf_exempt
+def edit_user_mobile(request):
+    body_unicode = (request.body.decode('utf-8'))
+    user = User.objects.get(user=request.user)
+    body = json.loads(body_unicode)
+    namaLengkap = body['namaLengkap']
+    nomorTeleponPemilik = body['nomorTeleponPemilik']
+    alamatPemilik = body['alamatPemilik']
+    user = User.objects.get(namaLengkap = namaLengkap, nomorTeleponPemilik = nomorTeleponPemilik, alamatPemilik = alamatPemilik)
+    user.save()
+    return HttpResponse(status=202)
+
 
 def landing_page(request):
     if request.user.is_authenticated:
@@ -42,6 +71,32 @@ def login_user(request):
             messages.info(request, 'Username atau Password salah!')
     context = {}
     return render(request, 'login.html', context)
+
+@csrf_exempt
+def login_user_mobile(request):
+    body_unicode = (request.body.decode('utf-8'))
+    body = json.loads(body_unicode)
+    username = body['username']
+    password = body['password']
+    userTemp = authenticate(request, username=username, password=password)
+    if userTemp is not None:
+        if not User.objects.filter(user = userTemp).exists():
+            return JsonResponse({'status':'notRegister'})
+        else:
+            userLogin = User.objects.get(user = userTemp)
+            response = {
+                'status':'register',
+                'fields':{
+                    'username':username,
+                    'role':userLogin.role,
+                    'namaLengkap':userLogin.namaLengkap,
+                    'nomorTeleponPemilik':userLogin.nomorTeleponPemilik,
+                    'alamatPemilik':userLogin.alamatPemilik,
+                }
+            }
+            return JsonResponse(response)
+    else:
+        return JsonResponse({'status':'failed'})
 
 def register(request):
     form = UserCreationForm()
@@ -99,3 +154,8 @@ def logout_user(request):
     response = HttpResponseRedirect(reverse('sisolo:landing_page'))
     return response
     
+def logout_mobile(request):
+    logout(request)
+    response = HttpResponseRedirect(reverse('sisolo:login'))
+    response.delete_cookie('last_login')
+    return response
