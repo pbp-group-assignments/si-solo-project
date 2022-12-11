@@ -1,0 +1,175 @@
+{% extends 'base.html' %}
+
+{% block meta %}
+<title>Info Sarana Kesehatan</title>
+{% endblock meta %}
+
+{% block content %}
+
+<nav class="navbar navbar-custom">
+    <div class="container-fluid">
+        <a href="{% url 'sisolo:landing_page' %}" class="navbar-brand">SISOLO</a>
+    
+        <div class="navbar-right">
+            
+            <div class="modal fade" id="nomord" tabindex="-1">
+                <div class="modal-dialog">
+                    <div class="modal-content" style="color:black;">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Nomor Darurat</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div>
+                                <a href="tel:+62-271712600">Poltabes Solo: (0271)712600</a>
+                            </div>
+                            <div>
+                                <a href="tel:+62-119">Ambulans SPGDT: 119</a>
+                            </div>
+                            <div>
+                                <a href="tel:+62-113">Pemadam Kebakaran: 113</a>
+                            </div>
+                            <div>
+                                <a href="tel:+62-271722091">Gangguan Listrik PLN: (0271)722091</a>
+                            </div>
+                            <div>
+                                <a href="tel:+62-271714039">Stasiun Solo Balapan: (0271)714039</a>
+                            </div>
+                            <div>
+                                <a href="tel:+62-271738900">Terminal Tortonadi: (0271)738900</a>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary text-black" data-bs-dismiss="modal">Close</button>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+            
+            
+            <a class="btn btn-danger btn-sm btn-outline-secondary" style="margin:5px; color: white;" data-bs-toggle="modal" data-bs-target="#nomord">Nomor Darurat</a>   
+
+
+            {% if user.is_authenticated %}
+            
+            {% for thing in data %}
+
+            <div class="modal fade" id="edit" tabindex="-1">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title">Edit Profil</h5>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                      <form>
+                        {% csrf_token %}
+                        
+                        <div class="mb-3">
+                            <label for="namaLengkap" class="col-form-label">Nama Lengkap:</label>
+                            <input type="text" name="namaLengkap" id="namaLengkap"  class="form-control" value="{{thing.namaLengkap}}" required="">
+                        </div>
+                        <div class="mb-3">
+                            <label for="nomorTeleponPemilik" class="col-form-label">Nomor Telpon:</label>
+                            <input type="text" name="nomorTeleponPemilik" id="nomorTeleponPemilik" class="form-control" value="{{thing.nomorTeleponPemilik}}" required=""></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="alamatPemilik" class="col-form-label">Alamat:</label>
+                            <input type="text" name="alamatPemilik" id="alamatPemilik" class="form-control" value="{{thing.alamatPemilik}}" required=""></textarea>
+                          </div>
+                
+                        <div class="d-grid mt-4">
+                            <input class="btnUpdate btn btn-outline-primary" type="submit" value="Save" data-bs-dismiss="modal"/>
+                        </div>
+                    </form>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" style="color:black;" data-bs-dismiss="modal">Close</button>
+                    </div>
+                  </div>
+                </div>
+            </div>
+
+            <a class="btn btn-sm btn-outline-secondary" style="margin:5px; color: black;" data-bs-toggle="modal" data-bs-target="#edit">Edit Profil</a>   
+
+            {% endfor %}
+            
+            
+            <a class="btn btn-sm btn-outline-secondary" style="margin:5px; color: black;" href="{% url 'sisolo:logout_user' %}" >Logout</a>
+
+            {% else %}
+            <a class="btn btn-sm btn-outline-secondary" style="margin:5px; color: black;" href="/login">Login</a>
+            <a class="btn btn-sm btn-outline-secondary" style="margin:5px; color: black;" href="/register">Sign up</a>
+            
+            {% endif %}
+        </div>
+    </div>
+</nav>
+
+<div class="row featurette">
+    <div class="welcome p-4 p-md-5 text-white bg-dark">
+        <div class="row mb-2">
+            <div class="px-0">
+                <h1 class="display-4 font-italic" style="text-align: center; padding: 10px; font-weight: bold">Info Sarana Kesehatan</h1>
+            </div>
+        </div>
+    </div>
+</div>
+<br>
+
+<div class = "healthcenter-info">
+
+    <nav class="navbar navbar-light bg-light" style="padding: 10px">
+        <div class="container-fluid" style="display: flex; justify-content: center; width: 100%">
+            <form method="POST" class="d-flex justify-content-center" style="width: 50%">
+                {% csrf_token %}
+                <input class="form-control me-2" type="search" name="search_keyword" placeholder="Search" aria-label="Search">
+                <button class="btn btn-outline-success" type="submit">Search</button>
+            </form>
+        </div>
+    </nav>
+    <br>
+
+    <div class="px-5" id="healthcenter-list"></div>
+
+</div>
+
+<script>
+    function clearElement() {
+        $("#healthcenter-list").empty();
+    }
+    function renderTransportation() {
+        var flexContainer = $('<div class="flex-container"></div>')
+        var cardContainer = $('<div></div>')
+        $.get("{% url 'info_sarana_kesehatan:show_json_healthcenter' %}", function(data) {
+            console.log(data)
+            for (i = 0; i < data.length; i++) {
+                var healthcenter = data[i]
+                var card = $('<div class="card" style="width: 100%; height: auto"></div>')
+                var cardHeader = $('<div class="card-header" id="image" style="width: 100%; height: auto"></div>')
+                var cardBody = $('<div class="card-body"></div>')
+                cardHeader.append(`<img src="/media/${healthcenter.fields.image}" class="card-img-top img-fluid py-2" alt="Healthcenter image">`)
+                cardBody.append(`
+                    <strong class="card-title" style="padding: 5px; font-size: 22px">${healthcenter.fields.name}</strong>
+                    <hr>
+                    <p class="card-text" style="padding: 10px">
+                        Alamat: <a type="link" href="${healthcenter.fields.location_url}">${healthcenter.fields.address}<a><br>
+                        Kontak: ${healthcenter.fields.contact}
+                    </p>
+                `)
+                card.append(cardHeader)
+                card.append(cardBody)
+                cardContainer.append(card)
+                cardContainer.append('<br>')
+            }
+        })
+        flexContainer.append(cardContainer)
+        $("#healthcenter-list").append(flexContainer)
+    }
+    $(document).ready(function(){
+        clearElement();
+        renderTransportation();
+    });
+</script>
+{% endblock content %}

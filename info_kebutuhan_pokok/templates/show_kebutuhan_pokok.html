@@ -1,0 +1,120 @@
+{% extends 'base.html' %}
+{% load filters %}
+
+{% block meta %}
+<title>List Pendaftaran Usaha</title>
+{% endblock meta %}
+
+{% block content %}
+<head>
+    <script>
+        $(document).ready(function(){
+          var jumlahDaftar = 0;
+          $.get(`/daftar-usaha/semua-usaha-json`, function(data){
+            for (let i = 0; i < data.length; i++){
+                $('#list-pendaftaran').append(`${data[i].fields.statusPendaftaran == 'Diterima' && data[i].fields.jenisUsaha == 'Menjual Bahan Pokok' ? 
+                `<div id="${data[i].pk}--daftar" class="card text-white bg-dark mb-3 transform transition duration-500 hover:scale-105 flex-auto" style="max-width: 17rem; min-width: 17rem;"> 
+                <div class="card-header text-white bg-dark mb-3">${data[i].fields.namaUsaha}
+          <div class="card-body text-white bg-dark mb-3">
+            <p class="card-text text-white bg-dark mb-3" style="text-align: center;">Alamat Usaha: ${data[i].fields.alamatUsaha}</p>
+            <p class="card-text text-white bg-dark mb-3" style="text-align: center;">Nomor Telepon Usaha: ${data[i].fields.nomorTeleponUsaha}</p>
+            <div class="container text-white bg-dark mb-3" style="text-align: center;">
+            <a><button class="button-delete bg-cyan-500 hover:bg-cyan-400"style="width: 90px; height: 30px" ><a class="font-delete" onclick="menu(${data[i].pk})" data-bs-toggle="modal" data-bs-target="#KebutuhanModal">Lihat Item</a></button></a>
+            </div></div></div></div>`:``}`)
+            }
+          })
+
+          menu = (daftarId) => {
+              $.ajax({
+                url: `/info-kebutuhan-pokok/manage-json`,
+                type: 'GET',
+                data:{id:daftarId},
+                success: function(response){
+                  for (let i = 0; i < response.length; i++){
+                    $('#kebutuhan-modal-body').append(`<p>Nama Kebutuhan: ${response[i].fields.namaKebutuhan}</p>
+                    <p>Harga Kebutuhan: ${response[i].fields.hargaKebutuhan}</p>
+                    <p>Deskripsi Kebutuhan: ${response[i].fields.deskripsiKebutuhan}</p>
+                    <hr>`)
+                  }
+                }
+              })
+            $('#kebutuhan-modal-body').html('')
+          }
+        })
+    </script>
+</head>
+
+<body>
+  <nav class="navbar navbar-custom">
+    <div class="container-fluid">
+        <a href="/" class="navbar-brand">SISOLO</a>
+    
+        <div class="navbar-right">
+            
+            <div class="modal fade" id="nomord" tabindex="-1">
+                <div class="modal-dialog">
+                    <div class="modal-content" style="color:black;">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Nomor Darurat</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div>
+                                <a href="tel:+62-271712600">Poltabes Solo: (0271)712600</a>
+                            </div>
+                            <div>
+                                <a href="tel:+62-119">Ambulans SPGDT: 119</a>
+                            </div>
+                            <div>
+                                <a href="tel:+62-113">Pemadam Kebakaran: 113</a>
+                            </div>
+                            <div>
+                                <a href="tel:+62-271722091">Gangguan Listrik PLN: (0271)722091</a>
+                            </div>
+                            <div>
+                                <a href="tel:+62-271714039">Stasiun Solo Balapan: (0271)714039</a>
+                            </div>
+                            <div>
+                                <a href="tel:+62-271738900">Terminal Tortonadi: (0271)738900</a>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary text-black" data-bs-dismiss="modal">Close</button>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+            
+            
+            <a class="btn btn-danger btn-sm btn-outline-secondary" style="margin:5px; color: white;" data-bs-toggle="modal" data-bs-target="#nomord">Nomor Darurat</a>   
+            
+            <a class="btn btn-sm btn-outline-secondary" style="margin:5px; color: black;" href="{% url 'sisolo:landing_page' %}" >Halaman Utama</a>
+            
+            <a class="btn btn-sm btn-outline-secondary" style="margin:5px; color: black;" href="{% url 'sisolo:logout_user' %}" >Logout</a>
+        </div>
+    </div>
+</nav>
+
+ 
+
+  <div class="modal fade" id="KebutuhanModal" tabindex="-1" role="dialog" aria-labelledby="KebutuhanModal" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title text-black" id="DaftarUsahaBaruModal">Kebutuhan</h5>
+        </div>
+        <div class="modal-body" id="kebutuhan-modal-body">
+        </div>
+        <div class="modal-footer" id="manage-modal-footer">
+            <button type="button" class="btn btn-secondary text-black" data-bs-dismiss="modal">Tutup</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="items-center flex justify-center">
+    <div class="grid gap-4 grid-cols-1 sm:grid-flow-cols-1 md:grid-cols-3 lg:grid-cols-4 m-4" id="list-pendaftaran"></div>
+  </div>
+</body>
+{% endblock content %}

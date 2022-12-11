@@ -11,30 +11,17 @@
 <br>
 
 <div class="add-stop-point">
-
-    <form method="POST" id="add-stop-point">
-        {% csrf_token %}
-        <div class="card border-dark" style="margin:auto; width:60%; padding:10px">
-            <strong class="card-title" style="font-size: 25px">Tambah titik pemberhentian baru disini:</strong>
-            <table>
-                <tr>
-                    <td>Nama referensi rute (lihat di django admin): </td>
-                    <td><input type="text" name="ref_name_route" placeholder="nama_referensi_rute" class="form-control"></td>
-                </tr> 
-                <tr>
-                    <td>Nama titik pemberhentian: </td>
-                    <td><input type="text" name="stop_name" placeholder="Nama titik pemberhentian" class="form-control"></td>
-                </tr>
-                <tr>
-                    <td>URL lokasi titik pemberhentian (google maps): </td>
-                    <td><input type="text" name="stop_location" placeholder="https://goo.gl/maps/..." class="form-control"></td>
-                </tr>
-            </table>
-            <br>
-            <button class="btn btn-primary" type="submit" style="align-self: center; width: 100%;">Tambah</button>
+    <div class="card border-dark" style="margin:auto; width:60%; padding:10px">
+        <div class="card-body">
+            <h4 class="card-title" style="font-size: 25px; font-weight: bold; padding-bottom: 5px">Tambah titik pemberhentian baru disini:</h4>
+            <form method="POST" id="add-stop-point">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <br>
+                <button class="btn" type="submit" style="align-self: center; width: 100%; padding-bottom: 5px; background-color: #721ad6; color: white">Tambah</button>
+            </form>
         </div>
-    </form>
-
+    </div>
 </div>
 
 <script>
@@ -48,6 +35,9 @@
                 // on success
                 success: function(response) {
                     alert(response);
+                },
+                error: function(response) {
+                    alert("Penambahan titik pemberhentian gagal!")
                 }
             });
             return false;

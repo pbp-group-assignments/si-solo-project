@@ -40,7 +40,6 @@ def edit_user_mobile(request):
     user.save()
     return HttpResponse(status=202)
 
-
 def landing_page(request):
     if request.user.is_authenticated:
         data = User.objects.filter(user=request.user)

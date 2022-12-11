@@ -22,10 +22,14 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('sisolo.urls')),
     path('daftar-usaha/', include('pendaftaran_izin_usaha.urls')),
+    path('Admin/', include('Admin.urls')),
+    path('info-kebutuhan-pokok/', include('info_kebutuhan_pokok.urls')),
     path('layanan-pengaduan/', include('layanan_pengaduan.urls')),
     path('saran-pembangunan-kota/', include('saran_pembangunan_kota.urls')),
     path('info-transportasi-umum/', include('info_transportasi_umum.urls')),
-    path('Admin/', include('Admin.urls')),
+    path('tempat-wisata/', include('info_tempat_wisata.urls')),
+    path('tempat-kuliner/', include('info_kuliner.urls')),
+    path('info-sarana-kesehatan/', include('info_sarana_kesehatan.urls')),
 ]
 
 if settings.DEBUG:

@@ -8,6 +8,7 @@ from sisolo.decorators import allowed_users
 from sisolo.models import User
 from django.shortcuts import redirect
 from pendaftaran_izin_usaha.forms import DaftarPelakuUsaha, DaftarUsaha
+import json
 
 # Create your views here.
 @login_required(login_url='/login/')
@@ -17,11 +18,21 @@ def show_pendaftaran(request):
     form = DaftarUsaha()
     return render(request, "list_pendaftaran.html", {'form':form})
 
-@login_required(login_url='/login/')
-@allowed_users(allowed_roles=['Pelaku Usaha', 'Admin'])
+# @login_required(login_url='/login/')
+# @allowed_users(allowed_roles=['Pelaku Usaha', 'Admin'])
 def usaha_json(request):
     user = User.objects.get(user = request.user)
     data = Usaha.objects.filter(user = user)
+    return HttpResponse(serializers.serialize("json", data), content_type="application/json")
+
+def usaha_json_mobile(request, role, namaLengkap, nomorTeleponPemilik, alamatPemilik):
+    user = User.objects.get(role = role, namaLengkap = namaLengkap, nomorTeleponPemilik = nomorTeleponPemilik, alamatPemilik = alamatPemilik)
+    data = Usaha.objects.filter(user = user)
+    return HttpResponse(serializers.serialize("json", data), content_type="application/json")
+
+def semua_usaha_json(request):
+    # print('masuk')
+    data = Usaha.objects.all()
     return HttpResponse(serializers.serialize("json", data), content_type="application/json")
 
 @login_required(login_url='/login/')
@@ -54,6 +65,23 @@ def daftar_usaha_baru(request):
 
     return HttpResponseBadRequest()
 
+@csrf_exempt
+def add_usaha_mobile(request):
+    body_unicode = (request.body.decode('utf-8'))
+    body = json.loads(body_unicode)
+    role = body['role']
+    namaLengkap = body['namaLengkap']
+    nomorTeleponPemilik = body['nomorTeleponPemilik']
+    alamatPemilik = body['alamatPemilik']
+    namaUsaha = body['namaUsaha']
+    alamatUsaha = body['alamatUsaha']
+    nomorTeleponUsaha = body['nomorTeleponUsaha']
+    jenisUsaha = body['jenisUsaha']
+    user = User.objects.get(role = role, namaLengkap = namaLengkap, nomorTeleponPemilik = nomorTeleponPemilik, alamatPemilik = alamatPemilik)
+    usaha = Usaha(user = user, namaPemilik = user.namaLengkap, nomorTeleponPemilik = user.nomorTeleponPemilik, alamatPemilik = user.alamatPemilik, namaUsaha = namaUsaha, jenisUsaha = jenisUsaha, alamatUsaha = alamatUsaha, nomorTeleponUsaha = nomorTeleponUsaha)
+    usaha.save()
+    return HttpResponse(status=202)
+
 @login_required(login_url='/login/')
 @csrf_exempt
 @allowed_users(allowed_roles=['Pelaku Usaha'])
@@ -80,20 +108,92 @@ def daftar_pelaku_usaha(request):
                 pelakuUsaha = PelakuUsaha(user = user, namaPemilik = user.namaLengkap, nomorTeleponPemilik = user.nomorTeleponPemilik, alamatPemilik = user.alamatPemilik, nik = nik)
                 pelakuUsaha.save()
 
-                render(request, 'proses_pendaftaran_pelaku_usaha.html')
+                return redirect('pendaftaran_izin_usaha:proses_daftar_pelaku_usaha')
             
         context= {'form':form}
         return render(request, 'daftar_pelaku_usaha.html', context)
     else:
         pelakuUsaha = PelakuUsaha.objects.get(user = user)
         if pelakuUsaha.status == 'Diproses':
-            return render(request, 'proses_pendaftaran_pelaku_usaha.html')
+            return redirect('pendaftaran_izin_usaha:proses_daftar_pelaku_usaha')
         elif pelakuUsaha.status == 'Ditolak':
-            temp.delete()
             context={'pesan':pelakuUsaha.pesan}
             return render(request, 'tolak_pendaftaran_pelaku_usaha.html', context)
         else:
             return redirect('pendaftaran_izin_usaha:show_pendaftaran')
+
+def daftar_pelaku_usaha_mobile(request, role, namaLengkap, nomorTeleponPemilik, alamatPemilik):
+    user = User.objects.get(role = role, namaLengkap = namaLengkap, nomorTeleponPemilik = nomorTeleponPemilik, alamatPemilik = alamatPemilik)
+    temp = PelakuUsaha.objects.filter(user = user)
+
+    if not temp.exists():
+        return JsonResponse({'message': 'belumDaftar'})
+    else:
+        pelakuUsaha = PelakuUsaha.objects.get(user = user)
+        if pelakuUsaha.status == 'Diproses':
+            response = {
+                'message': 'daftar',
+                'status': 'diproses',
+            }
+            return JsonResponse(response)
+        elif pelakuUsaha.status == 'Ditolak':
+            response = {
+                'message': 'daftar',
+                'status': 'ditolak',
+                'pesan': pelakuUsaha.pesan
+            }
+            return JsonResponse(response)
+        else:
+            response = {
+                'message': 'daftar',
+                'status': 'diterima',
+            }
+            return JsonResponse(response)
+
+@csrf_exempt
+def add_pelaku_usaha(request):
+    body_unicode = (request.body.decode('utf-8'))
+    body = json.loads(body_unicode)
+    role = body['role']
+    namaLengkap = body['namaLengkap']
+    nomorTeleponPemilik = body['nomorTeleponPemilik']
+    alamatPemilik = body['alamatPemilik']
+    nik = body['nik']
+    user = User.objects.get(role = role, namaLengkap = namaLengkap, nomorTeleponPemilik = nomorTeleponPemilik, alamatPemilik = alamatPemilik)
+    pelakuUsaha = PelakuUsaha(user = user, namaPemilik = user.namaLengkap, nomorTeleponPemilik = user.nomorTeleponPemilik, alamatPemilik = user.alamatPemilik, nik = nik)
+    pelakuUsaha.save()
+    return HttpResponse(status=202)
+
+def get_usaha_mobile(request, role, namaLengkap, nomorTeleponPemilik, alamatPemilik):
+    user = User.objects.get(role = role, namaLengkap = namaLengkap, nomorTeleponPemilik = nomorTeleponPemilik, alamatPemilik = alamatPemilik)
+    temp = Usaha.objects.filter(user = user)
+    return HttpResponse(serializers.serialize("json", temp), content_type="application/json")
+
+@login_required(login_url='/login/')
+@allowed_users(allowed_roles=['Pengguna'])
+def daftar_ulang(request):
+    user = User.objects.get(user = request.user)
+    temp = PelakuUsaha.objects.filter(user = user)
+    temp.delete()
+    return redirect('pendaftaran_izin_usaha:daftar_usaha_baru')
+
+@csrf_exempt
+def daftar_ulang_mobile(request):
+    body_unicode = (request.body.decode('utf-8'))
+    body = json.loads(body_unicode)
+    role = body['role']
+    namaLengkap = body['namaLengkap']
+    nomorTeleponPemilik = body['nomorTeleponPemilik']
+    alamatPemilik = body['alamatPemilik']
+    user = User.objects.get(role = role, namaLengkap = namaLengkap, nomorTeleponPemilik = nomorTeleponPemilik, alamatPemilik = alamatPemilik)
+    temp = PelakuUsaha.objects.filter(user = user)
+    temp.delete()
+    return HttpResponse(status=202)
+
+@login_required(login_url='/login/')
+@allowed_users(allowed_roles=['Pengguna'])
+def proses_daftar_pelaku_usaha(request):
+    return render(request, 'proses_pendaftaran_pelaku_usaha.html')
 
 @login_required(login_url='/login/')
 @allowed_users(allowed_roles=['Pengguna'])
