@@ -137,6 +137,25 @@
                   <button type="button" class="btn btn-secondary text-black" data-bs-dismiss="modal">Tutup</button>`)
                 }
               })
+            }else if(jenis == 'Menjual Bahan Pokok'){
+              $.ajax({
+                url: `/info-kebutuhan-pokok/manage-json`,
+                type: 'GET',
+                data:{id:daftarId},
+                success: function(response){
+                  for (let i = 0; i < response.length; i++){
+                    $('#manage-modal-body').append(`<div id='${response[i].pk}--kebutuhan'><p>PK (Kode Unik Objek): ${response[i].pk}</p>
+                    <p>Nama Kebutuhan: ${response[i].fields.namaKebutuhan}</p>
+                    <p>Harga Kebutuhan: ${response[i].fields.hargaKebutuhan}</p>
+                    <p>Deskripsi Kebutuhan: ${response[i].fields.deskripsiKebutuhan}</p>
+                    <hr></div>`)
+                  }
+                  $('#manage-modal-footer').append(`<button id="tambahKebutuhan" type="button" class="btn btn-secondary text-black" data-bs-toggle="modal" data-bs-target="#TambahKebutuhanModal">Tambah Kebutuhan</button>
+                  <button type="button" class="btn btn-secondary text-black" data-bs-toggle="modal" data-bs-target="#HapusKebutuhanModal">Hapus Kebutuhan</button>
+                  <button type="button" class="btn btn-secondary text-black" data-bs-dismiss="modal">Tutup</button>`)
+                }
+              })
+
             }
             $('#manage-modal-body').html('')
             $('#manage-modal-footer').html('')
@@ -165,26 +184,6 @@
             }
           })
 
-          $('#hapus-menu').click(function(){
-            if ($('#inputPKMenu').val() == ''){
-              window.alert('Mohon Isi Data Dengan Lengkap')
-            }else if (isNaN($('#inputPKMenu').val())){
-              window.alert('Mohon Isi Data Dengan Benar')
-            }else{
-              $.ajax({
-                  url: `/tempat-kuliner/delete-menu-kuliner`,
-                  type: 'POST',
-                  data: {PKMenu:$('#inputPKMenu').val()},
-                  success: function(response){
-                    if (response.status == 'NO'){
-                      window.alert('PK yang Anda Masukkan Salah!')
-                    }
-                  }
-                })
-            }
-            $('#inputPKMenu').val('')
-          })
-
           $('#tambah-wisata').click(function(){
             if ($('#inputNamaWisata').val() == '' || $('#inputHargaWisata').val() == '' || $('#inputDeskripsiWisata').val() == ''){
               window.alert('Mohon Isi Data Dengan Lengkap')
@@ -206,6 +205,49 @@
                   $('#inputHargaWisata').val('')
                   $('#inputDeskripsiWisata').val('')
             }
+          })
+
+          $('#tambah-kebutuhan').click(function(){
+            if ($('#inputNamaKebutuhan').val() == '' || $('#inputHargaKebutuhan').val() == '' || $('#inputDeskripsiKebutuhan').val() == ''){
+              window.alert('Mohon Isi Data Dengan Lengkap')
+            }else{
+              $.ajax({
+                    url: `/info-kebutuhan-pokok/add-kebutuhan`,
+                    type: 'POST',
+                    data: {daftarId:tempDaftarId,namaKebutuhan:$('#inputNamaKebutuhan').val(), hargaKebutuhan:$('#inputHargaKebutuhan').val(), deskripsiKebutuhan:$('#inputDeskripsiKebutuhan').val()},
+                    success: function(response){
+                      $('#manage-modal-body').append(`<p>PK (Kode Unik Objek): ${response.pk}</p>
+                      <p>Nama Kebutuhan: ${response.fields.namaKebutuhan}</p>
+                      <p>Harga Kebutuhan: ${response.fields.hargaKebutuhan}</p>
+                      <p>Deskripsi Kebutuhan: ${response.fields.deskripsiKebutuhan}</p>
+                      <p>Deskripsi Kebutuhan: ${response.fields.tokoKebutuhan.jenisUsaha}</p>
+                      <hr>`)
+                    }
+                  })
+                  $('#inputNamaKebutuhan').val('')
+                  $('#inputHargaKebutuhan').val('')
+                  $('#inputDeskripsiKebutuhanu').val('')
+            }
+          })
+
+          $('#hapus-menu').click(function(){
+            if ($('#inputPKMenu').val() == ''){
+              window.alert('Mohon Isi Data Dengan Lengkap')
+            }else if (isNaN($('#inputPKMenu').val())){
+              window.alert('Mohon Isi Data Dengan Benar')
+            }else{
+              $.ajax({
+                  url: `/tempat-kuliner/delete-menu-kuliner`,
+                  type: 'POST',
+                  data: {PKMenu:$('#inputPKMenu').val()},
+                  success: function(response){
+                    if (response.status == 'NO'){
+                      window.alert('PK yang Anda Masukkan Salah!')
+                    }
+                  }
+                })
+            }
+            $('#inputPKMenu').val('')
           })
 
           $('#hapus-wisata').click(function(){
@@ -446,6 +488,31 @@
     </div>
   </div>
 
+  <div class="modal fade" id="TambahKebutuhanModal" tabindex="-1" role="dialog" aria-labelledby="TambahKebutuhanModal" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title text-black" id="DaftarUsahaBaruModal">Tambah Kebutuhan Baru</h5>
+        </div>
+        <div class="modal-body">
+          <form class="rounded px-8 pt-6 pb-8" method="POST">
+          {% csrf_token %}
+          <label class="text-black">Nama Kebutuhan</label>
+          <input class="shadow appearance-none border rounded w-full py-2 px-3 text-zinc-800 leading-tight focus:outline-none focus:shadow-outline" id="inputNamaKebutuhan">
+          <label class="text-black">Harga Kebutuhan</label>
+          <input class="shadow appearance-none border rounded w-full py-2 px-3 text-zinc-800 leading-tight focus:outline-none focus:shadow-outline" id="inputHargaKebutuhan">
+          <label class="text-black">Deskripsi Kebutuhan</label>
+          <input class="shadow appearance-none border rounded w-full py-2 px-3 text-zinc-800 leading-tight focus:outline-none focus:shadow-outline" id="inputDeskripsiKebutuhan">
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary text-black" data-bs-dismiss="modal">Batalkan / Tutup</button>
+          <button id="tambah-kebutuhan" type="button" class="btn btn-primary text-black" >Tambah</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <div class="modal fade" id="HapusMenuModal" tabindex="-1" role="dialog" aria-labelledby="HapusMenuModal" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
@@ -482,6 +549,27 @@
         </div>
         <div class="modal-footer">
           <button id="hapus-wisata" type="button" class="btn btn-primary text-black">Hapus</button>
+          <button type="button" class="btn btn-secondary text-black" data-bs-dismiss="modal">Cancel</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="HapusKebutuhanModal" tabindex="-1" role="dialog" aria-labelledby="HapusKebutuhanuModal" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title text-black" id="DaftarUsahaBaruModal">Hapus Kebutuhan</h5>
+        </div>
+        <div class="modal-body">
+          <form class="rounded px-8 pt-6 pb-8" method="POST">
+          {% csrf_token %}
+          <label class="text-black">PK (Kode Unik Objek) yang Ingin Dihapus</label>
+          <input class="shadow appearance-none border rounded w-full py-2 px-3 text-zinc-800 leading-tight focus:outline-none focus:shadow-outline" id="inputPKKebutuhan">
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button id="hapus-kebutuhan" type="button" class="btn btn-primary text-black">Hapus</button>
           <button type="button" class="btn btn-secondary text-black" data-bs-dismiss="modal">Cancel</button>
         </div>
       </div>

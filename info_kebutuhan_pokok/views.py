@@ -12,8 +12,9 @@ def show_kebutuhan_pokok(request):
     return render(request, 'show_kebutuhan_pokok.html')
 
 def manage_kebutuhan_json(request):
-    data = KebutuhanPokok.objects.filter(tokoKebutuhan = request.GET.get('id'))
+    data = KebutuhanPokok.objects.all()
     return HttpResponse(serializers.serialize("json", data), content_type="application/json")
+
 
 @login_required(login_url='/login/')
 @csrf_exempt

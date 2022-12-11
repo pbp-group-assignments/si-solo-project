@@ -13,6 +13,33 @@ from sisolo.models import User
 from django.views.decorators.csrf import csrf_exempt
 import json
 
+# from django.contrib.auth.models import User
+from django.views.decorators.csrf import csrf_exempt
+
+@csrf_exempt
+def register_mobile(request):
+    body_unicode = (request.body.decode('utf-8'))
+    body = json.loads(body_unicode)
+    username = body['username']
+    password = body['password']
+    if username and password:
+        User.objects.create(username=username, password=password)
+    user = User (username = username, password = password)
+    user.save()
+    return JsonResponse({'status': 'Success'})
+
+@csrf_exempt
+def edit_user_mobile(request):
+    body_unicode = (request.body.decode('utf-8'))
+    user = User.objects.get(user=request.user)
+    body = json.loads(body_unicode)
+    namaLengkap = body['namaLengkap']
+    nomorTeleponPemilik = body['nomorTeleponPemilik']
+    alamatPemilik = body['alamatPemilik']
+    user = User.objects.get(namaLengkap = namaLengkap, nomorTeleponPemilik = nomorTeleponPemilik, alamatPemilik = alamatPemilik)
+    user.save()
+    return HttpResponse(status=202)
+
 def landing_page(request):
     if request.user.is_authenticated:
         data = User.objects.filter(user=request.user)
@@ -126,3 +153,8 @@ def logout_user(request):
     response = HttpResponseRedirect(reverse('sisolo:landing_page'))
     return response
     
+def logout_mobile(request):
+    logout(request)
+    response = HttpResponseRedirect(reverse('sisolo:login'))
+    response.delete_cookie('last_login')
+    return response
