@@ -78,7 +78,7 @@ def register(request):
             form.save()
             messages.success(request, 'Akun telah berhasil dibuat!')
             return redirect('sisolo:login_user')
-    
+
     context = {'form':form}
     return render(request, 'register.html', context)
 
