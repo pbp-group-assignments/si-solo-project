@@ -3,6 +3,8 @@ from django.contrib.auth.decorators import login_required
 
 from info_kebutuhan_pokok.models import KebutuhanPokok
 import json
+from info_kuliner.models import MenuKuliner
+from info_tempat_wisata.models import DaftarWisata
 from sisolo.decorators import admin_only
 from pendaftaran_izin_usaha.models import Usaha, PelakuUsaha
 from django.http import HttpResponse, JsonResponse
@@ -269,11 +271,21 @@ def show_list_wisata(request):  #Untuk nampilin data wisata
     context = {}
     return render(request, 'list_wisata.html', context)
 
+@login_required(login_url='/login/')
+def show_list_wisata_json(request):
+    data = DaftarWisata.objects.all()
+    return HttpResponse(serializers.serialize("json", data), content_type="application/json")
+
 @login_required(login_url='/sisolo/login/')
 @admin_only
 def show_list_kuliner(request):  #Untuk nampilin data kuliner
     context = {}
     return render(request, 'list_kuliner.html', context)
+
+@login_required(login_url='/sisolo/login/')
+def show_list_kuliner_json(request):
+    data = MenuKuliner.objects.all()
+    return HttpResponse(serializers.serialize("json", data), content_type="application/json")
 
 @login_required(login_url='/sisolo/login/')
 @admin_only

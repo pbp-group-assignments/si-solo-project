@@ -1,6 +1,6 @@
 from django.urls import path
 
-from Admin.views import show_admin_page, list_pendaftaran_json, list_pendaftaran_diajukan, get_detail_pendaftaran, set_diproses_pendaftaran
+from Admin.views import show_admin_page, list_pendaftaran_json, list_pendaftaran_diajukan, get_detail_pendaftaran, set_diproses_pendaftaran, show_list_kuliner_json, show_list_wisata_json
 from Admin.views import list_pendaftaran_diproses, set_ditolak_pendaftaran, list_pendaftaran_ditolak, list_pendaftaran_diterima, set_diterima_pendaftaran
 from Admin.views import add_kebutuhan, show_list_kebutuhan, set_ditolak_pendaftaran_mobile
 
@@ -36,6 +36,7 @@ urlpatterns = [
     path('list-pendaftaran-pelaku-usaha-diterima', list_pendaftaran_pelaku_usaha_diterima, name='list_pendaftaran_pelaku_usaha_diterima'),
     path('set-ditolak-pelaku-usaha/<pkPemohon>', set_ditolak_pelaku_usaha, name='set_ditolak_pelaku_usaha'),
     path('list-pendaftaran-pelaku-usaha-ditolak', list_pendaftaran_pelaku_usaha_ditolak, name='list_pendaftaran_pelaku_usaha_ditolak'),
+    path('list-wisata-json/', show_list_wisata_json, name='show_list_wisata_json'),
     path('list-wisata/', show_list_wisata, name='show_list_wisata'),
     path('add-transport/', add_transport, name='add_transport'),
     path('add-route/', add_route, name='add_route'),
@@ -49,6 +50,7 @@ urlpatterns = [
     path('list-pengaduan-verifikasi/', list_pengaduan_verifikasi, name='list_pengaduan_verifikasi'),
     path('list-saran/', list_saran, name='list_saran'),
     path('list-kuliner', show_list_kuliner, name='show_list_kuliner'),
+    path('list-kuliner-json/', show_list_kuliner_json, name='show_list_kuliner_json'),
     path('hapus-usaha/<permohonanId>', hapus_usaha, name='hapus_usaha'),
     path('list-kebutuhan', show_list_kebutuhan, name='show_list_kebutuhan'),
     path('pengaduan-selesai/<permohonanId>', set_pengaduan_selesai, name='set_pengaduan_selesai'),
